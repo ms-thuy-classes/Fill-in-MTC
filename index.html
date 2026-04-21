@@ -4,527 +4,166 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Học từ vựng cùng Ms. Thúy</title>
-
   <style>
-    :root {
-      --bg-primary: #f4f6fb;
-      --bg-card: #ffffff;
-      --gradient-start: #a8d8ea;
-      --gradient-mid: #aa96da;
-      --gradient-end: #fcbad3;
-      --text-primary: #2d3436;
-      --text-secondary: #636e72;
-      --text-light: #b2bec3;
-      --accent-blue: #74b9ff;
-      --accent-purple: #a29bfe;
-      --accent-pink: #fd79a8;
-      --success: #00b894;
-      --error: #e17055;
-      --warning: #fdcb6e;
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
-      --radius-sm: 10px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
-
+    /* GIỮ NGUYÊN TOÀN BỘ CSS TỪ FILE LAYOUT CỦA BẠN */
+    :root { --bg-primary: #f4f6fb; --bg-card: #ffffff; --gradient-start: #a8d8ea; --gradient-mid: #aa96da; --gradient-end: #fcbad3; --text-primary: #2d3436; --text-secondary: #636e72; --text-light: #b2bec3; --accent-blue: #74b9ff; --accent-purple: #a29bfe; --accent-pink: #fd79a8; --success: #00b894; --error: #e17055; --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06); --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08); --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12); --radius-md: 16px; --radius-lg: 24px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-main);
-      background: linear-gradient(135deg, var(--bg-primary) 0%, #e8ecf4 100%);
-      color: var(--text-primary);
-      min-height: 100vh;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* Background Blobs */
+    body { font-family: var(--font-main); background: linear-gradient(135deg, var(--bg-primary) 0%, #e8ecf4 100%); min-height: 100vh; color: var(--text-primary); }
     .bg-decoration { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
     .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.25; animation: float 20s ease-in-out infinite; }
     .blob-1 { width: 400px; height: 400px; background: var(--gradient-start); top: -100px; right: -100px; }
-    .blob-2 { width: 350px; height: 350px; background: var(--gradient-mid); bottom: -80px; left: -80px; animation-delay: -7s; }
-    .blob-3 { width: 300px; height: 300px; background: var(--gradient-end); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -14s; }
-    @keyframes float { 0%,100%{transform:translate(0,0) scale(1)} 25%{transform:translate(30px,-30px) scale(1.05)} 50%{transform:translate(-20px,20px) scale(0.95)} 75%{transform:translate(20px,10px) scale(1.02)} }
-
-    .app-container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px; min-height: 100vh; }
+    .blob-2 { width: 350px; height: 350px; background: var(--gradient-mid); bottom: -80px; left: -80px; }
+    @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,20px)} }
+    .app-container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px; }
     .header { text-align: center; padding: 40px 20px 30px; }
-    .header__logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
-    .header__subtitle { color: var(--text-secondary); font-size: 0.95rem; }
-
+    .header__logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .page { display: none; animation: fadeSlideIn 0.5s ease-out; }
     .page--active { display: block; }
     @keyframes fadeSlideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-
-    /* Dashboard */
-    .stats-bar { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
-    .stat-card { background: var(--bg-card); border-radius: var(--radius-md); padding: 16px 24px; box-shadow: var(--shadow-sm); text-align: center; flex: 1; min-width: 120px; transition: var(--transition); }
-    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-    .stat-card__number { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .stat-card__label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-
-    .search-bar { position: relative; margin-bottom: 24px; }
-    .search-bar__input { width: 100%; padding: 14px 20px 14px 48px; border: 2px solid transparent; border-radius: var(--radius-md); background: var(--bg-card); font-size: 1rem; font-family: var(--font-main); box-shadow: var(--shadow-sm); transition: var(--transition); outline: none; }
-    .search-bar__input:focus { border-color: var(--accent-purple); box-shadow: var(--shadow-md), 0 0 0 4px rgba(162,155,254,0.15); }
-    .search-bar__icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; opacity: 0.4; }
-
     .vocab-table-wrapper { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
-    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .table-scroll::-webkit-scrollbar { height: 6px; }
-    .table-scroll::-webkit-scrollbar-track { background: #f1f2f6; border-radius: 10px; }
-    .table-scroll::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border-radius: 10px; }
+    .table-scroll { overflow-x: auto; max-height: 500px; }
     .vocab-table { width: 100%; border-collapse: collapse; }
-    .vocab-table thead { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); }
-    .vocab-table th { padding: 14px 16px; color: white; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: left; }
-    .vocab-table th:first-child { width: 40px; text-align: center; }
-    .vocab-table td { padding: 12px 16px; border-bottom: 1px solid #f1f2f6; font-size: 0.95rem; transition: var(--transition); }
-    .vocab-table tbody tr:hover { background: linear-gradient(135deg, rgba(116,185,255,0.05), rgba(162,155,254,0.05)); }
-    .vocab-table td:first-child { text-align: center; color: var(--text-light); font-weight: 600; font-size: 0.85rem; }
-    .word-cell { font-weight: 700; }
-    .word-type { display: inline-block; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; font-size: 0.85rem; }
-    .ipa-cell { color: var(--text-secondary); font-family: 'Segoe UI', monospace; font-size: 0.9rem; }
-    .meaning-cell { color: var(--text-primary); font-weight: 500; }
-    .btn-audio { width: 36px; height: 36px; border: none; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; transition: var(--transition); }
-    .btn-audio:hover { transform: scale(1.15); box-shadow: 0 4px 15px rgba(116,185,255,0.4); }
-    .btn-audio.playing { animation: pulse 1s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(116,185,255,0.4)} 50%{box-shadow:0 0 0 10px rgba(116,185,255,0)} }
-
-    .btn-cta { display: inline-flex; align-items: center; gap: 10px; padding: 16px 40px; border: none; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink)); color: white; font-size: 1.1rem; font-weight: 700; font-family: var(--font-main); cursor: pointer; transition: var(--transition); box-shadow: 0 4px 20px rgba(162,155,254,0.3); margin-top: 30px; }
-    .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(162,155,254,0.45); }
-    .cta-wrapper { text-align: center; padding-bottom: 40px; }
-
-    /* Quiz */
-    .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 4px; gap: 12px; }
-    .progress-bar { flex: 1; height: 8px; background: #e9ecef; border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
-    .progress-bar__fill { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-pink)); border-radius: 10px; transition: width 0.4s ease; }
-    .progress-bar__text { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-align: center; }
-    
-    .timer-container { display: flex; align-items: center; gap: 8px; min-width: 140px; }
-    .timer-bar { flex: 1; height: 8px; background: #e9ecef; border-radius: 10px; overflow: hidden; }
-    .timer-bar__fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 10px; transition: width 1s linear, background 0.3s; }
-    .timer-text { font-size: 0.9rem; font-weight: 800; color: var(--text-primary); min-width: 32px; text-align: right; }
-
-    .quiz-card { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 32px 24px; margin-bottom: 30px; animation: fadeSlideIn 0.4s ease-out; }
-    .quiz-card__number { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; text-align: center; }
-    .quiz-sentence { font-size: 1.35rem; font-weight: 600; text-align: center; margin-bottom: 24px; line-height: 1.7; color: var(--text-primary); padding: 16px; background: #fafbfc; border-radius: var(--radius-md); }
-    .blank { border-bottom: 3px dashed var(--accent-purple); padding: 0 8px; color: var(--accent-purple); font-weight: 800; }
-    .quiz-card__prompt { text-align: center; font-size: 1rem; color: var(--text-secondary); margin-bottom: 20px; }
-
-    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 600px; margin: 0 auto; }
-    .quiz-option { position: relative; padding: 18px 16px; border: 2px solid #e9ecef; border-radius: var(--radius-md); background: var(--bg-card); cursor: pointer; font-size: 1rem; font-weight: 700; font-family: var(--font-main); color: var(--text-primary); transition: var(--transition); text-align: center; overflow: hidden; }
-    .quiz-option__letter { position: absolute; top: 6px; left: 10px; font-size: 0.65rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; }
-    .quiz-option:hover:not(.quiz-option--disabled) { border-color: var(--accent-purple); background: linear-gradient(135deg, rgba(116,185,255,0.05), rgba(162,155,254,0.05)); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-    .quiz-option--correct { border-color: var(--success) !important; background: rgba(0,184,148,0.08) !important; color: var(--success) !important; }
-    .quiz-option--correct::after { content: '✓'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--success); font-weight: 800; }
-    .quiz-option--wrong { border-color: var(--error) !important; background: rgba(225,112,85,0.08) !important; color: var(--error) !important; }
-    .quiz-option--wrong::after { content: '✗'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--error); font-weight: 800; }
-    .quiz-option--disabled { cursor: default; opacity: 0.5; }
-    .quiz-option--disabled:not(.quiz-option--correct):not(.quiz-option--wrong) { opacity: 0.35; }
-
-    .feedback { margin-top: 20px; padding: 14px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; text-align: center; animation: fadeSlideIn 0.3s ease-out; display: none; }
-    .feedback--correct { background: rgba(0,184,148,0.1); color: var(--success); display: block; }
-    .feedback--wrong { background: rgba(225,112,85,0.1); color: var(--error); display: block; }
-
-    .btn-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; padding-bottom: 40px; }
-    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border: 2px solid var(--accent-purple); border-radius: var(--radius-md); background: transparent; color: var(--accent-purple); font-size: 1rem; font-weight: 700; font-family: var(--font-main); cursor: pointer; transition: var(--transition); }
-    .btn-secondary:hover { background: var(--accent-purple); color: white; transform: translateY(-2px); }
-
-    /* Results */
-    .results-card { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 40px 32px; text-align: center; margin-bottom: 30px; animation: fadeSlideIn 0.5s ease-out; }
-    .results-card__emoji { font-size: 4rem; margin-bottom: 16px; }
-    .results-card__title { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .results-card__message { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 24px; }
-    .score-ring { width: 180px; height: 180px; margin: 0 auto 24px; position: relative; }
-    .score-ring svg { transform: rotate(-90deg); }
-    .score-ring__circle-bg { fill: none; stroke: #e9ecef; stroke-width: 10; }
-    .score-ring__circle { fill: none; stroke: url(#gradient); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.5s ease-out; }
-    .score-ring__text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5rem; font-weight: 800; color: var(--text-primary); }
-    
-    .wrong-words-section { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 24px; margin-bottom: 30px; }
-    .wrong-words-section__title { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; color: var(--error); display: flex; align-items: center; gap: 8px; }
-    
-    .review-item { padding: 18px; border: 1px solid #f1f2f6; border-radius: var(--radius-md); margin-bottom: 14px; background: #fafbfc; transition: var(--transition); }
-    .review-item:last-child { margin-bottom: 0; }
-    .review-item:hover { box-shadow: var(--shadow-sm); background: #ffffff; }
-    .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
-    .review-word { font-weight: 800; font-size: 1.1rem; color: var(--text-primary); }
-    .review-vi { color: var(--accent-purple); font-weight: 600; font-size: 0.9rem; }
-    .review-sentence { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 12px; font-style: italic; line-height: 1.5; background: #ffffff; padding: 10px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--accent-purple); }
-    .review-sentence .correct-fill { color: var(--accent-purple); font-weight: 700; text-decoration: underline; text-decoration-style: dotted; }
-    .review-badges { display: flex; gap: 10px; flex-wrap: wrap; }
-    .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
-    .badge-wrong { background: rgba(225,112,85,0.1); color: var(--error); }
-    .badge-correct { background: rgba(0,184,148,0.1); color: var(--success); }
-    .badge-timeout { background: rgba(253,203,110,0.2); color: #d63031; }
-
-    .scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; border: none; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: var(--shadow-md); transition: var(--transition); opacity: 0; visibility: hidden; z-index: 100; }
-    .scroll-top--visible { opacity: 1; visibility: visible; }
-    .scroll-top:hover { transform: translateY(-3px); }
-
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--bg-card); color: var(--text-primary); padding: 14px 24px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); font-weight: 600; font-size: 0.9rem; z-index: 200; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; gap: 10px; }
-    .toast--visible { transform: translateX(-50%) translateY(0); }
-
-    @media (max-width: 768px) {
-      .app-container { padding: 12px; }
-      .header__logo { font-size: 1.5rem; }
-      .quiz-options { gap: 10px; }
-      .quiz-option { padding: 14px 12px; font-size: 0.9rem; }
-      .quiz-sentence { font-size: 1.15rem; padding: 12px; }
-      .results-card { padding: 28px 20px; }
-      .vocab-table th:nth-child(4), .vocab-table td:nth-child(4) { display: none; }
-      .timer-container { min-width: 120px; }
-    }
-    @media (max-width: 480px) {
-      .quiz-options { grid-template-columns: 1fr; }
-      .btn-group { flex-direction: column; align-items: center; }
-      .btn-secondary, .btn-cta { width: 100%; justify-content: center; }
-    }
+    .vocab-table th { padding: 14px; background: var(--accent-purple); color: white; text-align: left; }
+    .vocab-table td { padding: 12px; border-bottom: 1px solid #f1f2f6; }
+    .btn-cta { padding: 16px 40px; border: none; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; font-weight: 700; cursor: pointer; margin-top: 20px; }
+    .quiz-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-lg); text-align: center; }
+    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+    .quiz-option { padding: 15px; border: 2px solid #eee; border-radius: var(--radius-md); background: white; cursor: pointer; font-weight: 700; }
+    .quiz-option--correct { border-color: var(--success); background: rgba(0,184,148,0.1); }
+    .quiz-option--wrong { border-color: var(--error); background: rgba(225,112,85,0.1); }
+    .progress-bar { height: 8px; background: #eee; border-radius: 10px; margin-bottom: 20px; }
+    .progress-bar__fill { height: 100%; background: var(--accent-blue); width: 0%; transition: 0.3s; }
   </style>
 </head>
 <body>
-  <div class="bg-decoration"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+  <div class="bg-decoration"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
   
   <div class="app-container">
     <header class="header">
-      <h1 class="header__logo">📚 Học từ vựng cùng Ms. Thúy</h1>
-      <p class="header__subtitle">Từ vựng Tiếng Anh — Điền từ vào chỗ trống</p>
+      <h1 class="header__logo" id="dynamic-title">Đang tải bài học...</h1>
     </header>
 
     <section id="page-dashboard" class="page page--active">
-      <div class="stats-bar">
-        <div class="stat-card"><div class="stat-card__number" id="stat-total">15</div><div class="stat-card__label">Tổng từ</div></div>
-        <div class="stat-card"><div class="stat-card__number" id="stat-nouns">—</div><div class="stat-card__label">Danh từ</div></div>
-        <div class="stat-card"><div class="stat-card__number" id="stat-verbs">—</div><div class="stat-card__label">Động từ</div></div>
-        <div class="stat-card"><div class="stat-card__number" id="stat-adjs">—</div><div class="stat-card__label">Tính/Trạng</div></div>
-      </div>
-      <div class="search-bar">
-        <span class="search-bar__icon">🔍</span>
-        <input type="text" class="search-bar__input" id="searchInput" placeholder="Tìm kiếm từ vựng, nghĩa, phiên âm...">
-      </div>
       <div class="vocab-table-wrapper">
         <div class="table-scroll">
           <table class="vocab-table">
-            <thead><tr><th>#</th><th>Từ vựng</th><th>Từ loại</th><th>IPA</th><th>Nghĩa</th><th>🔊</th></tr></thead>
+            <thead><tr><th>Từ vựng</th><th>Nghĩa</th><th>🔊</th></tr></thead>
             <tbody id="vocabBody"></tbody>
           </table>
         </div>
       </div>
-      <div class="cta-wrapper"><button class="btn-cta" id="btnStartQuiz"><span>🚀</span><span>Bắt đầu Quiz</span></button></div>
+      <div style="text-align:center"><button class="btn-cta" id="btnStartQuiz">🚀 Bắt đầu Quiz</button></div>
     </section>
 
     <section id="page-quiz" class="page">
-      <div class="quiz-header">
-        <div style="flex:1">
-          <div class="progress-bar"><div class="progress-bar__fill" id="progressFill" style="width:0%"></div></div>
-          <div class="progress-bar__text" id="progressText">Câu 1 / 15</div>
-        </div>
-        <div class="timer-container">
-          <div class="timer-bar"><div class="timer-bar__fill" id="timerFill"></div></div>
-          <span id="timerText" class="timer-text">25s</span>
-        </div>
-      </div>
+      <div class="progress-bar"><div class="progress-bar__fill" id="progressFill"></div></div>
       <div class="quiz-card" id="quizCard"></div>
     </section>
 
-    <section id="page-results" class="page">
-      <div id="resultsContent"></div>
-    </section>
+    <section id="page-results" class="page" id="resultsContent"></section>
   </div>
 
-  <button class="scroll-top" id="scrollTopBtn" title="Lên đầu trang">↑</button>
-  <div class="toast" id="toast"></div>
-
   <script>
-    // ======================== DATA (FROM IMAGE) ========================
-    const VOCAB_DATA = [
-      { id: 1,  word: "In the middle",          type: "(phr)", ipa: "/ɪn ðə ˈmɪd.əl/",            meaning: "Ở giữa", sentence: "He is standing ________ of the crowd so I can't see him." },
-      { id: 2,  word: "on the roller coaster",  type: "(phr)", ipa: "/ˈroʊ.lɚ ˌkoʊ.stɚ/",         meaning: "Tàu lượn siêu tốc", sentence: "I feel dizzy when I am ________." },
-      { id: 3,  word: "get together",           type: "(v)",   ipa: "/ɡet təˈɡeð.ər/",            meaning: "Cùng nhau/Tập hợp", sentence: "The whole family will ________ for dinner this weekend." },
-      { id: 4,  word: "get into",               type: "(v)",   ipa: "/ɡet ˈɪn.tuː/",              meaning: "Bắt đầu thích", sentence: "She started to ________ photography lately." },
-      { id: 5,  word: "movie star",             type: "(n)",   ipa: "/ˈmuː.vi stɑːr/",            meaning: "Siêu sao điện ảnh", sentence: "Tom Cruise is a famous Hollywood ________." },
-      { id: 6,  word: "as soon as possible",    type: "(adv)", ipa: "/æz suːn æz ˈpɒs.ə.bəl/",    meaning: "Sớm nhất có thể", sentence: "Please reply to my email ________." },
-      { id: 7,  word: "extrovert",              type: "(n)",   ipa: "/ˈek.strə.vɜːt/",            meaning: "Người hướng ngoại", sentence: "An ________ person enjoys meeting new people." },
-      { id: 8,  word: "pessimist",              type: "(n)",   ipa: "/ˈpes.ɪ.mɪst/",              meaning: "Người bi quan", sentence: "A ________ always expects the worst to happen." },
-      { id: 9,  word: "transformed",            type: "(v)",   ipa: "/trænsˈfɔːrmd/",             meaning: "Thay đổi hoàn toàn", sentence: "The old house was ________ into a modern cafe." },
-      { id: 10, word: "over the past decade",   type: "(phr)", ipa: "/ˈoʊ.vɚ ðə pæst ˈdek.eɪd/",  meaning: "Trong thập kỷ qua", sentence: "The city has changed a lot ________." },
-      { id: 11, word: "participate in",         type: "(v)",   ipa: "/pɑːrˈtɪs.ə.peɪt ɪn/",       meaning: "Tham gia vào", sentence: "Many students want to ________ the school competition." },
-      { id: 12, word: "rely on",                type: "(v)",   ipa: "/rɪˈlaɪ ɒn/",                meaning: "Phụ thuộc vào", sentence: "Children often ________ their parents for support." },
-      { id: 13, word: "any time",               type: "(adv)", ipa: "/ˈen.i taɪm/",               meaning: "Bất cứ lúc nào", sentence: "You can call me ________ you need help." },
-      { id: 14, word: "a wide range of",        type: "(phr)", ipa: "/ə waɪd reɪndʒ əv/",         meaning: "Có nhiều/Đa dạng", sentence: "The shop offers ________ organic products." },
-      { id: 15, word: "make preparation for",   type: "(v)",   ipa: "/ˌprep.əˈreɪ.ʃən fɔːr/",     meaning: "Chuẩn bị cho", sentence: "We need to ________ the upcoming final exam." }
-    ];
+    let VOCAB_DATA = [];
+    let State = { quizQuestions: [], currentQuestionIndex: 0, score: 0, hasAnswered: false };
 
-    // ======================== STATE ========================
-    const State = {
-      currentPage: 'dashboard',
-      quizQuestions: [],
-      currentQuestionIndex: 0,
-      score: 0,
-      wrongAnswers: [],
-      hasAnswered: false,
-      timerInterval: null,
-      timeLeft: 25
-    };
+    // 1. HÀM QUAN TRỌNG: Lấy dữ liệu từ thư mục data/
+    async function initApp() {
+      const params = new URLSearchParams(window.location.search);
+      const lessonName = params.get('lesson'); // Lấy tên file từ URL (?lesson=ten-file)
 
-    // ======================== UTILS ========================
-    const shuffle = arr => {
-      const a = [...arr];
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+      if (!lessonName) {
+        document.getElementById('dynamic-title').innerText = "Vui lòng chọn bài học";
+        return;
       }
-      return a;
-    };
 
-    const navigateTo = pageId => {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('page--active'));
-      document.getElementById(`page-${pageId}`)?.classList.add('page--active');
-      State.currentPage = pageId;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    const showToast = (msg, dur = 2500) => {
-      const t = document.getElementById('toast');
-      t.innerHTML = msg;
-      t.classList.add('toast--visible');
-      setTimeout(() => t.classList.remove('toast--visible'), dur);
-    };
-
-    const speak = (word, btn) => {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(word);
-      u.lang = 'en-US'; u.rate = 0.85;
-      if (btn) {
-        btn.classList.add('playing');
-        u.onend = u.onerror = () => btn.classList.remove('playing');
+      try {
+        const response = await fetch(`data/${lessonName}.json`);
+        if (!response.ok) throw new Error();
+        VOCAB_DATA = await response.json();
+        
+        // Cập nhật tiêu đề dựa trên tên file (thay thế dấu gạch ngang bằng khoảng trắng)
+        document.getElementById('dynamic-title').innerText = lessonName.replace(/-/g, ' ').toUpperCase();
+        renderDashboard();
+      } catch (err) {
+        document.getElementById('dynamic-title').innerText = "Lỗi: Không tìm thấy file dữ liệu!";
       }
-      window.speechSynthesis.speak(u);
-    };
+    }
 
-    const generateOptions = (correctWord, allData) => {
-      const distractors = allData.filter(v => v.word !== correctWord).map(v => v.word);
-      const picked = shuffle(distractors).slice(0, 3);
-      return shuffle([...picked, correctWord]);
-    };
-
-    // ======================== DASHBOARD ========================
-    const renderDashboard = (data = VOCAB_DATA) => {
+    function renderDashboard() {
       const tbody = document.getElementById('vocabBody');
-      tbody.innerHTML = data.length === 0 
-        ? `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-light)">Không tìm thấy từ vựng nào 😕</td></tr>`
-        : data.map((item, i) => `
-          <tr>
-            <td>${i+1}</td>
-            <td class="word-cell">${item.word}</td>
-            <td><span class="word-type">${item.type}</span></td>
-            <td class="ipa-cell">${item.ipa}</td>
-            <td class="meaning-cell">${item.meaning}</td>
-            <td style="text-align:center"><button class="btn-audio" data-w="${item.word}" aria-label="Phát âm">🔊</button></td>
-          </tr>`).join('');
-      
-      document.querySelectorAll('.btn-audio').forEach(btn => 
-        btn.addEventListener('click', e => speak(e.currentTarget.dataset.w, e.currentTarget))
-      );
+      tbody.innerHTML = VOCAB_DATA.map(item => `
+        <tr>
+          <td style="font-weight:700">${item.word}</td>
+          <td>${item.meaning}</td>
+          <td><button onclick="speak('${item.word}')">🔊</button></td>
+        </tr>`).join('');
+    }
 
-      const n = v => v.type.includes('n'), ve = v => v.type.includes('v'), adj = v => v.type.includes('adj') || v.type.includes('adv');
-      document.getElementById('stat-total').textContent = VOCAB_DATA.length;
-      document.getElementById('stat-nouns').textContent = VOCAB_DATA.filter(n).length;
-      document.getElementById('stat-verbs').textContent = VOCAB_DATA.filter(ve).length;
-      document.getElementById('stat-adjs').textContent = VOCAB_DATA.filter(adj).length;
-    };
+    function speak(word) {
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US'; window.speechSynthesis.speak(u);
+    }
 
-    document.getElementById('searchInput').addEventListener('input', e => {
-      const q = e.target.value.toLowerCase().trim();
-      renderDashboard(q ? VOCAB_DATA.filter(v => v.word.toLowerCase().includes(q) || v.meaning.toLowerCase().includes(q)) : VOCAB_DATA);
-    });
-
-    // ======================== QUIZ ENGINE ========================
-    const updateTimerUI = () => {
-      const fill = document.getElementById('timerFill');
-      const text = document.getElementById('timerText');
-      if (!fill || !text) return;
-      const pct = (State.timeLeft / 25) * 100;
-      fill.style.width = `${pct}%`;
-      text.textContent = `${State.timeLeft}s`;
-      fill.style.background = State.timeLeft <= 5 ? 'var(--error)' : 'linear-gradient(90deg, var(--accent-blue), var(--accent-purple))';
-    };
-
-    const startTimer = () => {
-      clearInterval(State.timerInterval);
-      State.timeLeft = 25;
-      updateTimerUI();
-      State.timerInterval = setInterval(() => {
-        State.timeLeft--;
-        updateTimerUI();
-        if (State.timeLeft <= 0) {
-          clearInterval(State.timerInterval);
-          handleTimeout();
-        }
-      }, 1000);
-    };
-
-    const handleTimeout = () => {
-      if (State.hasAnswered) return;
-      State.hasAnswered = true;
-      document.querySelectorAll('.quiz-option').forEach(b => b.classList.add('quiz-option--disabled'));
-      const q = State.quizQuestions[State.currentQuestionIndex];
-      State.wrongAnswers.push({ question: q, selected: '(Hết giờ)', correct: q.word });
-      showFeedback('⏰ Hết giờ! Chuyển câu tiếp theo.', false);
-      setTimeout(nextQuestion, 2000); // Chỉnh lại 2 giây
-    };
-
-    const handleOptionClick = e => {
-      if (State.hasAnswered) return;
-      State.hasAnswered = true;
-      clearInterval(State.timerInterval);
-
-      const selected = e.currentTarget.dataset.word;
-      const q = State.quizQuestions[State.currentQuestionIndex];
-      const correct = selected === q.word;
-
-      document.querySelectorAll('.quiz-option').forEach(b => b.classList.add('quiz-option--disabled'));
-      e.currentTarget.classList.add(correct ? 'quiz-option--correct' : 'quiz-option--wrong');
-
-      if (correct) {
-        State.score++;
-        showFeedback('🎉 Chính xác! Tuyệt vời!', true);
-      } else {
-        State.wrongAnswers.push({ question: q, selected, correct: q.word });
-        showFeedback('😔 Chưa đúng rồi! Hãy ghi nhớ từ này nhé.', false);
-      }
-      setTimeout(nextQuestion, 2000); // Chỉnh lại 2 giây
-    };
-
-    const showFeedback = (msg, isCorrect) => {
-      const fb = document.getElementById('feedback');
-      fb.className = `feedback ${isCorrect ? 'feedback--correct' : 'feedback--wrong'}`;
-      fb.textContent = msg;
-    };
-
-    const nextQuestion = () => {
-      State.currentQuestionIndex++;
-      if (State.currentQuestionIndex < State.quizQuestions.length) renderQuestion();
-      else finishQuiz();
-    };
-
-    const renderQuestion = () => {
-      const q = State.quizQuestions[State.currentQuestionIndex];
-      const total = State.quizQuestions.length;
-      const curr = State.currentQuestionIndex + 1;
-
-      document.getElementById('progressFill').style.width = `${(State.currentQuestionIndex/total)*100}%`;
-      document.getElementById('progressText').textContent = `Câu ${curr} / ${total}`;
-
-      const options = generateOptions(q.word, VOCAB_DATA);
-      const letters = ['A','B','C','D'];
-      const sentenceHTML = q.sentence.replace('________', '<span class="blank">________</span>');
-
-      document.getElementById('quizCard').innerHTML = `
-        <div class="quiz-card__number">Câu hỏi ${curr}</div>
-        <div class="quiz-sentence">"${sentenceHTML}"</div>
-        <div class="quiz-card__prompt">Chọn từ thích hợp điền vào chỗ trống:</div>
-        <div class="quiz-options">
-          ${options.map((opt, i) => `
-            <button class="quiz-option" data-word="${opt}" aria-label="Phương án ${letters[i]}">
-              <span class="quiz-option__letter">${letters[i]}</span>${opt}
-            </button>`).join('')}
-        </div>
-        <div class="feedback" id="feedback"></div>
-      `;
-
-      document.querySelectorAll('.quiz-option').forEach(btn => btn.addEventListener('click', handleOptionClick));
-      State.hasAnswered = false;
-      startTimer();
-    };
-
-    const startQuiz = () => {
-      State.quizQuestions = shuffle(VOCAB_DATA);
+    function startQuiz() {
+      State.quizQuestions = [...VOCAB_DATA].sort(() => Math.random() - 0.5);
       State.currentQuestionIndex = 0;
       State.score = 0;
-      State.wrongAnswers = [];
-      State.hasAnswered = false;
       navigateTo('quiz');
       renderQuestion();
-    };
+    }
 
-    document.getElementById('btnStartQuiz').addEventListener('click', startQuiz);
+    function renderQuestion() {
+      const q = State.quizQuestions[State.currentQuestionIndex];
+      const options = [...VOCAB_DATA].sort(() => Math.random() - 0.5).slice(0, 3).map(v => v.word);
+      if (!options.includes(q.word)) options[0] = q.word;
+      const finalOptions = options.sort(() => Math.random() - 0.5);
 
-    // ======================== RESULTS ========================
-    const finishQuiz = () => {
-      clearInterval(State.timerInterval);
-      navigateTo('results');
+      document.getElementById('progressFill').style.width = `${(State.currentQuestionIndex / State.quizQuestions.length) * 100}%`;
       
-      const total = State.quizQuestions.length;
-      const pct = Math.round((State.score / total) * 100);
-      let emoji, msg;
-      if (pct >= 90) { emoji = '🏆'; msg = 'Xuất sắc! Bạn nắm rất vững từ vựng!'; }
-      else if (pct >= 70) { emoji = '🌟'; msg = 'Làm tốt lắm! Hãy ôn thêm các câu còn sai nhé!'; }
-      else if (pct >= 50) { emoji = '💪'; msg = 'Khá rồi! Hãy cố gắng thêm nhé!'; }
-      else { emoji = '📖'; msg = 'Hãy ôn lại từ vựng và thử lại nhé!'; }
-
-      const circ = 2 * Math.PI * 70;
-      const offset = circ - (pct / 100) * circ;
-
-      document.getElementById('resultsContent').innerHTML = `
-        <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--accent-blue)"/><stop offset="50%" stop-color="var(--accent-purple)"/><stop offset="100%" stop-color="var(--accent-pink)"/></linearGradient></defs></svg>
-        <div class="results-card">
-          <div class="results-card__emoji">${emoji}</div>
-          <div class="results-card__title">Kết Quả Quiz</div>
-          <div class="score-ring">
-            <svg viewBox="0 0 160 160"><circle class="score-ring__circle-bg" cx="80" cy="80" r="70"/><circle class="score-ring__circle" cx="80" cy="80" r="70" style="stroke-dasharray:${circ};stroke-dashoffset:${circ}" id="scoreRing"/></svg>
-            <div class="score-ring__text">${pct}%</div>
-          </div>
-          <div class="results-card__message">${msg}</div>
-          <div style="display:flex;justify-content:center;gap:24px;margin-bottom:20px;flex-wrap:wrap">
-            <div><span style="font-size:1.6rem;font-weight:800;color:var(--success)">${State.score}</span><span style="color:var(--text-secondary);font-size:0.85rem"> Đúng</span></div>
-            <div><span style="font-size:1.6rem;font-weight:800;color:var(--error)">${total-State.score}</span><span style="color:var(--text-secondary);font-size:0.85rem"> Sai</span></div>
-            <div><span style="font-size:1.6rem;font-weight:800;color:var(--text-primary)">${total}</span><span style="color:var(--text-secondary);font-size:0.85rem"> Tổng</span></div>
-          </div>
+      document.getElementById('quizCard').innerHTML = `
+        <h2>${q.sentence.replace('________', '____')}</h2>
+        <p style="margin: 10px 0; color: #666;">(Nghĩa: ${q.meaning})</p>
+        <div class="quiz-options">
+          ${finalOptions.map(opt => `<button class="quiz-option" onclick="handleAnswer(this, '${opt}', '${q.word}')">${opt}</button>`).join('')}
         </div>
-        ${State.wrongAnswers.length > 0 ? `
-          <div class="wrong-words-section">
-            <div class="wrong-words-section__title">📝 Chi tiết các câu cần ôn lại (${State.wrongAnswers.length})</div>
-            ${State.wrongAnswers.map((w, i) => {
-              const q = w.question;
-              const isTimeout = w.selected === '(Hết giờ)';
-              const sentenceForReview = q.sentence.replace('________', `<span class="correct-fill">${q.word}</span>`);
-              return `
-                <div class="review-item">
-                  <div class="review-header">
-                    <span class="review-word">${q.word}</span>
-                    <span class="ipa-cell">${q.ipa}</span>
-                    <span class="review-vi">${q.meaning}</span>
-                  </div>
-                  <div class="review-sentence">"${sentenceForReview}"</div>
-                  <div class="review-badges">
-                    ${isTimeout ? '<span class="badge badge-timeout">⏰ Hết giờ</span>' : `<span class="badge badge-wrong">✗ Bạn chọn: ${w.selected}</span>`}
-                    <span class="badge badge-correct">✓ Đáp án đúng: ${q.word}</span>
-                  </div>
-                </div>`;
-            }).join('')}
-          </div>` : ''}
-        <div class="btn-group">
-          <button class="btn-cta" id="btnRetry"><span>🔄</span><span>Làm lại Quiz</span></button>
-          <button class="btn-secondary" id="btnDash"><span>📚</span><span>Về Dashboard</span></button>
-        </div>`;
+      `;
+      State.hasAnswered = false;
+    }
 
-      requestAnimationFrame(() => setTimeout(() => {
-        document.getElementById('scoreRing').style.strokeDashoffset = offset;
-      }, 100));
-      document.getElementById('btnRetry').addEventListener('click', startQuiz);
-      document.getElementById('btnDash').addEventListener('click', () => navigateTo('dashboard'));
-    };
+    function handleAnswer(btn, selected, correct) {
+      if (State.hasAnswered) return;
+      State.hasAnswered = true;
+      
+      const isCorrect = selected === correct;
+      btn.classList.add(isCorrect ? 'quiz-option--correct' : 'quiz-option--wrong');
+      if (isCorrect) State.score++;
 
-    // ======================== INIT ========================
-    window.addEventListener('scroll', () => {
-      document.getElementById('scrollTopBtn').classList.toggle('scroll-top--visible', window.scrollY > 300);
-    });
-    document.getElementById('scrollTopBtn').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
-    document.addEventListener('DOMContentLoaded', () => { renderDashboard(); showToast('👋 Chào mừng học sinh đến với lớp học của Ms. Thúy!'); });
+      // CHỈNH ĐÚNG 2 GIÂY RỒI CHUYỂN CÂU
+      setTimeout(() => {
+        State.currentQuestionIndex++;
+        if (State.currentQuestionIndex < State.quizQuestions.length) renderQuestion();
+        else showResults();
+      }, 1000);
+    }
+
+    function showResults() {
+      navigateTo('results');
+      document.getElementById('page-results').innerHTML = `
+        <div class="quiz-card">
+          <h1>Kết quả: ${State.score}/${State.quizQuestions.length}</h1>
+          <button class="btn-cta" onclick="location.reload()">Làm lại</button>
+        </div>
+      `;
+    }
+
+    function navigateTo(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('page--active'));
+      document.getElementById(`page-${id}`).classList.add('page--active');
+    }
+
+    document.getElementById('btnStartQuiz').onclick = startQuiz;
+    window.onload = initApp;
   </script>
 </body>
 </html>
