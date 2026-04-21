@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài học | Học từ vựng cùng Ms. Thúy</title>
+  <style>
+    /* CSS kế thừa từ code trước, được rút gọn cho gọn gàng */
+    :root {
+      --bg: #f4f6fb; --card: #fff; --text: #2d3436; --sec: #636e72; --light: #b2bec3;
+      --blue: #74b9ff; --purple: #a29bfe; --pink: #fd79a8; --success: #00b894; --error: #e17055;
+      --grad: linear-gradient(135deg, var(--blue), var(--purple), var(--pink));
+      --shadow: 0 4px 20px rgba(0,0,0,0.08); --radius: 16px; --trans: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+    .container{max-width:900px;margin:0 auto;padding:30px 20px}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--sec);text-decoration:none;font-weight:600;margin-bottom:20px;transition:var(--trans)}
+    .back-link:hover{color:var(--purple);transform:translateX(-4px)}
+    .lesson-header{text-align:center;margin-bottom:30px}
+    .lesson-title{font-size:1.8rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    
+    .quiz-wrap{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:30px}
+    .progress-bar{height:6px;background:#e9ecef;border-radius:10px;overflow:hidden;margin-bottom:10px}
+    .progress-fill{height:100%;background:var(--grad);transition:width 0.4s}
+    .progress-text{font-size:0.85rem;color:var(--sec);margin-bottom:15px}
+    
+    .timer-box{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+    .timer-bar{flex:1;height:6px;background:#e9ecef;border-radius:10px;overflow:hidden}
+    .timer-fill{height:100%;background:var(--blue);transition:width 1s linear, background 0.3s}
+    .timer-text{font-weight:800;min-width:30px;text-align:right}
+    
+    .question-box{text-align:center;padding:20px;background:#fafbfc;border-radius:var(--radius);margin-bottom:20px}
+    .q-sentence{font-size:1.2rem;font-weight:600;margin-bottom:10px}
+    .blank{color:var(--purple);border-bottom:2px dashed var(--purple);padding:0 6px}
+    
+    .options{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:500px;margin:0 auto}
+    .opt{padding:14px;border:2px solid #e9ecef;border-radius:12px;background:var(--card);cursor:pointer;font-weight:700;transition:var(--trans);position:relative;text-align:center}
+    .opt:hover:not(.dis){border-color:var(--purple);transform:translateY(-2px)}
+    .opt--c{border-color:var(--success)!important;background:rgba(0,184,148,0.1)!important;color:var(--success)!important}
+    .opt--c::after{content:'✓';position:absolute;right:10px;top:50%;transform:translateY(-50%)}
+    .opt--w{border-color:var(--error)!important;background:rgba(225,112,85,0.1)!important;color:var(--error)!important}
+    .opt--w::after{content:'✗';position:absolute;right:10px;top:50%;transform:translateY(-50%)}
+    .dis{cursor:default;opacity:0.5}
+    .dis:not(.opt--c):not(.opt--w){opacity:0.3}
+    
+    .feedback{text-align:center;padding:12px;border-radius:10px;margin-top:15px;font-weight:600;display:none}
+    .fb-c{background:rgba(0,184,148,0.1);color:var(--success);display:block}
+    .fb-w{background:rgba(225,112,85,0.1);color:var(--error);display:block}
+    
+    .result-card{text-align:center;background:var(--card);padding:40px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .score-ring{width:150px;height:150px;margin:0 auto 20px;position:relative}
+    .score-ring svg{transform:rotate(-90deg)}
+    .ring-bg{fill:none;stroke:#e9ecef;stroke-width:8}
+    .ring{fill:none;stroke:url(#g);stroke-width:8;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;transition:stroke-dashoffset 1.5s}
+    .score-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;font-weight:800}
+    .review-list{text-align:left;margin-top:25px}
+    .review-item{padding:15px;border:1px solid #f1f2f6;border-radius:10px;margin-bottom:10px;background:#fafbfc}
+    .rev-sentence{font-style:italic;color:var(--sec);margin:8px 0 12px;padding:8px;background:#fff;border-left:3px solid var(--purple)}
+    .rev-sentence span{color:var(--purple);font-weight:700;text-decoration:underline dotted}
+    .badges{display:flex;gap:8px;flex-wrap:wrap}
+    .badge{padding:4px 10px;border-radius:12px;font-size:0.75rem;font-weight:700}
+    .b-w{background:rgba(225,112,85,0.1);color:var(--error)}
+    .b-c{background:rgba(0,184,148,0.1);color:var(--success)}
+    .b-t{background:rgba(253,203,110,0.2);color:#d63031}
+    
+    .btn{padding:12px 24px;border:none;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;cursor:pointer;transition:var(--trans);margin-top:20px}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(162,155,254,0.3)}
+    .btn-sec{background:transparent;border:2px solid var(--purple);color:var(--purple)}
+    .btn-sec:hover{background:var(--purple);color:#fff}
+    @media(max-width:600px){.options{grid-template-columns:1fr}.q-sentence{font-size:1rem}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← Về trang chủ</a>
+    <header class="lesson-header">
+      <h1 class="lesson-title" id="lessonTitle">Đang tải bài học...</h1>
+    </header>
+    <div id="appRoot"></div>
+  </div>
+
+  <script>
+    // ======================== QUIZ ENGINE (REUSABLE) ========================
+    const State = { data: [], idx: 0, score: 0, wrong: [], answered: false, timer: null, timeLeft: 25 };
+    const shuffle = a => { for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a };
+    const genOpts = (w, d) => shuffle([...shuffle(d.filter(x=>x.word!==w).map(x=>x.word)).slice(0,3), w]);
+    const speak = (w, b) => { if(!('speechSynthesis' in window))return; window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=0.85;if(b){b.classList.add('playing');u.onend=u.onerror=()=>b.classList.remove('playing')}window.speechSynthesis.speak(u); };
+    
+    const renderQ = () => {
+      const q = State.data[State.idx];
+      const tot = State.data.length;
+      const cur = State.idx + 1;
+      const root = document.getElementById('appRoot');
+      const opts = genOpts(q.word, State.data);
+      const sHtml = q.sentence.replace('________', '<span class="blank">________</span>');
+      
+      root.innerHTML = `
+        <div class="progress-bar"><div class="progress-fill" style="width:${((State.idx)/tot)*100}%"></div></div>
+        <div class="progress-text">Câu ${cur} / ${tot}</div>
+        <div class="quiz-wrap">
+          <div class="timer-box"><div class="timer-bar"><div class="timer-fill" id="tFill"></div></div><div class="timer-text" id="tText">25s</div></div>
+          <div class="question-box"><div class="q-sentence">"${sHtml}"</div><div style="color:var(--sec);margin-top:5px">Chọn từ điền vào chỗ trống:</div></div>
+          <div class="options">${opts.map((o,i)=>`<button class="opt" data-w="${o}"><span style="position:absolute;top:4px;left:8px;font-size:0.65rem;color:var(--light)">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div>
+          <div class="feedback" id="fb"></div>
+        </div>
+      `;
+      document.querySelectorAll('.opt').forEach(b=>b.addEventListener('click', handleOpt));
+      startTimer();
+    };
+
+    const updateTimer = () => {
+      const f=document.getElementById('tFill'),t=document.getElementById('tText');
+      if(!f||!t)return;
+      f.style.width=`${(State.timeLeft/25)*100}%`;t.textContent=`${State.timeLeft}s`;
+      f.style.background=State.timeLeft<=5?'var(--error)':'var(--blue)';
+    };
+    const startTimer = () => { clearInterval(State.timer); State.timeLeft=25; updateTimer(); State.timer=setInterval(()=>{State.timeLeft--;updateTimer();if(State.timeLeft<=0){clearInterval(State.timer);handleTimeout()}},1000) };
+    const handleTimeout = () => { if(State.answered)return; State.answered=true; document.querySelectorAll('.opt').forEach(b=>b.classList.add('dis')); const q=State.data[State.idx]; State.wrong.push({q,sel:'⏰ Hết giờ',cor:q.word}); showFb('⏰ Hết giờ!', false); setTimeout(next, 1200); };
+    const handleOpt = e => { if(State.answered)return; State.answered=true; clearInterval(State.timer); const sel=e.currentTarget.dataset.w; const q=State.data[State.idx]; const ok=sel===q.word; document.querySelectorAll('.opt').forEach(b=>b.classList.add('dis')); e.currentTarget.classList.add(ok?'opt--c':'opt--w'); ok?State.score++:State.wrong.push({q,sel,cor:q.word}); showFb(ok?'🎉 Chính xác!':'😔 Chưa đúng rồi!', ok); setTimeout(next, 1500); };
+    const showFb = (m,ok) => { const f=document.getElementById('fb');f.className=`feedback ${ok?'fb-c':'fb-w'}`;f.textContent=m; };
+    const next = () => { State.idx++; State.idx<State.data.length?renderQ():renderRes(); };
+    
+    const renderRes = () => {
+      clearInterval(State.timer);
+      const tot=State.data.length, pct=Math.round((State.score/tot)*100);
+      let emoji='📖',msg='Hãy ôn lại nhé!';
+      if(pct>=90){emoji='🏆';msg='Xuất sắc!'}else if(pct>=70){emoji='🌟';msg='Làm tốt lắm!'}else if(pct>=50){emoji='💪';msg='Khá rồi!'}
+      const circ=2*Math.PI*65, off=circ-(pct/100)*circ;
+      
+      document.getElementById('appRoot').innerHTML = `
+        <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--blue)"/><stop offset="50%" stop-color="var(--purple)"/><stop offset="100%" stop-color="var(--pink)"/></linearGradient></defs></svg>
+        <div class="result-card">
+          <div style="font-size:3rem;margin-bottom:10px">${emoji}</div>
+          <h2 style="margin-bottom:5px">Kết Quả</h2>
+          <div class="score-ring"><svg viewBox="0 0 160 160"><circle class="ring-bg" cx="80" cy="80" r="65"/><circle class="ring" cx="80" cy="80" r="65" style="stroke-dasharray:${circ};stroke-dashoffset:${circ}" id="ring"/></svg><div class="score-text">${pct}%</div></div>
+          <p style="color:var(--sec)">${msg}</p>
+          <div style="display:flex;justify-content:center;gap:20px;margin:15px 0"><span style="color:var(--success);font-weight:800">${State.score} Đúng</span><span style="color:var(--error);font-weight:800">${tot-State.score} Sai</span></div>
+        </div>
+        ${State.wrong.length?`<div class="review-list" style="margin-top:30px"><h3 style="margin-bottom:15px;color:var(--error)">📝 Câu cần ôn:</h3>${State.wrong.map(w=>{const s=w.q.sentence.replace('________',`<span>${w.q.word}</span>`);const isT=w.sel==='⏰ Hết giờ';return`<div class="review-item"><strong>${w.q.word}</strong> <span style="color:var(--purple)">${w.q.meaning}</span><div class="rev-sentence">"${s}"</div><div class="badges">${isT?'<span class="badge b-t">⏰ Hết giờ</span>':`<span class="badge b-w">✗ Bạn chọn: ${w.sel}</span>`}<span class="badge b-c">✓ Đúng: ${w.cor}</span></div></div>`}).join('')}</div>`:''}
+        <div style="text-align:center"><button class="btn" onclick="location.reload()">🔄 Làm lại</button> <button class="btn btn-sec" onclick="location.href='index.html'">📚 Về trang chủ</button></div>
+      `;
+      setTimeout(()=>{const r=document.getElementById('ring');if(r)r.style.strokeDashoffset=off},100);
+    };
+
+    // ======================== INIT ========================
+    async function initLesson() {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if(!id){document.getElementById('lessonTitle').textContent='Không tìm thấy bài học';return}
+      
+      try {
+        const res = await fetch(`data/${id}.json`);
+        if(!res.ok) throw new Error('Data không tồn tại');
+        State.data = shuffle(await res.json());
+        
+        // Load metadata
+        const artRes = await fetch('data/articles.json');
+        const arts = await artRes.json();
+        const meta = arts.find(a=>a.id===id);
+        if(meta) document.getElementById('lessonTitle').textContent = meta.title;
+        
+        renderQ();
+      } catch(e) {
+        document.getElementById('appRoot').innerHTML = `<div style="text-align:center;padding:40px;color:var(--error)">⚠️ Không tải được dữ liệu bài học. Hãy kiểm tra đường dẫn hoặc server.</div>`;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', initLesson);
+  </script>
+</body>
+</html>
