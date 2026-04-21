@@ -1,0 +1,268 @@
+[
+  {
+    "word": "Action",
+    "type": "(n)",
+    "ipa": "/ˈækʃən/",
+    "meaning": "Hành động",
+    "sentence": "We need to take immediate ________ to reduce plastic waste in our community."
+  },
+  {
+    "word": "Attraction",
+    "type": "(n)",
+    "ipa": "/əˈtrækʃən/",
+    "meaning": "Sự thu hút",
+    "sentence": "Ha Long Bay is a famous tourist ________ that draws millions of visitors yearly."
+  },
+  {
+    "word": "Business",
+    "type": "(n)",
+    "ipa": "/ˈbɪznɪs/",
+    "meaning": "Việc kinh doanh",
+    "sentence": "She plans to open a small ________ selling traditional crafts to foreign tourists."
+  },
+  {
+    "word": "Collection",
+    "type": "(n)",
+    "ipa": "/kəˈlekʃən/",
+    "meaning": "Bộ sưu tập",
+    "sentence": "The museum displays a valuable ________ of ancient pottery from the 15th century."
+  },
+  {
+    "word": "Coral",
+    "type": "(n)",
+    "ipa": "/ˈkɔːrəl/",
+    "meaning": "San hô",
+    "sentence": "Rising sea temperatures are destroying ________ reefs around the world."
+  },
+  {
+    "word": "Craft",
+    "type": "(v)",
+    "ipa": "/kræft/",
+    "meaning": "Làm thủ công",
+    "sentence": "Local artisans carefully ________ beautiful bamboo baskets by hand."
+  },
+  {
+    "word": "Craftsmen",
+    "type": "(n)",
+    "ipa": "/ˈkræfts.mən/",
+    "meaning": "Thợ thủ công",
+    "sentence": "The village is renowned for its skilled ________ who carve wooden sculptures."
+  },
+  {
+    "word": "Dive",
+    "type": "(v)",
+    "ipa": "/daɪv/",
+    "meaning": "Lặn biển",
+    "sentence": "You can ________ in the clear waters of Con Dao to see tropical fish."
+  },
+  {
+    "word": "Documentary",
+    "type": "(n)",
+    "ipa": "/ˌdɑːkjəˈment̬ɚi/",
+    "meaning": "Phim tài liệu",
+    "sentence": "We watched a fascinating ________ about wildlife conservation last weekend."
+  },
+  {
+    "word": "Eco-friendly",
+    "type": "(adj)",
+    "ipa": "/iː.koʊˈfrendli/",
+    "meaning": "Thân thiện môi trường",
+    "sentence": "Many companies now use ________ packaging to protect the environment."
+  },
+  {
+    "word": "Ecotour",
+    "type": "(n)",
+    "ipa": "/ˈiːkoʊ tʊər/",
+    "meaning": "Du lịch thân thiện MT",
+    "sentence": "Our class organized an ________ to a national park to learn about biodiversity."
+  },
+  {
+    "word": "Equipment",
+    "type": "(n)",
+    "ipa": "/ɪˈkwɪpmənt/",
+    "meaning": "Trang bị",
+    "sentence": "Don't forget to pack the necessary camping ________ before we leave."
+  },
+  {
+    "word": "Experience",
+    "type": "(n)",
+    "ipa": "/ɪkˈspɪriəns/",
+    "meaning": "Trải nghiệm",
+    "sentence": "Volunteering at the animal shelter was a truly meaningful ________ for me."
+  },
+  {
+    "word": "Explore",
+    "type": "(v)",
+    "ipa": "/ɪkˈsplɔːr/",
+    "meaning": "Khám phá",
+    "sentence": "Scientists plan to ________ the deep caves to discover new species."
+  },
+  {
+    "word": "Fieldtrip",
+    "type": "(n)",
+    "ipa": "/ˈfiːld trɪp/",
+    "meaning": "Chuyến đi thực tế",
+    "sentence": "The biology ________ helped students understand local ecosystems better."
+  },
+  {
+    "word": "Handmade",
+    "type": "(adj)",
+    "ipa": "/ˌhændˈmeɪd/",
+    "meaning": "Đồ thủ công",
+    "sentence": "I bought a ________ scarf as a gift for my grandmother."
+  },
+  {
+    "word": "Herb",
+    "type": "(n)",
+    "ipa": "/ɝːb/",
+    "meaning": "Thảo dược",
+    "sentence": "My mother grows fresh ________ like mint and basil in her backyard."
+  },
+  {
+    "word": "Impact",
+    "type": "(n,v)",
+    "ipa": "/ˈɪmpækt/",
+    "meaning": "Ảnh hưởng",
+    "sentence": "Deforestation has a severe ________ on the local wildlife population."
+  },
+  {
+    "word": "Industry",
+    "type": "(n)",
+    "ipa": "/ˈɪndəstri/",
+    "meaning": "Công nghiệp",
+    "sentence": "Tourism has become the fastest-growing ________ in many developing countries."
+  },
+  {
+    "word": "Introduce",
+    "type": "(v)",
+    "ipa": "/ˌɪntrəˈduːs/",
+    "meaning": "Giới thiệu",
+    "sentence": "The teacher will ________ a new project about sustainable travel next week."
+  },
+  {
+    "word": "Litter",
+    "type": "(n,v)",
+    "ipa": "/ˈlɪt̬ɚ/",
+    "meaning": "Rác, xả rác",
+    "sentence": "Visitors must not ________ on the beach to keep it clean."
+  },
+  {
+    "word": "Mass tourism",
+    "type": "(n)",
+    "ipa": "/mæs ˈtʊrɪzəm/",
+    "meaning": "Du lịch đại trà",
+    "sentence": "________ often leads to overcrowding and environmental damage in historic towns."
+  },
+  {
+    "word": "Negative",
+    "type": "(adj)",
+    "ipa": "/ˈneɡətɪv/",
+    "meaning": "Tiêu cực",
+    "sentence": "The ________ effects of air pollution are becoming more noticeable every year."
+  },
+  {
+    "word": "Package",
+    "type": "(n)",
+    "ipa": "/ˈpækɪdʒ/",
+    "meaning": "Gói hàng",
+    "sentence": "I received a care ________ from my friend containing local snacks."
+  },
+  {
+    "word": "Profit",
+    "type": "(n)",
+    "ipa": "/ˈprɑːfɪt/",
+    "meaning": "Lợi nhuận",
+    "sentence": "The charity sells souvenirs to make a ________ for community projects."
+  },
+  {
+    "word": "Promote",
+    "type": "(v)",
+    "ipa": "/prəˈmoʊt/",
+    "meaning": "Thúc đẩy",
+    "sentence": "The government aims to ________ responsible travel habits among young people."
+  },
+  {
+    "word": "Reef",
+    "type": "(n)",
+    "ipa": "/riːf/",
+    "meaning": "Rạn (san hô, đá…)",
+    "sentence": "Snorkeling around the coral ________ allows you to observe marine life up close."
+  },
+  {
+    "word": "Respect",
+    "type": "(n,v)",
+    "ipa": "/rɪˈspekt/",
+    "meaning": "Tôn trọng",
+    "sentence": "Travelers should always ________ local traditions when visiting rural areas."
+  },
+  {
+    "word": "Responsible tourism",
+    "type": "(n)",
+    "ipa": "/rɪˈspɑːnsəbəl ˈtʊrɪzəm/",
+    "meaning": "Du lịch có trách nhiệm",
+    "sentence": "________ ensures that visiting a place benefits both locals and nature."
+  },
+  {
+    "word": "Smokeless industry",
+    "type": "(n)",
+    "ipa": "/ˈsmoʊkləs ˈɪndəstri/",
+    "meaning": "Công nghiệp không khói",
+    "sentence": "Tourism is often called the ________ because it creates jobs without heavy pollution."
+  },
+  {
+    "word": "Snack",
+    "type": "(n)",
+    "ipa": "/snæk/",
+    "meaning": "Đồ ăn vặt",
+    "sentence": "We bought a light ________ before boarding the long-distance bus."
+  },
+  {
+    "word": "Souvenir",
+    "type": "(n)",
+    "ipa": "/ˌsuːvəˈnɪr/",
+    "meaning": "Đồ lưu niệm",
+    "sentence": "He keeps every ticket stub as a ________ of his travels around Asia."
+  },
+  {
+    "word": "Specific",
+    "type": "(adj)",
+    "ipa": "/spəˈsɪfɪk/",
+    "meaning": "Cụ thể",
+    "sentence": "Could you give me more ________ details about the hotel reservation?"
+  },
+  {
+    "word": "Stalactite",
+    "type": "(n)",
+    "ipa": "/ˈstæləktaɪt/",
+    "meaning": "Thạch nhũ",
+    "sentence": "The ancient cave is famous for its giant ________ hanging from the ceiling."
+  },
+  {
+    "word": "Sustainable tourism",
+    "type": "(n)",
+    "ipa": "/səˈsteɪnəbəl ˈtʊrɪzəm/",
+    "meaning": "Du lịch bền vững",
+    "sentence": "________ focuses on protecting natural resources for future generations."
+  },
+  {
+    "word": "Tourism",
+    "type": "(n)",
+    "ipa": "/ˈtʊrɪzəm/",
+    "meaning": "Du lịch",
+    "sentence": "The city has invested heavily in ________ infrastructure to attract international visitors."
+  },
+  {
+    "word": "Well-known",
+    "type": "(adj)",
+    "ipa": "/ˌwel ˈnoʊn/",
+    "meaning": "Nổi tiếng",
+    "sentence": "This restaurant is ________ for its authentic traditional Vietnamese dishes."
+  },
+  {
+    "word": "Wetsuit",
+    "type": "(n)",
+    "ipa": "/ˈwet.suːt/",
+    "meaning": "Đồ lặn",
+    "sentence": "You should wear a ________ when swimming in cold ocean water to stay warm."
+  }
+]
