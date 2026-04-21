@@ -3,167 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Học từ vựng cùng Ms. Thúy</title>
+  <title>Học từ vựng cùng Ms. Thúy | Trang chủ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;800&display=swap">
   <style>
-    /* GIỮ NGUYÊN TOÀN BỘ CSS TỪ FILE LAYOUT CỦA BẠN */
-    :root { --bg-primary: #f4f6fb; --bg-card: #ffffff; --gradient-start: #a8d8ea; --gradient-mid: #aa96da; --gradient-end: #fcbad3; --text-primary: #2d3436; --text-secondary: #636e72; --text-light: #b2bec3; --accent-blue: #74b9ff; --accent-purple: #a29bfe; --accent-pink: #fd79a8; --success: #00b894; --error: #e17055; --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06); --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08); --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12); --radius-md: 16px; --radius-lg: 24px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: var(--font-main); background: linear-gradient(135deg, var(--bg-primary) 0%, #e8ecf4 100%); min-height: 100vh; color: var(--text-primary); }
-    .bg-decoration { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-    .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.25; animation: float 20s ease-in-out infinite; }
-    .blob-1 { width: 400px; height: 400px; background: var(--gradient-start); top: -100px; right: -100px; }
-    .blob-2 { width: 350px; height: 350px; background: var(--gradient-mid); bottom: -80px; left: -80px; }
-    @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,20px)} }
-    .app-container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px; }
-    .header { text-align: center; padding: 40px 20px 30px; }
-    .header__logo { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .page { display: none; animation: fadeSlideIn 0.5s ease-out; }
-    .page--active { display: block; }
-    @keyframes fadeSlideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .vocab-table-wrapper { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
-    .table-scroll { overflow-x: auto; max-height: 500px; }
-    .vocab-table { width: 100%; border-collapse: collapse; }
-    .vocab-table th { padding: 14px; background: var(--accent-purple); color: white; text-align: left; }
-    .vocab-table td { padding: 12px; border-bottom: 1px solid #f1f2f6; }
-    .btn-cta { padding: 16px 40px; border: none; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; font-weight: 700; cursor: pointer; margin-top: 20px; }
-    .quiz-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-lg); text-align: center; }
-    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-    .quiz-option { padding: 15px; border: 2px solid #eee; border-radius: var(--radius-md); background: white; cursor: pointer; font-weight: 700; }
-    .quiz-option--correct { border-color: var(--success); background: rgba(0,184,148,0.1); }
-    .quiz-option--wrong { border-color: var(--error); background: rgba(225,112,85,0.1); }
-    .progress-bar { height: 8px; background: #eee; border-radius: 10px; margin-bottom: 20px; }
-    .progress-bar__fill { height: 100%; background: var(--accent-blue); width: 0%; transition: 0.3s; }
+    :root {
+      --bg: #f4f6fb; --card: #fff; --text: #2d3436; --text-sec: #636e72;
+      --blue: #74b9ff; --purple: #a29bfe; --pink: #fd79a8;
+      --grad: linear-gradient(135deg, var(--blue), var(--purple), var(--pink));
+      --shadow: 0 4px 20px rgba(0,0,0,0.08); --radius: 16px;
+      --trans: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+    .container{max-width:900px;margin:0 auto;padding:40px 20px}
+    header{text-align:center;margin-bottom:40px}
+    h1{font-size:2.2rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .subtitle{color:var(--text-sec);margin-top:8px}
+    
+    .search-box{position:relative;max-width:500px;margin:0 auto 40px}
+    .search-box input{width:100%;padding:14px 20px;border:2px solid transparent;border-radius:var(--radius);background:var(--card);font-size:1rem;box-shadow:var(--shadow);transition:var(--trans);outline:none}
+    .search-box input:focus{border-color:var(--purple);box-shadow:0 0 0 4px rgba(162,155,254,0.15)}
+    
+    .article-list{display:grid;gap:20px}
+    .article-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);transition:var(--trans);display:flex;flex-direction:column;gap:12px;border:1px solid #f1f2f6}
+    .article-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.12)}
+    .card-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
+    .card-title{font-size:1.3rem;font-weight:700;color:var(--text)}
+    .card-date{background:#f1f2f6;padding:4px 10px;border-radius:20px;font-size:0.8rem;color:var(--text-sec);font-weight:600}
+    .card-desc{color:var(--text-sec);font-size:0.95rem}
+    .card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;flex-wrap:wrap;gap:10px}
+    .tags{display:flex;gap:8px}
+    .tag{font-size:0.75rem;padding:3px 10px;border-radius:12px;background:rgba(162,155,254,0.1);color:var(--purple);font-weight:600}
+    .btn{padding:10px 20px;border:none;border-radius:12px;background:var(--grad);color:white;font-weight:700;cursor:pointer;transition:var(--trans);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(162,155,254,0.3)}
+    .btn-outline{background:transparent;border:2px solid var(--purple);color:var(--purple)}
+    .btn-outline:hover{background:var(--purple);color:white}
+    .data-link{font-size:0.85rem;color:var(--text-sec);text-decoration:underline;cursor:pointer}
+    .data-link:hover{color:var(--purple)}
+    .empty{text-align:center;padding:40px;color:var(--text-sec)}
+    @media(max-width:600px){.article-card{padding:18px}.card-title{font-size:1.1rem}}
   </style>
 </head>
 <body>
-  <div class="bg-decoration"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
-  
-  <div class="app-container">
-    <header class="header">
-      <h1 class="header__logo" id="dynamic-title">Đang tải bài học...</h1>
+  <div class="container">
+    <header>
+      <h1>📚 Học từ vựng cùng Ms. Thúy</h1>
+      <p class="subtitle">Kho bài tập từ vựng Tiếng Anh lớp 9 – Trình độ B1</p>
     </header>
 
-    <section id="page-dashboard" class="page page--active">
-      <div class="vocab-table-wrapper">
-        <div class="table-scroll">
-          <table class="vocab-table">
-            <thead><tr><th>Từ vựng</th><th>Nghĩa</th><th>🔊</th></tr></thead>
-            <tbody id="vocabBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div style="text-align:center"><button class="btn-cta" id="btnStartQuiz">🚀 Bắt đầu Quiz</button></div>
-    </section>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm bài viết, chủ đề, từ khóa...">
+    </div>
 
-    <section id="page-quiz" class="page">
-      <div class="progress-bar"><div class="progress-bar__fill" id="progressFill"></div></div>
-      <div class="quiz-card" id="quizCard"></div>
-    </section>
-
-    <section id="page-results" class="page" id="resultsContent"></section>
+    <div id="articleList" class="article-list">
+      <div class="empty">Đang tải danh sách bài học...</div>
+    </div>
   </div>
 
   <script>
-    let VOCAB_DATA = [];
-    let State = { quizQuestions: [], currentQuestionIndex: 0, score: 0, hasAnswered: false };
+    // ======================== CORE ========================
+    const DOM = {
+      list: document.getElementById('articleList'),
+      search: document.getElementById('searchInput')
+    };
 
-    // 1. HÀM QUAN TRỌNG: Lấy dữ liệu từ thư mục data/
-    async function initApp() {
-      const params = new URLSearchParams(window.location.search);
-      const lessonName = params.get('lesson'); // Lấy tên file từ URL (?lesson=ten-file)
+    // Fetch & Render Articles
+    async function init() {
+      try {
+        const res = await fetch('data/articles.json');
+        if (!res.ok) throw new Error('Không tải được data');
+        let articles = await res.json();
+        
+        // Sort mới nhất lên đầu
+        articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+        renderArticles(articles);
+        
+        // Search listener
+        DOM.search.addEventListener('input', e => {
+          const q = e.target.value.toLowerCase();
+          const filtered = articles.filter(a => 
+            a.title.toLowerCase().includes(q) || 
+            a.description.toLowerCase().includes(q) ||
+            a.tags.some(t => t.toLowerCase().includes(q))
+          );
+          renderArticles(filtered);
+        });
+      } catch (err) {
+        DOM.list.innerHTML = `<div class="empty">⚠️ Lỗi tải dữ liệu: ${err.message}<br>Hãy đảm bảo file đang chạy trên server hoặc GitHub Pages.</div>`;
+      }
+    }
 
-      if (!lessonName) {
-        document.getElementById('dynamic-title').innerText = "Vui lòng chọn bài học";
+    function renderArticles(data) {
+      if (data.length === 0) {
+        DOM.list.innerHTML = `<div class="empty">Không tìm thấy bài viết nào phù hợp 😕</div>`;
         return;
       }
-
-      try {
-        const response = await fetch(`data/${lessonName}.json`);
-        if (!response.ok) throw new Error();
-        VOCAB_DATA = await response.json();
-        
-        // Cập nhật tiêu đề dựa trên tên file (thay thế dấu gạch ngang bằng khoảng trắng)
-        document.getElementById('dynamic-title').innerText = lessonName.replace(/-/g, ' ').toUpperCase();
-        renderDashboard();
-      } catch (err) {
-        document.getElementById('dynamic-title').innerText = "Lỗi: Không tìm thấy file dữ liệu!";
-      }
-    }
-
-    function renderDashboard() {
-      const tbody = document.getElementById('vocabBody');
-      tbody.innerHTML = VOCAB_DATA.map(item => `
-        <tr>
-          <td style="font-weight:700">${item.word}</td>
-          <td>${item.meaning}</td>
-          <td><button onclick="speak('${item.word}')">🔊</button></td>
-        </tr>`).join('');
-    }
-
-    function speak(word) {
-      const u = new SpeechSynthesisUtterance(word);
-      u.lang = 'en-US'; window.speechSynthesis.speak(u);
-    }
-
-    function startQuiz() {
-      State.quizQuestions = [...VOCAB_DATA].sort(() => Math.random() - 0.5);
-      State.currentQuestionIndex = 0;
-      State.score = 0;
-      navigateTo('quiz');
-      renderQuestion();
-    }
-
-    function renderQuestion() {
-      const q = State.quizQuestions[State.currentQuestionIndex];
-      const options = [...VOCAB_DATA].sort(() => Math.random() - 0.5).slice(0, 3).map(v => v.word);
-      if (!options.includes(q.word)) options[0] = q.word;
-      const finalOptions = options.sort(() => Math.random() - 0.5);
-
-      document.getElementById('progressFill').style.width = `${(State.currentQuestionIndex / State.quizQuestions.length) * 100}%`;
-      
-      document.getElementById('quizCard').innerHTML = `
-        <h2>${q.sentence.replace('________', '____')}</h2>
-        <p style="margin: 10px 0; color: #666;">(Nghĩa: ${q.meaning})</p>
-        <div class="quiz-options">
-          ${finalOptions.map(opt => `<button class="quiz-option" onclick="handleAnswer(this, '${opt}', '${q.word}')">${opt}</button>`).join('')}
+      DOM.list.innerHTML = data.map(a => `
+        <div class="article-card">
+          <div class="card-header">
+            <div class="card-title">${a.title}</div>
+            <div class="card-date">${formatDate(a.date)}</div>
+          </div>
+          <div class="card-desc">${a.description}</div>
+          <div class="tags">${a.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <div class="card-footer">
+            <a href="lesson.html?id=${a.id}" class="btn">🚀 Bắt đầu học</a>
+            <a href="https://github.com/YOUR-USERNAME/YOUR-REPO/blob/main/${a.dataFile}" target="_blank" class="data-link">📄 Xem dữ liệu bài viết</a>
+          </div>
         </div>
-      `;
-      State.hasAnswered = false;
+      `).join('');
     }
 
-    function handleAnswer(btn, selected, correct) {
-      if (State.hasAnswered) return;
-      State.hasAnswered = true;
-      
-      const isCorrect = selected === correct;
-      btn.classList.add(isCorrect ? 'quiz-option--correct' : 'quiz-option--wrong');
-      if (isCorrect) State.score++;
-
-      // CHỈNH ĐÚNG 2 GIÂY RỒI CHUYỂN CÂU
-      setTimeout(() => {
-        State.currentQuestionIndex++;
-        if (State.currentQuestionIndex < State.quizQuestions.length) renderQuestion();
-        else showResults();
-      }, 1000);
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('vi-VN', {day:'2-digit', month:'2-digit', year:'numeric'});
     }
 
-    function showResults() {
-      navigateTo('results');
-      document.getElementById('page-results').innerHTML = `
-        <div class="quiz-card">
-          <h1>Kết quả: ${State.score}/${State.quizQuestions.length}</h1>
-          <button class="btn-cta" onclick="location.reload()">Làm lại</button>
-        </div>
-      `;
-    }
-
-    function navigateTo(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('page--active'));
-      document.getElementById(`page-${id}`).classList.add('page--active');
-    }
-
-    document.getElementById('btnStartQuiz').onclick = startQuiz;
-    window.onload = initApp;
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
