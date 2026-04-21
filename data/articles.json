@@ -1,0 +1,18 @@
+[
+  {
+    "id": "lesson-1",
+    "title": "Unit 1: Du lịch bền vững & Sinh thái",
+    "date": "2024-05-20",
+    "description": "38 từ vựng chủ đề du lịch, bảo tồn môi trường. Kèm bài tập điền từ cấp độ B1.",
+    "dataFile": "data/lesson-1.json",
+    "tags": ["vocabulary", "tourism", "B1"]
+  },
+  {
+    "id": "lesson-2",
+    "title": "Unit 2: Công nghệ & Giáo dục",
+    "date": "2024-05-25",
+    "description": "Từ vựng chủ đề AI, e-learning, thiết bị số. Bài tập trắc nghiệm ngữ cảnh.",
+    "dataFile": "data/lesson-2.json",
+    "tags": ["vocabulary", "tech", "B1"]
+  }
+]
