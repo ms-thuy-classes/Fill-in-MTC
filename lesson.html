@@ -39,34 +39,30 @@
     .blob-3{width:300px;height:300px;background:var(--gradient-end);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s}
     @keyframes float{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-30px) scale(1.05)}50%{transform:translate(-20px,20px) scale(0.95)}75%{transform:translate(20px,10px) scale(1.02)}}
 
+    /* ===== ĐÃ XÓA THANH CUỘN MÀU XANH: ẩn hoàn toàn scrollbar nhưng vẫn cuộn được ===== */
     .app-container {
       position: relative;
       z-index: 1;
       max-width: 900px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 20px 24px;
       height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
+      scrollbar-width: none;        /* Firefox */
+      -ms-overflow-style: none;     /* IE/Edge */
     }
-    /* Ẩn thanh cuộn gần trên laptop nhưng vẫn cuộn được */
     .app-container::-webkit-scrollbar {
-      width: 6px;
+      display: none;
+      width: 0;
       background: transparent;
     }
-    .app-container::-webkit-scrollbar-track {
-      background: #f1f2f6;
-      border-radius: 10px;
-    }
-    .app-container::-webkit-scrollbar-thumb {
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-      border-radius: 10px;
-    }
+
     @media (max-width: 768px) {
-      .app-container::-webkit-scrollbar {
-        width: 3px;
+      .app-container {
+        padding: 20px 16px;
       }
     }
 
@@ -93,13 +89,14 @@
 
     /* Vocabulary Table */
     .vocab-table-wrapper{background:var(--bg-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:30px}
-    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .table-scroll::-webkit-scrollbar{height:6px}
+    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-right:4px;padding-bottom:4px}
+    .table-scroll::-webkit-scrollbar{height:6px;background:#e9ecef;border-radius:12px}
+    .table-scroll::-webkit-scrollbar-thumb{background:var(--accent-purple);border-radius:12px}
     .vocab-table{width:100%;border-collapse:collapse}
     .vocab-table thead{background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple))}
-    .vocab-table th{padding:14px 16px;color:#fff;font-weight:600;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px;text-align:left}
+    .vocab-table th{padding:14px 18px;color:#fff;font-weight:600;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px;text-align:left}
     .vocab-table th:first-child{width:40px;text-align:center}
-    .vocab-table td{padding:12px 16px;border-bottom:1px solid #f1f2f6;font-size:0.95rem;transition:var(--transition)}
+    .vocab-table td{padding:12px 18px;border-bottom:1px solid #f1f2f6;font-size:0.95rem;transition:var(--transition)}
     .vocab-table tbody tr:hover{background:linear-gradient(135deg,rgba(116,185,255,0.05),rgba(162,155,254,0.05))}
     .word-cell{font-weight:700}
     .word-type{display:inline-block;background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:0.85rem}
@@ -118,7 +115,7 @@
     .timer-bar{flex:1;height:8px;background:#e9ecef;border-radius:10px;overflow:hidden}
     .timer-bar__fill{height:100%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));transition:width 1s linear}
     .timer-text{font-size:0.9rem;font-weight:800;min-width:32px;text-align:right}
-    .quiz-card{background:var(--bg-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:32px 24px;margin-bottom:30px}
+    .quiz-card{background:var(--bg-card);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:32px 28px;margin-bottom:30px}
     .quiz-sentence{font-size:1.35rem;font-weight:600;text-align:center;margin-bottom:24px;line-height:1.7;padding:16px;background:#fafbfc;border-radius:var(--radius-md)}
     .blank{border-bottom:3px dashed var(--accent-purple);padding:0 8px;color:var(--accent-purple);font-weight:800}
     .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:600px;margin:0 auto}
@@ -157,39 +154,21 @@
     .scroll-top--visible{opacity:1;visibility:visible}
     .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-card);color:var(--text-primary);padding:14px 24px;border-radius:var(--radius-md);box-shadow:var(--shadow-lg);font-weight:600;font-size:0.9rem;z-index:200;transition:transform 0.3s ease;white-space:nowrap}
     .toast--visible{transform:translateX(-50%) translateY(0)}
+    
     @media(max-width:768px){
       .quiz-options{grid-template-columns:1fr}
       .quiz-sentence{font-size:1.15rem}
+      .quiz-card{padding:24px 20px}
       .btn-group{flex-direction:column;align-items:stretch}
       .btn-secondary,.btn-cta{justify-content:center}
       .toast{white-space:normal;width:80%;text-align:center}
+      .vocab-table th,
+      .vocab-table td{padding:10px 14px;font-size:0.9rem}
     }
-    /* Tạo khoảng cách cho thanh cuộn dọc không đè lên nội dung */
-.app-container {
-  padding-right: 12px;
-}
-
-/* Tuỳ chỉnh giao diện thanh cuộn dọc */
-.app-container::-webkit-scrollbar {
-  width: 6px;
-  background: transparent;
-}
-.app-container::-webkit-scrollbar-track {
-  background: #e9ecef;
-  border-radius: 10px;
-}
-.app-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-  border-radius: 10px;
-}
-
-/* Tạo khoảng cách cho bảng cuộn ngang */
-.table-scroll {
-  margin-bottom: 8px;
-}
-.table-scroll::-webkit-scrollbar {
-  height: 5px;
-}
+    
+    .app-container > *:last-child {
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -265,8 +244,8 @@
     const renderVocabTable = (data=State.data) => {
       const tbody = $('#vocabBody');
       if(!tbody) return;
-      tbody.innerHTML = data.length===0 ? `<tr><td colspan="6" style="text-align:center;padding:30px">Không tìm thấy từ vựng</td></tr>` : data.map((item,i)=>`
-        <tr><td>${i+1}</td><td class="word-cell">${escapeHtml(item.word)}</td><td><span class="word-type">${item.type||''}</span></td><td class="ipa-cell">${item.ipa||''}</td><td class="meaning-cell">${escapeHtml(item.meaning)}</td><td style="text-align:center"><button class="btn-audio" data-w="${escapeHtml(item.word)}">🔊</button></td></tr>
+      tbody.innerHTML = data.length===0 ? `<tr><td colspan="6" style="text-align:center;padding:30px">Không tìm thấy từ vựng</td>` : data.map((item,i)=>`
+        <tr><td>${i+1}</td><td class="word-cell">${escapeHtml(item.word)}</td><td><span class="word-type">${item.type||''}</span></td><td class="ipa-cell">${item.ipa||''}</td><td class="meaning-cell">${escapeHtml(item.meaning)}</td><td style="text-align:center"><button class="btn-audio" data-w="${escapeHtml(item.word)}">🔊</button></td>
       `).join('');
       $$('.btn-audio').forEach(btn=>btn.addEventListener('click',e=>speak(e.currentTarget.dataset.w,e.currentTarget)));
       updateStats(data);
@@ -312,33 +291,84 @@
     // ---------- RESULTS ----------
     const finishQuiz = () => { clearInterval(State.timerInterval); navigateTo('results'); const total=State.quizQuestions.length, pct=Math.round((State.score/total)*100); let emoji='📖',msg='Hãy ôn lại từ vựng và thử lại nhé!'; if(pct>=90){emoji='🏆';msg='Xuất sắc! Bạn nắm rất vững từ vựng!'} else if(pct>=70){emoji='🌟';msg='Làm tốt lắm! Hãy ôn thêm các câu còn sai nhé!'} else if(pct>=50){emoji='💪';msg='Khá rồi! Hãy cố gắng thêm nhé!'} const circ=2*Math.PI*70, offset=circ-(pct/100)*circ; $('#resultsContent').innerHTML=`<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--accent-blue)"/><stop offset="50%" stop-color="var(--accent-purple)"/><stop offset="100%" stop-color="var(--accent-pink)"/></linearGradient></defs></svg><div class="results-card"><div class="results-card__emoji">${emoji}</div><div class="results-card__title">Kết Quả Quiz</div><div class="score-ring"><svg viewBox="0 0 160 160"><circle class="score-ring__circle-bg" cx="80" cy="80" r="70"/><circle class="score-ring__circle" cx="80" cy="80" r="70" style="stroke-dasharray:${circ};stroke-dashoffset:${circ}" id="scoreRing"/></svg><div class="score-ring__text">${pct}%</div></div><div class="results-card__message">${msg}</div><div style="display:flex;justify-content:center;gap:24px;margin-bottom:20px;flex-wrap:wrap"><div><span style="font-size:1.6rem;font-weight:800;color:var(--success)">${State.score}</span><span style="color:var(--text-secondary)"> Đúng</span></div><div><span style="font-size:1.6rem;font-weight:800;color:var(--error)">${total-State.score}</span><span style="color:var(--text-secondary)"> Sai</span></div><div><span style="font-size:1.6rem;font-weight:800;color:var(--text-primary)">${total}</span><span style="color:var(--text-secondary)"> Tổng</span></div></div></div>${State.wrongAnswers.length>0?`<div class="wrong-words-section"><div class="wrong-words-section__title">📝 Chi tiết các câu cần ôn lại (${State.wrongAnswers.length})</div>${State.wrongAnswers.map(w=>{const q=w.question; const isT=w.selected==='(Hết giờ)'; const s=q.sentence.replace(/________/g,`<span class="correct-fill">${q.word}</span>`); return `<div class="review-item"><div class="review-header"><span class="review-word">${q.word}</span><span class="ipa-cell">${q.ipa||''}</span><span class="review-vi">${q.meaning}</span></div><div class="review-sentence">"${s}"</div><div class="review-badges">${isT?'<span class="badge badge-timeout">⏰ Hết giờ</span>':`<span class="badge badge-wrong">✗ Bạn chọn: ${w.selected}</span>`}<span class="badge badge-correct">✓ Đáp án đúng: ${q.word}</span></div></div>`}).join('')}</div>`:''}<div class="btn-group"><button class="btn-cta" id="btnRetry"><span>🔄</span><span>Làm lại Quiz</span></button><button class="btn-secondary" id="btnDash"><span>📚</span><span>Về đầu bài</span></button></div>`; setTimeout(()=>{const r=$('#scoreRing'); if(r) r.style.strokeDashoffset=offset},100); $('#btnRetry')?.addEventListener('click',()=>{ navigateTo('dashboard'); startQuiz(); }); $('#btnDash')?.addEventListener('click',()=>navigateTo('dashboard')); };
 
+    // ========== TẠO DỮ LIỆU MẪU (FALLBACK) ==========
+    function getSampleData() {
+      return [
+        { word: "beautiful", type: "adj", ipa: "/ˈbjuː.tɪ.fəl/", meaning: "xinh đẹp", sentence: "The sunset is ________." },
+        { word: "quickly", type: "adv", ipa: "/ˈkwɪk.li/", meaning: "một cách nhanh chóng", sentence: "He ran ________ to catch the bus." },
+        { word: "happiness", type: "n", ipa: "/ˈhæp.i.nəs/", meaning: "hạnh phúc", sentence: "________ is the key to a healthy life." },
+        { word: "decide", type: "v", ipa: "/dɪˈsaɪd/", meaning: "quyết định", sentence: "She needs to ________ which university to attend." },
+        { word: "intelligent", type: "adj", ipa: "/ɪnˈtel.ɪ.dʒənt/", meaning: "thông minh", sentence: "Dolphins are very ________ animals." },
+        { word: "freedom", type: "n", ipa: "/ˈfriː.dəm/", meaning: "tự do", sentence: "Everyone deserves ________ of speech." }
+      ];
+    }
+
     // ---------- INIT ----------
     async function initLesson() {
       const id = new URLSearchParams(window.location.search).get('id');
-      if(!id){ $('#lessonSubtitle').textContent='❌ Không tìm thấy bài học'; return; }
+      let useSample = false;
+      
+      if (!id) {
+        // Không có id -> dùng mẫu
+        useSample = true;
+        State.data = getSampleData();
+        $('.header__subtitle').textContent = `📘 Dữ liệu mẫu — ${State.data.length} từ vựng (không có ?id= trên URL)`;
+        document.title = `Học từ vựng (mẫu) | Ms. Thúy`;
+        renderVocabTable(State.data);
+        showToast('✨ Đang dùng từ vựng mẫu. Bạn có thể thêm file JSON với ?id=...', 3000);
+        attachEvents();
+        return;
+      }
+      
+      // Có id, thử fetch file JSON
       try {
         const res = await fetch(`data/${id}.json`);
-        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         State.data = await res.json();
+        // Thử lấy metadata từ articles.json (nếu có)
         try {
           const artRes = await fetch('data/articles.json');
-          const arts = await artRes.json();
-          const meta = arts.find(a=>a.id===id);
-          if(meta) { $('.header__subtitle').textContent = `${meta.title} — ${State.data.length} từ vựng`; document.title = `${meta.title} | Học từ vựng cùng Ms. Thúy`; }
-          else $('.header__subtitle').textContent = `Bài học — ${State.data.length} từ vựng`;
-        } catch(e) { $('.header__subtitle').textContent = `Bài học — ${State.data.length} từ vựng`; }
+          if (artRes.ok) {
+            const arts = await artRes.json();
+            const meta = arts.find(a => a.id === id);
+            if (meta) $('.header__subtitle').textContent = `${meta.title} — ${State.data.length} từ vựng`;
+            else $('.header__subtitle').textContent = `Bài học — ${State.data.length} từ vựng`;
+          } else {
+            $('.header__subtitle').textContent = `Bài học — ${State.data.length} từ vựng`;
+          }
+        } catch(e) {
+          $('.header__subtitle').textContent = `Bài học — ${State.data.length} từ vựng`;
+        }
+        document.title = `Học từ vựng | Ms. Thúy`;
         renderVocabTable(State.data);
         showToast('📖 Ôn từ vựng trước khi làm quiz nhé!');
-        $('#searchInput').addEventListener('input',e=>{ const q=e.target.value.toLowerCase().trim(); renderVocabTable(q?State.data.filter(v=>v.word.toLowerCase().includes(q)||v.meaning.toLowerCase().includes(q)):State.data); });
-        $('#btnStartQuiz').addEventListener('click',startQuiz);
-        const container = $('.app-container');
-        container.addEventListener('scroll', () => { $('#scrollTopBtn').classList.toggle('scroll-top--visible', container.scrollTop > 300); });
-        $('#scrollTopBtn').addEventListener('click',()=>container.scrollTo({top:0,behavior:'smooth'}));
-      } catch(err) {
-        $('#vocabBody').innerHTML=`<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--error)">⚠️ Không tải được dữ liệu bài học.<br>Kiểm tra file <code>data/${id}.json</code> có tồn tại không.</td></tr>`;
-        $('#btnStartQuiz').disabled=true; $('#btnStartQuiz').style.opacity='0.5';
+        attachEvents();
+      } catch (err) {
+        console.warn("Không tải được JSON, chuyển sang dữ liệu mẫu", err);
+        useSample = true;
+        State.data = getSampleData();
+        $('.header__subtitle').textContent = `⚠️ Không tìm thấy data/${id}.json — Đang dùng từ mẫu (${State.data.length} từ)`;
+        document.title = `Học từ vựng (mẫu) | Ms. Thúy`;
+        renderVocabTable(State.data);
+        showToast(`⚠️ Không tìm thấy file data/${id}.json, đã chuyển sang dữ liệu mẫu.`, 4000);
+        attachEvents();
       }
     }
+    
+    function attachEvents() {
+      $('#searchInput').addEventListener('input', e => { 
+        const q = e.target.value.toLowerCase().trim(); 
+        renderVocabTable(q ? State.data.filter(v => v.word.toLowerCase().includes(q) || v.meaning.toLowerCase().includes(q)) : State.data); 
+      });
+      $('#btnStartQuiz').addEventListener('click', startQuiz);
+      const container = $('.app-container');
+      container.addEventListener('scroll', () => { $('#scrollTopBtn').classList.toggle('scroll-top--visible', container.scrollTop > 300); });
+      $('#scrollTopBtn').addEventListener('click', () => container.scrollTo({ top: 0, behavior: 'smooth' }));
+      // Nếu nút bị disable trước đó (trong trường hợp lỗi cũ) thì enable lại
+      $('#btnStartQuiz').disabled = false;
+      $('#btnStartQuiz').style.opacity = '1';
+    }
+    
     document.addEventListener('DOMContentLoaded', initLesson);
   </script>
 </body>
