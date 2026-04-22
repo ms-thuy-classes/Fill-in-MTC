@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Học từ vựng cùng Ms. Thúy | Trang chủ</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;800&display=swap">
   <style>
@@ -42,6 +42,20 @@
     .data-link:hover{color:var(--purple)}
     .empty{text-align:center;padding:40px;color:var(--text-sec)}
     @media(max-width:600px){.article-card{padding:18px}.card-title{font-size:1.1rem}}
+    /* Tạo khoảng cách phía trên cho trang quiz */
+#page-quiz {
+  padding-top: 20px;
+}
+
+/* Riêng trên mobile, tăng thêm chút nữa */
+@media (max-width: 768px) {
+  #page-quiz {
+    padding-top: 30px;
+  }
+  .quiz-header {
+    margin-top: 8px;
+  }
+}
   </style>
 </head>
 <body>
@@ -61,24 +75,19 @@
   </div>
 
   <script>
-    // ======================== CORE ========================
     const DOM = {
       list: document.getElementById('articleList'),
       search: document.getElementById('searchInput')
     };
 
-    // Fetch & Render Articles
     async function init() {
       try {
         const res = await fetch('data/articles.json');
-        if (!res.ok) throw new Error('Không tải được data');
+        if (!res.ok) throw new Error('Không tải được data/articles.json');
         let articles = await res.json();
-        
-        // Sort mới nhất lên đầu
         articles.sort((a, b) => new Date(b.date) - new Date(a.date));
         renderArticles(articles);
         
-        // Search listener
         DOM.search.addEventListener('input', e => {
           const q = e.target.value.toLowerCase();
           const filtered = articles.filter(a => 
@@ -89,7 +98,7 @@
           renderArticles(filtered);
         });
       } catch (err) {
-        DOM.list.innerHTML = `<div class="empty">⚠️ Lỗi tải dữ liệu: ${err.message}<br>Hãy đảm bảo file đang chạy trên server hoặc GitHub Pages.</div>`;
+        DOM.list.innerHTML = `<div class="empty">⚠️ Lỗi tải dữ liệu: ${err.message}<br>Hãy đảm bảo bạn đang chạy trên web server (không mở trực tiếp file .html).</div>`;
       }
     }
 
@@ -101,14 +110,14 @@
       DOM.list.innerHTML = data.map(a => `
         <div class="article-card">
           <div class="card-header">
-            <div class="card-title">${a.title}</div>
+            <div class="card-title">${escapeHtml(a.title)}</div>
             <div class="card-date">${formatDate(a.date)}</div>
           </div>
-          <div class="card-desc">${a.description}</div>
-          <div class="tags">${a.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <div class="card-desc">${escapeHtml(a.description)}</div>
+          <div class="tags">${a.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
           <div class="card-footer">
             <a href="lesson.html?id=${a.id}" class="btn">🚀 Bắt đầu học</a>
-            <a href="https://github.com/YOUR-USERNAME/YOUR-REPO/blob/main/${a.dataFile}" target="_blank" class="data-link">📄 Xem dữ liệu bài viết</a>
+            <span class="data-link" onclick="alert('Dữ liệu bài viết: data/${a.dataFile}')">📄 Xem dữ liệu bài viết</span>
           </div>
         </div>
       `).join('');
@@ -117,6 +126,15 @@
     function formatDate(dateStr) {
       const d = new Date(dateStr);
       return d.toLocaleDateString('vi-VN', {day:'2-digit', month:'2-digit', year:'numeric'});
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
     }
 
     document.addEventListener('DOMContentLoaded', init);
