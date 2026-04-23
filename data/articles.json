@@ -5,7 +5,8 @@
     "date": "2024-05-20",
     "description": "Cụm từ & thành ngữ thông dụng - Bài tập điền từ vào câu.",
     "dataFile": "Test-1-P1-G9.json",
-    "tags": ["vocabulary", "phrasal verbs", "B1"]
+    "tags": ["vocabulary", "phrasal verbs", "B1"],
+    "layout": 1
   },
   {
     "id": "unit-10-grade-10",
@@ -13,14 +14,25 @@
     "date": "2025-02-15",
     "description": "Từ vựng về du lịch sinh thái, bảo vệ môi trường và trải nghiệm khám phá.",
     "dataFile": "unit-10-grade-10.json",
-    "tags": ["tourism", "eco-friendly", "B1", "vocabulary"]
+    "tags": ["tourism", "eco-friendly", "B1", "vocabulary"],
+    "layout": 1
   },
-    {
+  {
+    "id": "bac-ninh",
+    "title": "Bắc Ninh test",
+    "date": "2025-02-15",
+    "description": "Từ vựng về bài test",
+    "dataFile": "bac-ninh.json",
+    "tags": ["culture", "B1", "vocabulary"],
+    "layout": 1
+  },
+  {
     "id": "chuyen-ha-long",
     "title": "Từ vựng đề Chuyên Hạ Long",
     "date": "2025-02-15",
-    "description": "Từ vựng về bài test ",
+    "description": "Từ vựng về bài test",
     "dataFile": "chuyen-ha-long.json",
-    "tags": ["advanced", "medicine", "B1", "vocabulary"]
-     }
+    "tags": ["advanced", "medicine", "B1", "vocabulary"],
+    "layout": 2
+  }
 ]
