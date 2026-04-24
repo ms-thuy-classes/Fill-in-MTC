@@ -1,0 +1,93 @@
+[
+  {
+    "word": "important",
+    "type": "(adj)",
+    "ipa": "/ɪmˈpɔːrtənt/",
+    "meaning": "quan trọng",
+    "sentence": "Education is very ________ for young people."
+  },
+  {
+    "word": "necessity",
+    "type": "(n)",
+    "ipa": "/nəˈsesəti/",
+    "meaning": "sự cần thiết",
+    "sentence": "Water is a basic ________ for human life."
+  },
+  {
+    "word": "complexion",
+    "type": "(n)",
+    "ipa": "/kəmˈplekʃən/",
+    "meaning": "nước da / sắc da",
+    "sentence": "She has a clear ________ because she eats healthy food."
+  },
+  {
+    "word": "skin",
+    "type": "(n)",
+    "ipa": "/skɪn/",
+    "meaning": "da",
+    "sentence": "You should protect your ________ from the sun."
+  },
+  {
+    "word": "consumption",
+    "type": "(n)",
+    "ipa": "/kənˈsʌmpʃən/",
+    "meaning": "sự tiêu thụ",
+    "sentence": "The ________ of fast food is increasing among teenagers."
+  },
+  {
+    "word": "luxurious",
+    "type": "(adj)",
+    "ipa": "/lʌɡˈʒʊriəs/",
+    "meaning": "sang trọng",
+    "sentence": "They stayed in a ________ hotel during their vacation."
+  },
+  {
+    "word": "hesitant",
+    "type": "(adj)",
+    "ipa": "/ˈhezɪtənt/",
+    "meaning": "do dự",
+    "sentence": "He felt ________ about answering the difficult question."
+  },
+  {
+    "word": "unearth",
+    "type": "(v)",
+    "ipa": "/ʌnˈɜːrθ/",
+    "meaning": "khai quật",
+    "sentence": "Archaeologists hope to ________ ancient artifacts."
+  },
+  {
+    "word": "promote",
+    "type": "(v)",
+    "ipa": "/prəˈməʊt/",
+    "meaning": "thúc đẩy",
+    "sentence": "The campaign aims to ________ healthy lifestyles."
+  },
+  {
+    "word": "sympathetically",
+    "type": "(adv)",
+    "ipa": "/ˌsɪmpəˈθetɪkli/",
+    "meaning": "một cách thông cảm",
+    "sentence": "She listened ________ to his problems."
+  },
+  {
+    "word": "conformist",
+    "type": "(n)",
+    "ipa": "/kənˈfɔːrmɪst/",
+    "meaning": "người theo khuôn mẫu",
+    "sentence": "He is not a ________; he prefers to think independently."
+  },
+  {
+    "word": "arrange transport",
+    "type": "(v phrase)",
+    "ipa": "/əˈreɪndʒ ˈtrænspɔːrt/",
+    "meaning": "sắp xếp phương tiện di chuyển",
+    "sentence": "We need to ________ for the trip tomorrow."
+  },
+  {
+    "word": "transport infrastructure",
+    "type": "(n phrase)",
+    "ipa": "/ˈtrænspɔːrt ˈɪnfrəstrʌktʃər/",
+    "meaning": "cơ sở hạ tầng giao thông",
+    "sentence": "The government is investing in ________ to reduce traffic congestion."
+  }
+]

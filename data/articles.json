@@ -26,6 +26,15 @@
     "tags": ["culture", "B1", "vocabulary"],
     "layout": 1
   },
+   {
+    "id": "test1-part2",
+    "title": "Test 1 Part 2",
+    "date": "2025-04-24",
+    "description": "Từ vựng về bài test",
+    "dataFile": "test1-part2.json",
+    "tags": ["giải đề", "B1", "vocabulary"],
+    "layout": 1
+  },
   {
     "id": "chuyen-ha-long",
     "title": "Từ vựng đề Chuyên Hạ Long",
