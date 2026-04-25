@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🏎️ Vocabulary Racing Game - Lesson 3 | Learn with Ms. Thúy</title>
+    <style>
+        /* ===== BASE STYLES ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px) rotate(-2deg); } 75% { transform: translateX(10px) rotate(2deg); } }
+        @keyframes flash-green { 0%, 100% { box-shadow: 0 0 0 rgba(34, 197, 94, 0); } 50% { box-shadow: 0 0 50px 20px rgba(34, 197, 94, 0.6); } }
+        @keyframes flash-red { 0%, 100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0); } 50% { box-shadow: 0 0 50px 20px rgba(239, 68, 68, 0.6); } }
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes roadMove { from { background-position: 0 0; } to { background-position: -100px 0; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes glow { 0%, 100% { text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #f0f; } 50% { text-shadow: 0 0 20px #fff, 0 0 40px #ff0, 0 0 60px #f0f; } }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        @keyframes gradient-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+        /* ===== SCREENS ===== */
+        .screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.3s ease;
+        }
+        .screen.hidden { display: none; }
+        .screen.active { animation: fadeIn 0.5s ease forwards; }
+
+        /* ===== START SCREEN ===== */
+        #start-screen {
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
+                        url('https://cellphones.com.vn/sforum/wp-content/uploads/2024/01/game-dua-xe-16.jpg') center/cover no-repeat;
+            background-size: cover;
+        }
+        .start-content {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid #6366f1;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: fadeIn 0.6s ease;
+            position: relative;
+        }
+        .start-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        .start-content p {
+            color: #a5a5b8;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        #name-input {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.2rem;
+            border: 3px solid #4f46e5;
+            border-radius: 16px;
+            background: #2a2a4a;
+            color: white;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        #name-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        #start-btn {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+        #start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6);
+        }
+        #start-btn:active { transform: translateY(1px); }
+        #start-btn:disabled { opacity: 0.7; cursor: wait; }
+
+        /* Home button style (minimal, elegant) */
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            margin-top: 20px;
+        }
+        .home-btn:hover {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8b5cf6;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .start-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            margin: 0;
+        }
+        .summary-home {
+            display: inline-flex;
+            margin-top: 20px;
+        }
+
+        /* ===== GAME SCREEN ===== */
+        #game-screen {
+            background: linear-gradient(to bottom, #1e3a5f 0%, #0f172a 100%);
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+
+        /* Header */
+        .game-header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 16px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .player-info { font-weight: 600; font-size: 1.1rem; color: #e2e8f0; }
+        .progress-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            min-width: 200px;
+        }
+        .progress-bar {
+            height: 20px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        .score-display {
+            background: #6366f1;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        /* Road Container */
+        .road-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            overflow: hidden;
+            border-radius: 20px;
+            position: relative;
+            margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 10px;
+        }
+        .road {
+            width: 100%;
+            height: 200px;
+            background: url('https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUybnpiMWx2bmpja3F1N293aHVnZ2ZoYzJ6ZXYyYW5hdzVrMXNhc3U5eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/vbGLQXbaOoi2WXBNaF/source.gif') repeat-x;
+            background-size: auto 100%;
+            animation: roadMove 0.5s linear infinite;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        /* Removed fake road line */
+
+        .track {
+            position: absolute;
+            top: 50%; left: 5%; right: 5%;
+            height: 6px;
+            background: transparent;
+            transform: translateY(-50%);
+        }
+        .checkpoint {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: 4px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+            transition: all 0.3s;
+            z-index: 15;
+            backdrop-filter: blur(2px);
+        }
+        .checkpoint.reached {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            transform: translate(-50%, -50%) scale(1.1);
+            animation: bounce 0.6s ease;
+        }
+
+        .finish-line {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            width: 80px;
+            height: auto;
+            z-index: 10;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+        }
+
+        .car {
+            position: absolute;
+            top: 55%;
+            left: 5%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: auto;
+            z-index: 20;
+            transition: left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
+        }
+        .car.shake { animation: shake 0.4s ease; }
+        .car.speed-up { transition: left 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+
+        /* Question Panel */
+        .question-panel {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            border: 2px solid #4f46e5;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: center;
+            color: #f1f5f9;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.2rem;
+            border: 3px solid #4f46e5;
+            border-radius: 16px;
+            background: #2a2a4a;
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .answer-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+        }
+        .answer-input.correct {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.15);
+            animation: flash-green 0.3s ease;
+        }
+        .answer-input.incorrect {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            animation: flash-red 0.3s ease;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+        }
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            background: #64748b;
+        }
+        .feedback {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 24px;
+            font-size: 1.1rem;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .feedback.correct { color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+        .feedback.incorrect { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+
+        /* Visual Effects */
+        .flash-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .flash-overlay.green { background: rgba(34, 197, 94, 0.25); }
+        .flash-overlay.red { background: rgba(239, 68, 68, 0.25); }
+        .flash-overlay.active { opacity: 1; }
+
+        .rock {
+            position: absolute;
+            width: 40px; height: 40px;
+            background: radial-gradient(circle at 30% 30%, #6b7280, #374151);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 25;
+            pointer-events: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .rock.hit {
+            animation: shake 0.4s ease, fadeIn 0.1s forwards;
+            opacity: 1;
+        }
+
+        /* Winner Text - absolutely centered */
+        .winner-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #fbbf24, #f59e0b, #ef4444, #ec4899, #8b5cf6, #6366f1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: zoomIn 0.5s ease forwards, glow 1.5s infinite, gradient-shift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+            z-index: 200;
+            white-space: nowrap;
+            display: none;
+            pointer-events: none;
+        }
+
+        /* Summary Screen */
+        #summary-screen {
+            background: linear-gradient(135deg, #1e1b4b, #312e81, #1e1b4b);
+            padding: 30px;
+        }
+        .summary-card {
+            background: rgba(26, 26, 46, 0.95);
+            padding: 40px;
+            border-radius: 24px;
+            max-width: 700px;
+            width: 100%;
+            border: 3px solid #8b5cf6;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s ease;
+            position: relative;
+        }
+        .summary-card h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #8b5cf6;
+        }
+        .summary-card > p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 20px 30px;
+            border-radius: 16px;
+            min-width: 140px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #6366f1;
+        }
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+        .mistakes-list {
+            text-align: left;
+            margin: 25px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+        }
+        .mistake-item {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 12px 12px 0;
+            transition: background 0.2s;
+        }
+        .mistake-item .wrong { color: #ef4444; font-weight: 600; text-decoration: line-through; }
+        .mistake-item .correct { color: #22c55e; font-weight: 700; }
+        .mistake-item .sentence { 
+            color: #94a3b8; 
+            font-size: 0.95rem; 
+            margin-top: 8px; 
+            padding: 8px; 
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 6px;
+            font-style: italic;
+        }
+        .restart-btn {
+            background: linear-gradient(45deg, #8b5cf6, #6366f1);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.5);
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .start-content { padding: 30px 25px; }
+            .start-content h1 { font-size: 2rem; }
+            .game-header { flex-direction: column; gap: 10px; padding: 15px; }
+            .progress-container { max-width: 100%; margin: 10px 0; }
+            .road { height: 160px; }
+            .car { width: 60px; top: 56%; }
+            .checkpoint { width: 32px; height: 32px; font-size: 0.9rem; border-width: 3px; }
+            .question-text { font-size: 1.2rem; }
+            .winner-text { font-size: 3rem; white-space: nowrap; }
+            .summary-card { padding: 30px 25px; }
+            .result-stats { gap: 15px; }
+            .stat-box { padding: 15px 20px; min-width: 120px; }
+            .stat-value { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="flash-overlay" class="flash-overlay"></div>
+    <div id="winner-text" class="winner-text">🏆 VICTORY! 🏆</div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen active">
+        <div class="start-content">
+            <!-- Home button top-left inside start screen -->
+            <a href="../lesson3.html" class="home-btn start-home">⬅ Home</a>
+            <h1>🏎️ VOCAB RACER</h1>
+            <p>Unit 10: Du lịch bền vững (Lesson 3)</p>
+            <input type="text" id="name-input" placeholder="Nhập tên học sinh..." maxlength="20" autocomplete="off">
+            <button id="start-btn">🚀 Bắt đầu đua</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-header">
+            <div class="player-info">👤 <span id="player-name">Player</span></div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            <div class="score-display">⭐ <span id="score">0</span>/<span id="total-questions">0</span></div>
+        </div>
+
+        <div class="road-wrapper">
+            <div class="road">
+                <div class="track" id="track"></div>
+                <img src="https://www.clipartmax.com/png/full/180-1800704_finish-line-clipart-transparent-background-finish-line-clipart-banner.png" 
+                     alt="Finish Line" class="finish-line" id="finish-line">
+                <img src="https://freepngimg.com/thumb/car/2-2-car-transparent.png" 
+                     alt="Car" class="car" id="car">
+                <div class="rock" id="rock"></div>
+            </div>
+        </div>
+
+        <div class="question-panel">
+            <p class="question-text" id="question-text">Loading question...</p>
+            <input type="text" class="answer-input" id="answer-input" placeholder="🔤 Nhập từ còn thiếu..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            <button class="submit-btn" id="submit-btn">Submit Answer</button>
+            <p class="feedback" id="feedback"></p>
+        </div>
+    </div>
+
+    <!-- Summary Screen -->
+    <div id="summary-screen" class="screen hidden">
+        <div class="summary-card">
+            <a href="../lesson3.html" class="home-btn summary-home" style="position: absolute; top: 20px; left: 20px;">⬅ Home</a>
+            <h2>🏁 Race Complete!</h2>
+            <p>Great job, <span id="summary-name" style="color:#8b5cf6;font-weight:700;"></span>!</p>
+            <div class="result-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="final-score">0</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="final-total">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="final-percent">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+            </div>
+            <h3 style="margin: 25px 0 15px; color:#fbbf24;">📝 Review Mistakes</h3>
+            <div class="mistakes-list" id="mistakes-list"></div>
+            <button class="restart-btn" id="restart-btn">🔄 Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            DATA_URL: '/data/articles.json',
+            BASE_PATH: '/data/',
+            AUDIO: {
+                correct: 'https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/correct.mp3',
+                incorrect: 'https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/incorrect.mp3',
+                engine: 'https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/dragon-studio-car-engine-372477.mp3'
+            },
+            GAME: {
+                trackLength: 90,
+                carStartPos: 5,
+                speedMultiplier: 0.4,
+                targetLayoutId: 3
+            }
+        };
+
+        const SAMPLE_DATA = [
+            { word: "Sustainable", type: "(adj)", ipa: "/səˈsteɪnəbl/", meaning: "Bền vững", sentence: "________ tourism helps protect nature." },
+            { word: "Action", type: "(n)", ipa: "/ˈækʃən/", meaning: "Hành động", sentence: "We need to take immediate ________." }
+        ];
+
+        class AudioManager {
+            constructor() {
+                this.sounds = {};
+                this.engineSound = new Audio(CONFIG.AUDIO.engine);
+                this.engineSound.loop = true;
+                this.isEnginePlaying = false;
+                ['correct', 'incorrect'].forEach(k => {
+                    this.sounds[k] = new Audio(CONFIG.AUDIO[k]);
+                });
+            }
+            play(key) { if(this.sounds[key]) { const s = this.sounds[key].cloneNode(); s.volume = 0.7; s.play().catch(()=>{}); } }
+            startEngine() { if(!this.isEnginePlaying) { this.engineSound.play().catch(()=>{}); this.isEnginePlaying = true; } }
+            stopEngine() { this.engineSound.pause(); this.isEnginePlaying = false; }
+            setSpeed(s) { this.engineSound.playbackRate = Math.max(0.5, Math.min(2.0, s)); }
+        }
+
+        class Game {
+            constructor() {
+                this.audio = new AudioManager();
+                this.questions = [];
+                this.playerName = '';
+                this.currentIndex = 0;
+                this.score = 0;
+                this.mistakes = [];
+                this.carPosition = CONFIG.GAME.carStartPos;
+                this.isMoving = false;
+                this.currentCheckpoint = null;
+                
+                this.els = {
+                    startScreen: document.getElementById('start-screen'),
+                    gameScreen: document.getElementById('game-screen'),
+                    summaryScreen: document.getElementById('summary-screen'),
+                    nameInput: document.getElementById('name-input'),
+                    startBtn: document.getElementById('start-btn'),
+                    playerName: document.getElementById('player-name'),
+                    questionText: document.getElementById('question-text'),
+                    answerInput: document.getElementById('answer-input'),
+                    submitBtn: document.getElementById('submit-btn'),
+                    feedback: document.getElementById('feedback'),
+                    car: document.getElementById('car'),
+                    track: document.getElementById('track'),
+                    progressFill: document.getElementById('progress-fill'),
+                    score: document.getElementById('score'),
+                    totalQ: document.getElementById('total-questions'),
+                    flash: document.getElementById('flash-overlay'),
+                    winnerText: document.getElementById('winner-text'),
+                    rock: document.getElementById('rock')
+                };
+
+                this.els.startBtn.addEventListener('click', () => this.startGame());
+                this.els.nameInput.addEventListener('keypress', e => { if(e.key === 'Enter') this.startGame(); });
+                this.els.submitBtn.addEventListener('click', () => this.submitAnswer());
+                this.els.answerInput.addEventListener('keypress', e => { if(e.key === 'Enter' && !this.els.submitBtn.disabled) this.submitAnswer(); });
+                document.getElementById('restart-btn').addEventListener('click', () => {
+                    this.els.winnerText.style.display = 'none';
+                    this.els.summaryScreen.classList.add('hidden');
+                    this.els.startScreen.classList.remove('hidden');
+                    this.els.nameInput.value = '';
+                    this.els.nameInput.focus();
+                    if (this.currentCheckpoint) this.currentCheckpoint.remove();
+                    this.currentCheckpoint = null;
+                });
+            }
+
+            async fetchData() {
+                try {
+                    const res = await fetch(CONFIG.DATA_URL);
+                    if (!res.ok) throw new Error("Network error");
+                    const allArticles = await res.json();
+                    const metadata = allArticles.find(a => a.layout === 3) || allArticles[0];
+                    const vocabURL = CONFIG.BASE_PATH + metadata.dataFile;
+                    const vocabRes = await fetch(vocabURL);
+                    if (!vocabRes.ok) throw new Error("Vocab file missing");
+                    const data = await vocabRes.json();
+                    return Array.isArray(data) ? data.map(item => ({
+                        vocabulary: item.word,
+                        meaning: item.meaning,
+                        type: item.type || '',
+                        ipa: item.ipa || '',
+                        example: item.sentence.replace(/_{3,}/g, '_____'),
+                        answer: (item.answer || item.word).toLowerCase()
+                    })) : [];
+                } catch (e) {
+                    console.warn("Using sample data", e);
+                    return SAMPLE_DATA.map(i => ({...i, answer: i.word.toLowerCase(), example: i.sentence.replace(/_{3,}/g, '_____')}));
+                }
+            }
+
+            async startGame() {
+                const name = this.els.nameInput.value.trim();
+                if(!name) return;
+                this.playerName = name;
+                this.els.playerName.textContent = name;
+                document.getElementById('summary-name').textContent = name;
+                this.els.winnerText.style.display = 'none';
+
+                this.els.startBtn.disabled = true;
+                this.els.startBtn.innerHTML = '<span class="loading"></span>Loading...';
+
+                this.questions = await this.fetchData();
+                if(this.questions.length === 0) {
+                    alert("No questions found!");
+                    this.els.startBtn.disabled = false;
+                    this.els.startBtn.textContent = "🚀 Bắt đầu đua";
+                    return;
+                }
+
+                this.currentIndex = 0;
+                this.score = 0;
+                this.mistakes = [];
+                this.carPosition = CONFIG.GAME.carStartPos;
+                
+                this.els.totalQ.textContent = this.questions.length;
+                this.els.score.textContent = '0';
+                this.els.progressFill.style.width = '0%';
+                this.els.car.style.left = `${this.carPosition}%`;
+                if (this.currentCheckpoint) this.currentCheckpoint.remove();
+                this.currentCheckpoint = null;
+
+                this.els.startScreen.classList.add('hidden');
+                this.els.gameScreen.classList.remove('hidden');
+                this.els.gameScreen.classList.add('active');
+
+                this.loadQuestion();
+                this.audio.startEngine();
+                this.els.startBtn.disabled = false;
+                this.els.startBtn.textContent = "🚀 Bắt đầu đua";
+            }
+
+            updateCheckpoint() {
+                if (this.currentCheckpoint) this.currentCheckpoint.remove();
+                if (this.currentIndex >= this.questions.length) return;
+                const step = (CONFIG.GAME.trackLength - CONFIG.GAME.carStartPos) / this.questions.length;
+                let leftPercent = CONFIG.GAME.carStartPos + (this.currentIndex + 1) * step;
+                const carLeft = parseFloat(this.els.car.style.left) || CONFIG.GAME.carStartPos;
+                if (leftPercent <= carLeft + 0.5) leftPercent = carLeft + step * 0.8;
+                const cp = document.createElement('div');
+                cp.className = 'checkpoint';
+                cp.textContent = this.currentIndex + 1;
+                cp.style.left = `${Math.min(leftPercent, CONFIG.GAME.trackLength)}%`;
+                this.els.track.appendChild(cp);
+                this.currentCheckpoint = cp;
+            }
+
+            loadQuestion() {
+                if(this.currentIndex >= this.questions.length) return this.finishGame();
+                this.updateCheckpoint();
+                const q = this.questions[this.currentIndex];
+                this.els.questionText.innerHTML = `
+                    <div style="font-size:1.35rem;margin-bottom:12px">✨ "${q.example}"</div>
+                    <div>${q.type ? `<span style="background:#4f46e533;padding:4px 12px;border-radius:8px;font-size:0.85rem;margin-right:8px">${q.type}</span>` : ''}
+                    ${q.ipa ? `<span style="font-family:monospace;color:#a5b4fc;font-size:0.9rem">${q.ipa}</span>` : ''}</div>
+                `;
+                this.els.answerInput.placeholder = "🔍 Nhập từ phù hợp...";
+                this.els.answerInput.value = '';
+                this.els.answerInput.className = 'answer-input';
+                this.els.feedback.textContent = '';
+                this.els.feedback.className = 'feedback';
+                this.els.submitBtn.disabled = false;
+                this.els.answerInput.focus();
+            }
+
+            submitAnswer() {
+                if(this.isMoving) return;
+                const input = this.els.answerInput.value.trim().toLowerCase();
+                const q = this.questions[this.currentIndex];
+                const correctAns = q.answer.toLowerCase();
+                const isCorrect = (input === correctAns || input === q.vocabulary.toLowerCase());
+                this.isMoving = true;
+                this.els.submitBtn.disabled = true;
+                if(isCorrect) {
+                    this.score++;
+                    this.els.score.textContent = this.score;
+                    this.els.answerInput.className = 'answer-input correct';
+                    this.els.feedback.innerHTML = '✅ Correct! +1 point';
+                    this.els.feedback.className = 'feedback correct';
+                    this.flash('green');
+                    this.moveCar(true);
+                    this.audio.play('correct');
+                } else {
+                    this.mistakes.push({ q, input, answer: q.vocabulary });
+                    this.els.answerInput.className = 'answer-input incorrect';
+                    this.els.feedback.innerHTML = `❌ Correct word: <strong>${q.vocabulary}</strong>`;
+                    this.els.feedback.className = 'feedback incorrect';
+                    this.flash('red');
+                    this.rockHit();
+                    this.moveCar(false);
+                    this.audio.play('incorrect');
+                }
+            }
+
+            moveCar(ok) {
+                const step = (CONFIG.GAME.trackLength - CONFIG.GAME.carStartPos) / this.questions.length;
+                let newPos = this.carPosition + step + (ok ? step * 0.3 : -step * 0.25);
+                newPos = Math.min(newPos, CONFIG.GAME.trackLength);
+                this.els.car.style.left = `${newPos}%`;
+                this.els.car.classList.toggle('shake', !ok);
+                this.audio.setSpeed(ok ? 1.5 : 0.7);
+                this.carPosition = newPos;
+                const progressPercent = (this.currentIndex + 1) / this.questions.length * 100;
+                this.els.progressFill.style.width = `${Math.min(progressPercent, 100)}%`;
+                if(newPos >= CONFIG.GAME.trackLength - 1.5) {
+                    setTimeout(() => this.finishGame(), 600);
+                } else {
+                    setTimeout(() => {
+                        this.currentIndex++;
+                        this.isMoving = false;
+                        this.els.car.classList.remove('shake');
+                        this.audio.setSpeed(1.0);
+                        if (this.currentCheckpoint) {
+                            this.currentCheckpoint.classList.add('reached');
+                            setTimeout(() => {
+                                if (this.currentCheckpoint) this.currentCheckpoint.remove();
+                                this.currentCheckpoint = null;
+                                this.loadQuestion();
+                            }, 300);
+                        } else {
+                            this.loadQuestion();
+                        }
+                    }, 600);
+                }
+            }
+
+            flash(color) {
+                this.els.flash.className = `flash-overlay ${color} active`;
+                setTimeout(() => this.els.flash.classList.remove('active'), 300);
+            }
+
+            rockHit() {
+                const carRect = this.els.car.getBoundingClientRect();
+                const r = this.els.rock;
+                const p = this.els.car.parentElement.getBoundingClientRect();
+                r.style.left = `${carRect.left - p.left + 15}px`;
+                r.style.top = `${carRect.top - p.top + 15}px`;
+                r.classList.add('hit');
+                setTimeout(() => r.classList.remove('hit'), 400);
+            }
+
+            finishGame() {
+                this.audio.stopEngine();
+                if (this.currentCheckpoint) this.currentCheckpoint.remove();
+                this.currentCheckpoint = null;
+                this.els.gameScreen.classList.add('hidden');
+                this.els.summaryScreen.classList.remove('hidden');
+                this.els.summaryScreen.classList.add('active');
+                this.els.winnerText.style.display = 'block';
+                setTimeout(() => {
+                    this.els.winnerText.style.display = 'none';
+                }, 1000);
+                document.getElementById('final-score').textContent = this.score;
+                document.getElementById('final-total').textContent = this.questions.length;
+                document.getElementById('final-percent').textContent = Math.round((this.score / this.questions.length) * 100) + '%';
+                const list = document.getElementById('mistakes-list');
+                if(this.mistakes.length === 0) {
+                    list.innerHTML = '<p style="text-align:center;color:#22c55e;font-weight:700">🎉 Perfect! No mistakes, champion!</p>';
+                } else {
+                    list.innerHTML = this.mistakes.map(m => `
+                        <div class="mistake-item">
+                            <div><span class="wrong">${m.input || '(trống)'}</span> → <span class="correct">${m.answer}</span></div>
+                            <div class="sentence">"${m.q.example}"</div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.game = new Game();
+            document.addEventListener('visibilitychange', () => { if(document.hidden) window.game.audio.stopEngine(); });
+        });
+    </script>
+</body>
+</html>

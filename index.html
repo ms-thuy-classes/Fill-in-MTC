@@ -116,7 +116,7 @@
           <div class="card-desc">${escapeHtml(a.description)}</div>
           <div class="tags">${a.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
           <div class="card-footer">
-            <a href="lesson.html?id=${a.id}" class="btn">🚀 Bắt đầu học</a>
+           <a href="lesson${Number(a.layout)}.html?id=${a.id}" class="btn">🚀 Bắt đầu học</a>
             <span class="data-link" onclick="alert('Dữ liệu bài viết: data/${a.dataFile}')">📄 Xem dữ liệu bài viết</span>
           </div>
         </div>
@@ -138,6 +138,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', init);
-  </script>
+  </script>s
 </body>
 </html>
