@@ -595,7 +595,18 @@
             if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
         });
     }
-
+  // Lấy ID từ URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let lessonId = urlParams.get('id');
+    
+    // HIỂN THỊ CẢNH BÁO NẾU THIẾU ID
+    if (!lessonId) {
+        document.getElementById('lessonSubtitle').innerHTML = '⚠️ THIẾU ID! Vui lòng truy cập: lesson3.html?id=unit-10-grade-10 ⚠️';
+        // Vẫn cho phép chạy demo nhưng có cảnh báo
+        lessonId = 'demo-lesson';
+    } else {
+        document.getElementById('lessonSubtitle').innerHTML = `📖 Đang tải bài học: ${lessonId}`;
+    }
     // ============================================================
     //  2. DATA FETCHING (exactly like lesson2)
     // ============================================================
