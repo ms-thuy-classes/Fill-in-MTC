@@ -2,11 +2,11 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 Game Center | Learn with Ms. Thúy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🎮 Game Center | Học từ vựng cùng Ms. Thúy</title>
     
     <style>
-        /* ===== CSS VARIABLES & RESET ===== */
+        /* ===== GLOBAL & GAME GRID STYLES (from lesson3) ===== */
         :root {
             --bg-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #fbc2eb 100%);
             --card-bg: rgba(255, 255, 255, 0.88);
@@ -17,6 +17,14 @@
             --btn-gradient: linear-gradient(135deg, #667eea, #764ba2);
             --radius: 24px;
             --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent-blue: #74b9ff;
+            --accent-purple: #a29bfe;
+            --accent-pink: #fd79a8;
+            --success: #00b894;
+            --error: #e17055;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --radius-md: 16px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,10 +39,10 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== HEADER ===== */
+        /* Header */
         header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             animation: fadeInDown 0.7s ease-out forwards;
         }
         h1 {
@@ -52,7 +60,241 @@
             opacity: 0.85;
         }
 
-        /* ===== GAME GRID ===== */
+        /* ===== FLASHCARD SECTION (from lesson2, adapted) ===== */
+        .flashcard-section {
+            max-width: 900px;
+            margin: 0 auto 2.5rem auto;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 1.8rem 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .fc-shuffle-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 40px;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            color: var(--text-sub);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+            border: 1px solid rgba(162,155,254,0.3);
+        }
+        .fc-shuffle-btn:hover {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            transform: translateY(-2px);
+        }
+        .fc-progress-wrap {
+            background: rgba(255,255,240,0.8);
+            border-radius: 24px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+        }
+        .fc-progress-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        .fc-progress-count { font-weight: 700; }
+        .fc-progress-count span { color: var(--accent-purple); font-size: 1.2rem; }
+        .fc-progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .fc-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+        .fc-progress-dots {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .fc-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e9ecef;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .fc-dot.seen { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); }
+        .fc-dot.current { box-shadow: 0 0 0 3px rgba(162,155,254,0.4); transform: scale(1.25); background: var(--accent-purple); }
+        .fc-stage {
+            perspective: 1200px;
+            margin-bottom: 20px;
+        }
+        .fc-card-wrap {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .fc-card-wrap.flipped { transform: rotateY(180deg); }
+        .fc-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 28px;
+            text-align: center;
+        }
+        .fc-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 60%, #f093fb 100%);
+            box-shadow: 0 12px 30px rgba(118, 75, 162, 0.3);
+        }
+        .fc-word {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            margin-bottom: 10px;
+        }
+        .fc-ipa {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.85);
+            font-family: monospace;
+            margin-bottom: 16px;
+        }
+        .fc-type-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .fc-audio-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+            margin-bottom: 12px;
+        }
+        .fc-audio-btn:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
+        .fc-flip-hint {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.6);
+            white-space: nowrap;
+        }
+        .fc-back {
+            transform: rotateY(180deg);
+            background: white;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        .fc-meaning {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+        .fc-divider {
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 3px;
+            margin-bottom: 16px;
+        }
+        .fc-example {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            font-style: italic;
+            background: #f8f9ff;
+            padding: 12px;
+            border-radius: 20px;
+            border-left: 4px solid var(--accent-purple);
+            max-width: 90%;
+        }
+        .fc-example .fc-highlight { color: var(--accent-purple); font-weight: 800; font-style: normal; }
+        .fc-back-flip-hint {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+        .fc-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 12px;
+        }
+        .fc-nav-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .fc-nav-btn:hover {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            transform: scale(1.05);
+        }
+        .fc-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Game Grid Styles (as before) */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -61,8 +303,6 @@
             margin: 0 auto;
             padding: 0 10px;
         }
-
-        /* ===== GAME CARD ===== */
         .game-card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -71,20 +311,17 @@
             text-align: center;
             box-shadow: var(--card-shadow);
             transition: var(--transition);
-            position: relative;
             text-decoration: none;
             color: inherit;
             display: flex;
             flex-direction: column;
             align-items: center;
             border: 2px solid rgba(255, 255, 255, 0.5);
-            overflow: visible;
             cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
+            position: relative;
         }
-
-        /* Gradient Border on Hover */
         .game-card::before {
             content: '';
             position: absolute;
@@ -98,35 +335,19 @@
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s;
             pointer-events: none;
-            z-index: 1;
         }
-
+        .game-card:hover::before { opacity: 1; }
         .game-card:hover {
             transform: translateY(-8px) scale(1.04);
             box-shadow: var(--card-shadow-hover);
             border-color: transparent;
         }
-        .game-card:hover::before { opacity: 1; }
-
-        /* Icon */
-        .game-card .icon {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease;
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));
-            z-index: 2;
-        }
-        .game-card:hover .icon {
-            animation: float 2.5s ease-in-out infinite;
-        }
-
-        /* Typography */
-        .game-card h3 { font-size: 1.45rem; margin: 0 0 0.5rem; font-weight: 700; z-index: 2; }
-        .game-card p { color: var(--text-sub); font-size: 0.95rem; margin: 0 0 1.8rem; line-height: 1.6; z-index: 2; }
-
-        /* Play Button */
+        .game-card .icon { font-size: 3.5rem; margin-bottom: 1rem; transition: transform 0.3s; }
+        .game-card:hover .icon { animation: float 2.5s ease-in-out infinite; }
+        .game-card h3 { font-size: 1.45rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .game-card p { color: var(--text-sub); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.6; }
         .play-btn {
             background: var(--btn-gradient);
             color: white;
@@ -134,17 +355,13 @@
             border-radius: 50px;
             font-weight: 600;
             font-size: 0.9rem;
-            letter-spacing: 0.5px;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-            transition: all 0.25s ease;
-            z-index: 2;
+            transition: 0.25s;
         }
         .game-card:hover .play-btn {
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
         }
-
-        /* Coming Soon Badge */
         .coming-soon-badge {
             position: absolute;
             top: 12px;
@@ -157,7 +374,6 @@
             transform: rotate(45deg);
             box-shadow: 0 3px 10px rgba(0,0,0,0.15);
             text-transform: uppercase;
-            letter-spacing: 1px;
             z-index: 10;
         }
         .game-card.disabled {
@@ -166,111 +382,339 @@
             cursor: not-allowed;
         }
 
-        /* ===== ANIMATIONS ===== */
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-25px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes gradient-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        @keyframes gradient-shift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             h1 { font-size: 2.1rem; }
-            .subtitle { font-size: 1rem; }
-            .game-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
-            .game-card { padding: 2rem 1.5rem; }
+            .flashcard-section { padding: 1rem; }
+            .fc-card-wrap { height: 230px; }
+            .fc-word { font-size: 1.6rem; }
+            .fc-meaning { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🎮 Game Center</h1>
-        <p class="subtitle">Choose a game to practice your vocabulary</p>
-    </header>
+<header>
+    <h1>🎮 Game Center</h1>
+    <p class="subtitle" id="lessonSubtitle">Ôn từ vựng, sau đó chọn game để luyện tập</p>
+</header>
 
-    <main class="game-grid">
-        
-        <!-- ========================================== -->
-        <!-- GAME CARD START                            -->
-        <!-- To add new game: copy this entire block    -->
-        <!-- Change data-game, icon, h3, p, href        -->
-        <!-- ========================================== -->
-        <a href="#" class="game-card" data-game="racing">
-            <div class="icon">🏎️</div>
-            <h3>Racing Game</h3>
-            <p>Answer correctly to make your car move faster. Reach the finish line!</p>
-            <span class="play-btn">Play Now</span>
-        </a>
-        <!-- GAME CARD END -->
-
-        <!-- ========================================== -->
-        <!-- GAME CARD START                            -->
-        <a href="#" class="game-card" data-game="hangman">
-            <div class="icon">☠️</div>
-            <h3>Hang man</h3>
-            <p>Guess the hidden word before the hangman is complete.</p>
-            <span class="play-btn">Play Now</span>
-        </a>
-        <!-- GAME CARD END -->
-
-        <!-- ========================================== -->
-        <!-- GAME CARD START                            -->
-        <a href="#" class="game-card" data-game="memory">
-            <div class="icon">🧩</div>
-            <h3>Memory Match</h3>
-            <p>Flip cards and match words with their correct meanings.</p>
-            <span class="play-btn">Play Now</span>
-        </a>
-        <!-- GAME CARD END -->
-
-        <!-- ========================================== -->
-        <!-- GAME CARD START (COMING SOON EXAMPLE)      -->
-        <!-- Add class="disabled" & badge for upcoming  -->
-        <div class="game-card disabled">
-            <span class="coming-soon-badge">Coming Soon</span>
-            <div class="icon">⏱️</div>
-            <h3>Speed Typing</h3>
-            <p>Type words as fast as you can before time runs out.</p>
-            <span class="play-btn" style="opacity: 0.5;">Locked</span>
+<!-- ========== FLASHCARD SECTION (embedded from lesson2) ========== -->
+<div class="flashcard-section" id="flashcardSection">
+    <div class="section-header">
+        <div class="section-title">📖 Ôn từ vựng với Flashcard</div>
+        <button class="fc-shuffle-btn" id="fcShuffleBtn">🔀 Xáo bài</button>
+    </div>
+    <div class="fc-progress-wrap">
+        <div class="fc-progress-meta">
+            <div class="fc-progress-count">Thẻ <span id="fcCurrent">1</span> / <span id="fcTotal">—</span></div>
+            <div class="fc-progress-hint">👆 Nhấn vào thẻ để lật</div>
         </div>
-        <!-- GAME CARD END -->
-        
-    </main>
+        <div class="fc-progress-track"><div class="fc-progress-fill" id="fcProgressFill" style="width:0%"></div></div>
+        <div class="fc-progress-dots" id="fcDots"></div>
+    </div>
+    <div class="fc-stage">
+        <div class="fc-card-wrap" id="fcCardWrap">
+            <div class="fc-face fc-front">
+                <div class="fc-type-badge" id="fcTypeBadge">noun</div>
+                <div class="fc-word" id="fcWord">...</div>
+                <div class="fc-ipa" id="fcIpa">/ˈ.../</div>
+                <button class="fc-audio-btn" id="fcAudioBtn">🔊</button>
+                <div class="fc-flip-hint">↩ Nhấn để xem nghĩa</div>
+            </div>
+            <div class="fc-face fc-back">
+                <div class="fc-meaning" id="fcMeaning">...</div>
+                <div class="fc-divider"></div>
+                <div class="fc-example" id="fcExample">...</div>
+                <div class="fc-back-flip-hint">↩ Nhấn để quay lại</div>
+            </div>
+        </div>
+    </div>
+    <div class="fc-controls">
+        <button class="fc-nav-btn" id="fcPrevBtn" disabled>◀</button>
+        <button class="fc-nav-btn" id="fcFlipBtn">↩</button>
+        <button class="fc-nav-btn" id="fcNextBtn">▶</button>
+    </div>
+</div>
 
-    <script>
-        /**
-         * 🎮 Game Hub Logic
-         * - Extracts lesson ID from URL
-         * - Dynamically updates all game card links
-         * - Adds staggered fade-in animations on load
-         */
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Get Lesson ID from URL Query String
-            // Example URL: lesson3.html?id=unit-10-grade-10
-            const params = new URLSearchParams(window.location.search);
-            const lessonId = params.get('id') || 'demo-lesson'; // Fallback for testing
+<!-- ========== GAME GRID (original lesson3 content) ========== -->
+<main class="game-grid">
+    <a href="#" class="game-card" data-game="racing">
+        <div class="icon">🏎️</div>
+        <h3>Racing Game</h3>
+        <p>Answer correctly to make your car move faster. Reach the finish line!</p>
+        <span class="play-btn">Play Now</span>
+    </a>
 
-            // 2. Update all playable game card links
-            document.querySelectorAll('.game-card:not(.disabled)').forEach(card => {
-                const gameName = card.getAttribute('data-game');
-                if (gameName) {
-                    // Format: games/[game-name].html?id={{lessonId}}
-                    card.href = `games/${gameName}.html?id=${encodeURIComponent(lessonId)}`;
-                }
+    <a href="#" class="game-card" data-game="hangman">
+        <div class="icon">☠️</div>
+        <h3>Hang Man</h3>
+        <p>Guess the hidden word before the hangman is complete.</p>
+        <span class="play-btn">Play Now</span>
+    </a>
+
+    <a href="#" class="game-card" data-game="matching">
+        <div class="icon">🧩</div>
+        <h3>Matching Game</h3>
+        <p>Flip cards and match words with their correct meanings.</p>
+        <span class="play-btn">Play Now</span>
+    </a>
+
+    <div class="game-card disabled">
+        <span class="coming-soon-badge">Coming Soon</span>
+        <div class="icon">⏱️</div>
+        <h3>Speed Typing</h3>
+        <p>Type words as fast as you can before time runs out.</p>
+        <span class="play-btn" style="opacity: 0.5;">Locked</span>
+    </div>
+</main>
+
+<script>
+    // ============================================================
+    //  1. FLASHCARD LOGIC (adapted from lesson2)
+    // ============================================================
+    const FlashcardState = {
+        cards: [],
+        currentIndex: 0,
+        flipped: false
+    };
+
+    // Helper: shuffle array
+    function shuffleArray(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function renderDots() {
+        const container = document.getElementById('fcDots');
+        if (!container) return;
+        const total = FlashcardState.cards.length;
+        const currentIdx = FlashcardState.currentIndex;
+        container.innerHTML = FlashcardState.cards.map((_, i) =>
+            `<div class="fc-dot ${i < currentIdx ? 'seen' : ''} ${i === currentIdx ? 'current' : ''}" data-i="${i}"></div>`
+        ).join('');
+        document.querySelectorAll('.fc-dot').forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const idx = parseInt(e.currentTarget.dataset.i);
+                goToCard(idx);
             });
-
-            // 3. Staggered Fade-In Animation for Cards
-            const cards = document.querySelectorAll('.game-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.12}s`;
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, 50 + (index * 120));
-            });
-
-            // Optional: Log for debugging
-            console.log(`🎮 Game Hub loaded with Lesson ID: ${lessonId}`);
         });
-    </script>
+    }
+
+    function renderFlashcard() {
+        if (!FlashcardState.cards.length) return;
+        const card = FlashcardState.cards[FlashcardState.currentIndex];
+        const wrap = document.getElementById('fcCardWrap');
+        if (wrap && FlashcardState.flipped) wrap.classList.add('flipped');
+        else if (wrap) wrap.classList.remove('flipped');
+
+        document.getElementById('fcWord').textContent = card.word || '';
+        document.getElementById('fcIpa').textContent = card.ipa || '';
+        document.getElementById('fcTypeBadge').textContent = card.type || '';
+        document.getElementById('fcMeaning').textContent = card.meaning || '';
+        const example = card.sentence || '';
+        document.getElementById('fcExample').innerHTML = example.replace(/________/g, `<span class="fc-highlight">${card.word}</span>`);
+
+        const total = FlashcardState.cards.length;
+        const current = FlashcardState.currentIndex + 1;
+        document.getElementById('fcCurrent').textContent = current;
+        document.getElementById('fcTotal').textContent = total;
+        const percent = (current / total) * 100;
+        document.getElementById('fcProgressFill').style.width = `${percent}%`;
+
+        document.getElementById('fcPrevBtn').disabled = FlashcardState.currentIndex === 0;
+        document.getElementById('fcNextBtn').disabled = FlashcardState.currentIndex === total - 1;
+        renderDots();
+
+        // auto speak
+        setTimeout(() => speakWord(card.word), 200);
+    }
+
+    function goToCard(idx) {
+        FlashcardState.currentIndex = idx;
+        FlashcardState.flipped = false;
+        renderFlashcard();
+    }
+
+    function flipCard() {
+        FlashcardState.flipped = !FlashcardState.flipped;
+        const wrap = document.getElementById('fcCardWrap');
+        if (wrap) wrap.classList.toggle('flipped', FlashcardState.flipped);
+    }
+
+    function speakWord(word) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85;
+        const btn = document.getElementById('fcAudioBtn');
+        btn.classList.add('playing');
+        utterance.onend = utterance.onerror = () => btn.classList.remove('playing');
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function attachFlashcardEvents() {
+        document.getElementById('fcCardWrap')?.addEventListener('click', flipCard);
+        document.getElementById('fcFlipBtn')?.addEventListener('click', flipCard);
+        document.getElementById('fcPrevBtn')?.addEventListener('click', () => {
+            if (FlashcardState.currentIndex > 0) goToCard(FlashcardState.currentIndex - 1);
+        });
+        document.getElementById('fcNextBtn')?.addEventListener('click', () => {
+            if (FlashcardState.currentIndex < FlashcardState.cards.length - 1) goToCard(FlashcardState.currentIndex + 1);
+        });
+        document.getElementById('fcAudioBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            speakWord(FlashcardState.cards[FlashcardState.currentIndex]?.word);
+        });
+        document.getElementById('fcShuffleBtn')?.addEventListener('click', () => {
+            FlashcardState.cards = shuffleArray(FlashcardState.cards);
+            FlashcardState.currentIndex = 0;
+            FlashcardState.flipped = false;
+            renderFlashcard();
+            showToast('🔀 Đã xáo bài flashcard!');
+        });
+        // keyboard support
+        document.addEventListener('keydown', (e) => {
+            const section = document.getElementById('flashcardSection');
+            if (!section || !section.isConnected) return;
+            if (e.key === 'ArrowLeft' && FlashcardState.currentIndex > 0) goToCard(FlashcardState.currentIndex - 1);
+            if (e.key === 'ArrowRight' && FlashcardState.currentIndex < FlashcardState.cards.length - 1) goToCard(FlashcardState.currentIndex + 1);
+            if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+        });
+    }
+
+    // ============================================================
+    //  2. DATA FETCHING (exactly like lesson2)
+    // ============================================================
+    async function loadVocabularyData(lessonId) {
+        try {
+            // Step 1: fetch articles.json
+            const articlesRes = await fetch('data/articles.json');
+            if (!articlesRes.ok) throw new Error('Cannot fetch articles.json');
+            const articles = await articlesRes.json();
+            // Find lesson metadata
+            const lessonMeta = articles.find(art => art.id === lessonId);
+            if (!lessonMeta) throw new Error('Lesson not found in articles.json');
+            const dataFile = lessonMeta.dataFile;
+            if (!dataFile) throw new Error('dataFile missing');
+            // Step 2: fetch actual vocabulary
+            const vocabRes = await fetch(`data/${dataFile}`);
+            if (!vocabRes.ok) throw new Error(`Vocab file ${dataFile} missing`);
+            const vocabData = await vocabRes.json();
+            // Transform to expected structure (word, meaning, ipa, type, sentence)
+            return vocabData.map(item => ({
+                word: item.word,
+                meaning: item.meaning || "no meaning",
+                ipa: item.ipa || "",
+                type: item.type || "",
+                sentence: item.sentence || `I love ${item.word}.`
+            }));
+        } catch (err) {
+            console.warn("Real data failed, using fallback sample:", err);
+            // Fallback sample data (same as lesson2)
+            return [
+                { word: "beautiful", type: "adj", ipa: "/ˈbjuː.tɪ.fəl/", meaning: "xinh đẹp", sentence: "The sunset is ________." },
+                { word: "quickly", type: "adv", ipa: "/ˈkwɪk.li/", meaning: "một cách nhanh chóng", sentence: "He ran ________ to catch the bus." },
+                { word: "happiness", type: "n", ipa: "/ˈhæp.i.nəs/", meaning: "hạnh phúc", sentence: "________ is the key to a healthy life." },
+                { word: "decide", type: "v", ipa: "/dɪˈsaɪd/", meaning: "quyết định", sentence: "She needs to ________ which university to attend." },
+                { word: "intelligent", type: "adj", ipa: "/ɪnˈtel.ɪ.dʒənt/", meaning: "thông minh", sentence: "Dolphins are very ________ animals." },
+                { word: "freedom", type: "n", ipa: "/ˈfriː.dəm/", meaning: "tự do", sentence: "Everyone deserves ________ of speech." },
+                { word: "explore", type: "v", ipa: "/ɪkˈsplɔːr/", meaning: "khám phá", sentence: "Scientists hope to ________ new planets." },
+                { word: "ancient", type: "adj", ipa: "/ˈeɪn.ʃənt/", meaning: "cổ đại", sentence: "The ________ ruins attracted many tourists." },
+                { word: "journey", type: "n", ipa: "/ˈdʒɜː.ni/", meaning: "hành trình", sentence: "The ________ to the mountains took three days." },
+                { word: "protect", type: "v", ipa: "/prəˈtekt/", meaning: "bảo vệ", sentence: "We must ________ endangered species." }
+            ];
+        }
+    }
+
+    async function initFlashcard() {
+        const params = new URLSearchParams(window.location.search);
+        let lessonId = params.get('id');
+        if (!lessonId) {
+            document.getElementById('lessonSubtitle').innerHTML = '⚠️ Không tìm thấy ?id=... Dùng dữ liệu mẫu.';
+            lessonId = 'sample';
+        } else {
+            document.getElementById('lessonSubtitle').innerHTML = `📖 Đang tải bài học: ${lessonId}`;
+        }
+        const vocab = await loadVocabularyData(lessonId);
+        FlashcardState.cards = vocab;
+        FlashcardState.currentIndex = 0;
+        FlashcardState.flipped = false;
+        if (vocab.length === 0) {
+            document.getElementById('flashcardSection').innerHTML += '<p style="color:red;">Không có dữ liệu từ vựng</p>';
+            return;
+        }
+        renderFlashcard();
+        attachFlashcardEvents();
+        document.getElementById('lessonSubtitle').innerHTML = `✨ ${vocab.length} từ vựng — Hãy ôn trước khi chơi game nhé!`;
+        showToast(`📚 Đã tải ${vocab.length} thẻ từ vựng`, 2000);
+    }
+
+    function showToast(msg, duration = 2500) {
+        let toast = document.querySelector('.toast-message');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%) translateY(70px)';
+            toast.style.background = 'rgba(0,0,0,0.8)';
+            toast.style.color = 'white';
+            toast.style.padding = '10px 24px';
+            toast.style.borderRadius = '40px';
+            toast.style.fontSize = '0.9rem';
+            toast.style.zIndex = '1000';
+            toast.style.transition = 'transform 0.2s';
+            toast.style.backdropFilter = 'blur(8px)';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+        setTimeout(() => {
+            toast.style.transform = 'translateX(-50%) translateY(70px)';
+        }, duration);
+    }
+
+    // ============================================================
+    //  3. GAME GRID LOGIC (original from lesson3)
+    // ============================================================
+    function setupGameLinks() {
+        const params = new URLSearchParams(window.location.search);
+        const lessonId = params.get('id') || 'demo-lesson';
+        document.querySelectorAll('.game-card:not(.disabled)').forEach(card => {
+            const gameName = card.getAttribute('data-game');
+            if (gameName) {
+                card.href = `games/${gameName}.html?id=${encodeURIComponent(lessonId)}`;
+            }
+        });
+        // Staggered animation
+        const cards = document.querySelectorAll('.game-card');
+        cards.forEach((card, idx) => {
+            card.style.animationDelay = `${idx * 0.12}s`;
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 50 + idx * 120);
+        });
+        console.log(`🎮 Game Hub loaded with Lesson ID: ${lessonId}`);
+    }
+
+    // ============================================================
+    //  4. INITIALIZE EVERYTHING
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+        setupGameLinks();
+        await initFlashcard();
+    });
+</script>
 </body>
 </html>

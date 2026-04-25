@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Lesson 5: Vocabulary Match | Duolingo Style Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f9eef7 0%, #e0d3ff 100%);
+            font-family: 'Segoe UI', 'Poppins', 'Quicksand', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 20px 40px;
+            position: relative;
+        }
+
+        /* HOME BUTTON */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 12px 22px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2d3e50;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.25s ease;
+            z-index: 1000;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            border-color: #ffb347;
+        }
+
+        .game-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(2px);
+            border-radius: 72px;
+            padding: 24px 32px 40px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+        }
+
+        /* START SCREEN */
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 28px;
+            padding: 50px 20px;
+            background: rgba(255, 248, 225, 0.8);
+            border-radius: 64px;
+            backdrop-filter: blur(4px);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .start-screen h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #7b2cbf, #ff8c42);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .name-input {
+            width: 320px;
+            max-width: 80vw;
+            padding: 16px 24px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 60px;
+            background: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            font-weight: 500;
+            border: 2px solid transparent;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #ffb469;
+            box-shadow: 0 0 0 3px rgba(255, 180, 90, 0.3);
+        }
+
+        .start-btn {
+            background: #6c5ce7;
+            border: none;
+            padding: 14px 42px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 16px rgba(108, 92, 231, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: scale(1.03);
+            background: #5b4bc4;
+        }
+
+        .game-area {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .stats-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 240, 0.7);
+            padding: 16px 24px;
+            border-radius: 80px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(4px);
+        }
+
+        .round-badge, .score-badge {
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+        }
+        .round-badge { background: #4a69bd; color: white; }
+        .score-badge { background: #f8c291; color: #2c3e50; }
+
+        .progress-container {
+            flex: 1;
+            margin: 0 20px;
+            height: 12px;
+            background: #ddd8e7;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #20bf6b;
+            border-radius: 20px;
+            transition: width 0.25s ease;
+        }
+
+        .game-board {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin-top: 20px;
+        }
+        .column {
+            flex: 1;
+            min-width: 260px;
+            background: rgba(255, 251, 240, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 48px;
+            padding: 20px 16px;
+        }
+        .column h3 {
+            text-align: center;
+            font-size: 1.7rem;
+            margin-bottom: 24px;
+            color: #4a2e6b;
+        }
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .vocab-card {
+            background: white;
+            padding: 18px 12px;
+            border-radius: 28px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+            border: 2px solid rgba(255, 215, 150, 0.6);
+            color: #2c3e50;
+        }
+        .vocab-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: #fff6e8;
+            border-color: #ffbc6e;
+        }
+        .selected-card {
+            background: #dfe6ff;
+            border: 3px solid #6c5ce7;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
+        }
+        .correct-glow {
+            background: #8dffb3 !important;
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 12px #2ecc71;
+        }
+        .wrong-flash {
+            background: #ffb3b3 !important;
+            border-color: #e74c3c !important;
+            animation: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .summary-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .summary-card {
+            max-width: 550px;
+            width: 90%;
+            background: #fffef7;
+            border-radius: 64px;
+            padding: 32px 28px;
+            text-align: center;
+        }
+        .wrong-list {
+            max-height: 260px;
+            overflow-y: auto;
+            background: #faf0e6;
+            border-radius: 32px;
+            padding: 16px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .restart-btn {
+            background: #1dd1a1;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.2rem;
+            border-radius: 40px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+        .demo-warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 8px 16px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+        @media (max-width: 760px) {
+            .game-wrapper { padding: 16px; }
+            .vocab-card { font-size: 1rem; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="#" id="dynamicHomeBtn" class="home-btn">⬅ Home</a>
+
+<div class="game-wrapper">
+    <div id="startScreen" class="start-screen">
+        <h1>📖 VOCAB MATCH</h1>
+        <p>Match English → Vietnamese</p>
+        <input type="text" id="playerNameInput" class="name-input" placeholder="Your name, champion ✨" autocomplete="off">
+        <button id="startGameBtn" class="start-btn">🚀 START GAME</button>
+    </div>
+
+    <div id="gameArea" class="game-area">
+        <div class="stats-panel">
+            <div class="round-badge" id="roundDisplay">Round 1 / --</div>
+            <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="score-badge" id="scoreDisplay">⭐ 0 / 0</div>
+        </div>
+        <div class="game-board">
+            <div class="column"><h3>🇬🇧 ENGLISH</h3><div id="englishList" class="card-list"></div></div>
+            <div class="column"><h3>🇻🇳 TIẾNG VIỆT</h3><div id="vietnameseList" class="card-list"></div></div>
+        </div>
+    </div>
+</div>
+
+<div id="summaryModal" class="summary-overlay">
+    <div class="summary-card">
+        <h2>🏆 GAME SUMMARY</h2>
+        <p id="summaryPlayerName" style="font-size:1.3rem; margin:12px 0;"></p>
+        <p id="summaryScore" style="font-weight:bold; font-size:1.5rem;"></p>
+        <div id="wrongListContainer" class="wrong-list"></div>
+        <button id="playAgainSummaryBtn" class="restart-btn">🔄 Play Again</button>
+    </div>
+</div>
+
+<script>
+    // ---------- GAME STATE ----------
+    let lessonId = null;
+    let playerName = "";
+    let allPairsMaster = [];      // { id, english, vietnamese }
+    let rounds = [];
+    let currentRoundIndex = 0;
+    let currentRoundPairs = [];
+    let matchedGlobalCount = 0;
+    let totalPairsCount = 0;
+    
+    let selectedElement = null;
+    let selectedPairId = null;
+    let selectedType = null;
+    let blockClicks = false;
+    let mistakeMap = new Map();   // wrong English -> correct Vietnamese
+    
+    // DOM elements
+    const startScreenDiv = document.getElementById('startScreen');
+    const gameAreaDiv = document.getElementById('gameArea');
+    const startBtn = document.getElementById('startGameBtn');
+    const playerNameInput = document.getElementById('playerNameInput');
+    const englishContainer = document.getElementById('englishList');
+    const vietnameseContainer = document.getElementById('vietnameseList');
+    const roundDisplaySpan = document.getElementById('roundDisplay');
+    const scoreDisplaySpan = document.getElementById('scoreDisplay');
+    const progressFill = document.getElementById('progressFill');
+    const summaryModal = document.getElementById('summaryModal');
+    const summaryPlayerSpan = document.getElementById('summaryPlayerName');
+    const summaryScoreSpan = document.getElementById('summaryScore');
+    const wrongListContainerDiv = document.getElementById('wrongListContainer');
+    const playAgainBtn = document.getElementById('playAgainSummaryBtn');
+    const homeBtn = document.getElementById('dynamicHomeBtn');
+    
+    // Helper functions
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+    
+    function splitIntoRounds(pairs, roundSize = 8) {
+        const shuffled = shuffleArray([...pairs]);
+        const roundsArr = [];
+        for (let i = 0; i < shuffled.length; i += roundSize) {
+            roundsArr.push(shuffled.slice(i, i + roundSize));
+        }
+        return roundsArr;
+    }
+    
+    function updateStats() {
+        scoreDisplaySpan.innerText = `⭐ ${matchedGlobalCount} / ${totalPairsCount}`;
+        const percent = totalPairsCount === 0 ? 0 : (matchedGlobalCount / totalPairsCount) * 100;
+        progressFill.style.width = `${percent}%`;
+        roundDisplaySpan.innerText = `Round ${currentRoundIndex + 1} / ${rounds.length}`;
+    }
+    
+    function renderGame() {
+        if (gameAreaDiv.style.display === 'none') return;
+        const leftItems = currentRoundPairs.map(p => ({ id: p.id, text: p.english, type: 'eng' }));
+        const rightRaw = currentRoundPairs.map(p => ({ id: p.id, text: p.vietnamese, type: 'vie' }));
+        const rightItems = shuffleArray([...rightRaw]);
+        
+        englishContainer.innerHTML = '';
+        leftItems.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            card.textContent = item.text;
+            card.dataset.id = item.id;
+            card.dataset.type = 'eng';
+            card.addEventListener('click', () => onCardClick(card, item.id, 'eng'));
+            englishContainer.appendChild(card);
+        });
+        
+        vietnameseContainer.innerHTML = '';
+        rightItems.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            card.textContent = item.text;
+            card.dataset.id = item.id;
+            card.dataset.type = 'vie';
+            card.addEventListener('click', () => onCardClick(card, item.id, 'vie'));
+            vietnameseContainer.appendChild(card);
+        });
+        
+        clearSelectedHighlight();
+        selectedElement = null;
+        selectedPairId = null;
+        selectedType = null;
+    }
+    
+    function clearSelectedHighlight() {
+        document.querySelectorAll('.vocab-card').forEach(c => c.classList.remove('selected-card'));
+    }
+    
+    function onCardClick(card, pairId, type) {
+        if (blockClicks) return;
+        if (selectedPairId === null) {
+            clearSelectedHighlight();
+            selectedElement = card;
+            selectedPairId = pairId;
+            selectedType = type;
+            card.classList.add('selected-card');
+            return;
+        }
+        
+        const firstId = selectedPairId, firstType = selectedType;
+        const secondId = pairId, secondType = type;
+        
+        if (firstType === secondType) {
+            resetSelection();
+            return;
+        }
+        
+        const engId = firstType === 'eng' ? firstId : secondId;
+        const vieId = firstType === 'vie' ? firstId : secondId;
+        const engPair = currentRoundPairs.find(p => p.id === engId);
+        const viePair = currentRoundPairs.find(p => p.id === vieId);
+        if (!engPair || !viePair) { resetSelection(); return; }
+        
+        if (engId === vieId) {
+            // Correct match
+            correctMatch(engPair, card);
+        } else {
+            // Wrong match
+            recordMistake(engPair, viePair);
+            wrongMatch(card);
+        }
+    }
+    
+    function recordMistake(engPair, viePair) {
+        if (engPair && engPair.english) {
+            if (!mistakeMap.has(engPair.english)) {
+                mistakeMap.set(engPair.english, engPair.vietnamese);
+            }
+        }
+    }
+    
+    function correctMatch(pair, secondCard) {
+        blockClicks = true;
+        const firstCard = selectedElement;
+        if (firstCard) firstCard.classList.add('correct-glow');
+        secondCard.classList.add('correct-glow');
+        
+        setTimeout(() => {
+            const idx = currentRoundPairs.findIndex(p => p.id === pair.id);
+            if (idx !== -1) currentRoundPairs.splice(idx, 1);
+            matchedGlobalCount++;
+            updateStats();
+            renderGame();
+            resetSelection();
+            blockClicks = false;
+            if (currentRoundPairs.length === 0) nextRound();
+        }, 280);
+    }
+    
+    function wrongMatch(secondCard) {
+        blockClicks = true;
+        const firstCard = selectedElement;
+        if (firstCard) firstCard.classList.add('wrong-flash');
+        secondCard.classList.add('wrong-flash');
+        setTimeout(() => {
+            if (firstCard) firstCard.classList.remove('wrong-flash');
+            secondCard.classList.remove('wrong-flash');
+            resetSelection();
+            blockClicks = false;
+        }, 400);
+        resetSelection();
+    }
+    
+    function resetSelection() {
+        clearSelectedHighlight();
+        selectedElement = null;
+        selectedPairId = null;
+        selectedType = null;
+    }
+    
+    function nextRound() {
+        currentRoundIndex++;
+        if (currentRoundIndex < rounds.length) {
+            currentRoundPairs = rounds[currentRoundIndex].map(p => ({ ...p }));
+            renderGame();
+            updateStats();
+        } else {
+            finishGame();
+        }
+    }
+    
+    function finishGame() {
+        summaryPlayerSpan.innerText = `👤 Player: ${playerName || 'Vocab Master'}`;
+        summaryScoreSpan.innerText = `✅ Correct: ${matchedGlobalCount} / ${totalPairsCount}`;
+        if (mistakeMap.size === 0) {
+            wrongListContainerDiv.innerHTML = `<strong>📋 Wrong attempts:</strong><br><span style="color:#27ae60;">✨ No mistakes! Perfect ✨</span>`;
+        } else {
+            let html = `<strong>❌ Wrong answers (word → correct meaning):</strong><ul style="margin-top:12px; list-style:none;">`;
+            for (let [eng, vi] of mistakeMap.entries()) {
+                html += `<li style="background:#ffe6e6; margin:8px 0; padding:10px; border-radius:28px;">📖 ${eng} &nbsp; ➜ &nbsp; 🇻🇳 ${vi}</li>`;
+            }
+            html += `</ul>`;
+            wrongListContainerDiv.innerHTML = html;
+        }
+        summaryModal.style.visibility = 'visible';
+        summaryModal.style.opacity = '1';
+    }
+    
+    // ---------- DATA LOADING (USER'S EXACT LOGIC) ----------
+    async function loadGameData() {
+        try {
+            // 1. Fetch articles.json from ../data/
+            const articlesRes = await fetch('../data/articles.json');
+            if (!articlesRes.ok) throw new Error('Cannot fetch articles.json');
+            const articles = await articlesRes.json();
+    
+            // 2. Get lessonId from URL
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+            if (!id) throw new Error("Missing lesson id in URL");
+            lessonId = id;
+    
+            // 3. Find matching lesson
+            const lessonMeta = articles.find(art => art.id === lessonId);
+            if (!lessonMeta) throw new Error('Lesson not found in articles.json');
+    
+            const dataFile = lessonMeta.dataFile;
+            if (!dataFile) throw new Error('dataFile missing in lesson metadata');
+    
+            // 4. Fetch vocabulary file from ../data/ + dataFile
+            const vocabRes = await fetch(`../data/${dataFile}`);
+            if (!vocabRes.ok) throw new Error(`Vocab file ${dataFile} missing`);
+            const vocabData = await vocabRes.json();
+    
+            // 5. Transform into game pairs
+            const pairs = vocabData.map((item, idx) => ({
+                id: `pair_${Date.now()}_${idx}_${Math.random()}`,
+                english: item.word,
+                vietnamese: item.meaning || "no meaning"
+            }));
+            if (pairs.length === 0) throw new Error('No vocabulary pairs found');
+            return pairs;
+        } catch (err) {
+            console.warn("Real data failed:", err.message);
+            // ----- FALLBACK: generate demo data based on lessonId string -----
+            const fallbackWords = [
+                { en: "Hello", vi: "Xin chào" }, { en: "Goodbye", vi: "Tạm biệt" }, { en: "Thank you", vi: "Cảm ơn" },
+                { en: "Friend", vi: "Bạn bè" }, { en: "School", vi: "Trường học" }, { en: "Teacher", vi: "Giáo viên" },
+                { en: "Student", vi: "Học sinh" }, { en: "Book", vi: "Sách" }, { en: "Pen", vi: "Bút" }, { en: "Car", vi: "Xe hơi" },
+                { en: "House", vi: "Nhà" }, { en: "Happy", vi: "Vui vẻ" }, { en: "Beautiful", vi: "Đẹp" }, { en: "Big", vi: "To lớn" },
+                { en: "Small", vi: "Nhỏ" }, { en: "Run", vi: "Chạy" }, { en: "Eat", vi: "Ăn" }, { en: "Drink", vi: "Uống" }
+            ];
+            let numPairs = 10;
+            const matchNum = (lessonId || "10").match(/\d+/);
+            if (matchNum) numPairs = Math.min(parseInt(matchNum[0]) + 4, 18);
+            const selected = fallbackWords.slice(0, numPairs);
+            const pairs = selected.map((item, idx) => ({
+                id: `demo_${idx}_${Date.now()}`,
+                english: item.en,
+                vietnamese: item.vi
+            }));
+            // Show warning on start screen
+            if (!document.querySelector('.demo-warning')) {
+                const warn = document.createElement('div');
+                warn.className = 'demo-warning';
+                warn.innerHTML = '⚠️ Using demo vocabulary. Please check your folder structure: ../data/articles.json and ../data/[dataFile]';
+                startScreenDiv.insertBefore(warn, startScreenDiv.firstChild);
+            }
+            return pairs;
+        }
+    }
+    
+    async function initGame(name) {
+        try {
+            const pairs = await loadGameData();
+            if (!pairs || pairs.length === 0) throw new Error("No vocabulary data");
+            allPairsMaster = pairs;
+            totalPairsCount = allPairsMaster.length;
+            rounds = splitIntoRounds(allPairsMaster, 8);
+            if (rounds.length === 0) throw new Error("No rounds created");
+            currentRoundIndex = 0;
+            currentRoundPairs = rounds[0].map(p => ({ ...p }));
+            matchedGlobalCount = 0;
+            mistakeMap.clear();
+            updateStats();
+            renderGame();
+            return true;
+        } catch (err) {
+            alert(`Error loading game: ${err.message}`);
+            return false;
+        }
+    }
+    
+    // ---------- UI FLOW ----------
+    function startGameFlow() {
+        const name = playerNameInput.value.trim();
+        if (!name) { alert("Please enter your name!"); return; }
+        playerName = name;
+        startScreenDiv.style.opacity = '0';
+        setTimeout(async () => {
+            startScreenDiv.style.display = 'none';
+            gameAreaDiv.style.display = 'block';
+            gameAreaDiv.style.animation = 'fadeIn 0.5s';
+            const success = await initGame(playerName);
+            if (!success) {
+                gameAreaDiv.style.display = 'none';
+                startScreenDiv.style.display = 'flex';
+                startScreenDiv.style.opacity = '1';
+            }
+        }, 200);
+    }
+    
+    function restartGame() {
+        summaryModal.style.visibility = 'hidden';
+        summaryModal.style.opacity = '0';
+        gameAreaDiv.style.display = 'none';
+        startScreenDiv.style.display = 'flex';
+        startScreenDiv.style.opacity = '1';
+        playerNameInput.value = playerName || "";
+        selectedElement = null;
+        blockClicks = false;
+        mistakeMap.clear();
+    }
+    
+    function setHomeLink() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        if (id) {
+            homeBtn.href = `../lesson3.html?id=${id}`;
+        } else {
+            homeBtn.href = "../lesson3.html?id=1";
+        }
+    }
+    
+    // Event binding
+    startBtn.addEventListener('click', startGameFlow);
+    playAgainBtn.addEventListener('click', restartGame);
+    playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startGameFlow(); });
+    
+    setHomeLink();
+    // store lessonId globally if available
+    const urlId = new URLSearchParams(window.location.search).get("id");
+    if (!urlId) {
+        // show missing id warning but game can still run with demo
+        const warn = document.createElement('div');
+        warn.className = 'demo-warning';
+        warn.innerHTML = '⚠️ Missing ?id=XXX in URL. Using demo words. Example: ?id=unit-1';
+        startScreenDiv.insertBefore(warn, startScreenDiv.firstChild);
+    }
+</script>
+</body>
+</html>
