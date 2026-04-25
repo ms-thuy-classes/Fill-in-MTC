@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Sắp xếp câu | Vocabulary Game</title>
+    <title>Sắp xếp câu | Vocabulary Game (shuffle câu hỏi)</title>
     <!-- SortableJS for drag & drop reordering -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* avoid accidental selection while dragging */
+            user-select: none;
         }
 
         body {
@@ -335,6 +335,7 @@
     <div id="startScreen" class="start-screen">
         <h1>🎯 Sắp xếp câu</h1>
         <p>Kéo thả các từ để tạo thành câu đúng nghĩa</p>
+        <p style="font-size:0.9rem; opacity:0.8;">✨ Câu hỏi được xáo trộn mỗi lượt chơi</p>
         <input type="text" id="playerName" class="name-input" placeholder="Tên của bạn..." autocomplete="off">
         <button id="startGameBtn" class="start-btn">Bắt đầu 🚀</button>
     </div>
@@ -377,7 +378,7 @@
     // -------------------- GLOBALS --------------------
     let lessonId = null;
     let playerName = "";
-    let questions = [];           // each: { originalSentence, wordsArray, originalOrder }
+    let questions = [];           // each: { originalSentence, wordsArray, currentShuffled }
     let currentQIndex = 0;
     let score = 0;
     let wrongList = [];           // { sentence, userOrder, correctOrder }
@@ -422,10 +423,10 @@
         gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
         osc.stop(audioCtx.currentTime + duration);
     }
-    function playCorrectSound() { playBeep(880, 0.35, 0.25); }  // happy ding
-    function playWrongSound() { playBeep(440, 0.5, 0.2); playBeep(330, 0.4, 0.2); } // sad buzz
+    function playCorrectSound() { playBeep(880, 0.35, 0.25); }
+    function playWrongSound() { playBeep(440, 0.5, 0.2); playBeep(330, 0.4, 0.2); }
 
-    // -------------------- DATA LOADING (exactly as lesson2) --------------------
+    // -------------------- DATA LOADING --------------------
     async function loadLessonData() {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get('id');
@@ -444,22 +445,15 @@
         if (!vocabRes.ok) throw new Error(`Vocab file ${dataFile} missing`);
         const vocabData = await vocabRes.json();
         // Transform to sentence-arrangement questions
-        // each vocab item should have a "sentence" field. If missing, create one.
         const qs = [];
         for (let item of vocabData) {
             let rawSentence = item.sentence || `I love ${item.word}.`;
-            // Replace ________ with the actual word to form full sentence
             let fullSentence = rawSentence.replace(/________/g, item.word);
-            // Clean up double spaces
             fullSentence = fullSentence.replace(/\s+/g, ' ').trim();
-            // Split into words (keep punctuation attached)
             const words = fullSentence.split(/(\s+)/).filter(w => w.trim().length > 0);
-            // Shuffle for scrambled display
-            const shuffled = shuffleArray([...words]);
             qs.push({
                 originalSentence: fullSentence,
-                wordsArray: words,          // correct order
-                currentShuffled: shuffled
+                wordsArray: words
             });
         }
         if (qs.length === 0) throw new Error('No valid sentences found');
@@ -477,10 +471,11 @@
 
     // -------------------- GAME INIT & RENDER --------------------
     function initGame(questionsData) {
+        // Mỗi câu sẽ có một bản sao wordsArray và currentShuffled được xáo riêng
         questions = questionsData.map(q => ({
             originalSentence: q.originalSentence,
             wordsArray: q.wordsArray,
-            currentShuffled: shuffleArray([...q.wordsArray])  // fresh shuffle each game
+            currentShuffled: shuffleArray([...q.wordsArray])  // xáo từ trong câu
         }));
         currentQIndex = 0;
         score = 0;
@@ -493,33 +488,28 @@
         if (!questions.length) return;
         const q = questions[currentQIndex];
         currentWordsOrder = [...q.currentShuffled];
-        historyStack = []; // reset history for this question
+        historyStack = [];
         pushHistory();     // save initial state
         
-        // render sortable list
         sortableContainer.innerHTML = '';
-        currentWordsOrder.forEach((word, idx) => {
+        currentWordsOrder.forEach(word => {
             const tile = document.createElement('div');
             tile.className = 'word-tile';
             tile.textContent = word;
-            tile.setAttribute('data-idx', idx);
             sortableContainer.appendChild(tile);
         });
         
-        // initialize or re-init SortableJS
         if (sortableInstance) sortableInstance.destroy();
         sortableInstance = new Sortable(sortableContainer, {
             animation: 200,
             onEnd: () => {
                 if (blockInteraction) return;
-                // update currentWordsOrder after drag
                 const newOrder = Array.from(sortableContainer.children).map(el => el.textContent);
                 currentWordsOrder = newOrder;
                 pushHistory();
             }
         });
         
-        // update UI text
         qCounterSpan.innerText = `Câu ${currentQIndex+1} / ${questions.length}`;
         updateProgress();
         feedbackDiv.innerHTML = '';
@@ -529,26 +519,17 @@
     
     function pushHistory() {
         historyStack.push([...currentWordsOrder]);
-        // limit history size
         if (historyStack.length > 20) historyStack.shift();
         undoBtn.disabled = false;
     }
     
     function undoLastMove() {
         if (blockInteraction) return;
-        if (historyStack.length <= 1) return; // nothing to undo
-        historyStack.pop(); // remove current state
+        if (historyStack.length <= 1) return;
+        historyStack.pop();
         const previous = historyStack[historyStack.length - 1];
         if (previous) {
             currentWordsOrder = [...previous];
-            // re-render list without destroying sortable (just update DOM)
-            const children = sortableContainer.children;
-            for (let i = 0; i < currentWordsOrder.length; i++) {
-                children[i].textContent = currentWordsOrder[i];
-            }
-            // if drag re-order changed indices, ensure order matches
-            // Sortable keeps DOM order, but we manually set textContent; but order might mismatch.
-            // Better: rebuild container but keep sortable instance
             sortableInstance.destroy();
             sortableContainer.innerHTML = '';
             currentWordsOrder.forEach(word => {
@@ -581,33 +562,26 @@
         enableButtons(false);
         
         if (isCorrect) {
-            // correct
             playCorrectSound();
             feedbackDiv.innerHTML = '<div class="message-correct">✅ Chính xác! Câu đúng thứ tự ✨</div>';
             score++;
             updateScoreDisplay();
-            // highlight green on all tiles
             document.querySelectorAll('.word-tile').forEach(tile => {
                 tile.style.backgroundColor = '#8dffb3';
-                tile.style.transition = '0.2s';
             });
             setTimeout(() => {
                 moveToNextQuestion();
             }, 1500);
         } else {
-            // wrong
             playWrongSound();
             feedbackDiv.innerHTML = `<div class="message-wrong">❌ Chưa đúng! Đáp án: "${correctOrder.join(' ')}"</div>`;
-            // record wrong answer
             wrongList.push({
                 sentence: q.originalSentence,
                 userAttempt: currentOrder.join(' '),
                 correct: correctOrder.join(' ')
             });
-            // highlight wrong (red flash)
             document.querySelectorAll('.word-tile').forEach(tile => {
                 tile.style.backgroundColor = '#ffb3b3';
-                tile.style.transition = '0.2s';
             });
             setTimeout(() => {
                 moveToNextQuestion();
@@ -624,7 +598,6 @@
     }
     
     function moveToNextQuestion() {
-        // reset tile colors
         document.querySelectorAll('.word-tile').forEach(tile => {
             tile.style.backgroundColor = '';
         });
@@ -637,7 +610,6 @@
     }
     
     function finishGame() {
-        // show summary
         summaryNameSpan.innerText = `👤 Học viên: ${playerName}`;
         summaryScoreSpan.innerText = `🏆 Điểm số: ${score} / ${questions.length}`;
         if (wrongList.length === 0) {
@@ -676,7 +648,7 @@
         else undoBtn.disabled = false;
     }
     
-    // -------------------- START FLOW --------------------
+    // -------------------- START FLOW (có shuffle câu hỏi) --------------------
     async function startGame() {
         const name = playerNameInput.value.trim();
         if (!name) {
@@ -690,7 +662,9 @@
             gameAreaDiv.style.display = 'block';
             try {
                 const qData = await loadLessonData();
-                initGame(qData);
+                // 🔀 SHUFFLE THỨ TỰ CÂU HỎI TRƯỚC KHI BẮT ĐẦU
+                const shuffledQuestions = shuffleArray(qData);
+                initGame(shuffledQuestions);
             } catch (err) {
                 console.error(err);
                 alert(`Lỗi tải dữ liệu: ${err.message}\nVui lòng kiểm lại file data/ và lesson ID.`);
@@ -708,7 +682,6 @@
         startScreenDiv.style.display = 'flex';
         startScreenDiv.style.opacity = '1';
         playerNameInput.value = playerName;
-        // reset states
         blockInteraction = false;
         if (sortableInstance) sortableInstance.destroy();
     }
@@ -733,7 +706,7 @@
     
     setHomeLink();
     
-    // small fallback: if no lesson id in URL, show warning
+    // fallback warning
     if (!new URLSearchParams(window.location.search).get('id')) {
         const warn = document.createElement('div');
         warn.style.background = '#fff3cd';

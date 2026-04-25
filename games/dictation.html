@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Dictation Game | Luyện nghe & viết câu</title>
+    <title>Dictation Game | Luyện nghe & viết câu (có shuffle)</title>
     <style>
         * {
             margin: 0;
@@ -353,6 +353,7 @@
     <div id="startScreen" class="start-screen">
         <h1>🎧 Dictation Game</h1>
         <p>Nghe câu và gõ chính xác nội dung bạn nghe được</p>
+        <p style="font-size:0.9rem; opacity:0.8;">✨ Câu hỏi được xáo trộn mỗi lượt chơi</p>
         <input type="text" id="playerName" class="name-input" placeholder="Tên của bạn..." autocomplete="off">
         <button id="startGameBtn" class="start-btn">Bắt đầu 🎙️</button>
     </div>
@@ -470,6 +471,15 @@
     function playCorrectSound() { playBeep(880, 0.3, 0.25); }
     function playWrongSound() { playBeep(550, 0.4, 0.2); setTimeout(()=>playBeep(440,0.3,0.2), 200); }
     
+    // -------------------- SHUFFLE FUNCTION --------------------
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+    
     // -------------------- DATA LOADING (articles.json + lesson) --------------------
     async function loadLessonData() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -500,12 +510,13 @@
             });
         }
         if (dictationList.length === 0) throw new Error('No sentences found');
-        return dictationList;
+        // SHUFFLE THE QUESTIONS BEFORE RETURNING (đảo câu mỗi lượt chơi)
+        return shuffleArray(dictationList);
     }
     
     // -------------------- GAME INIT --------------------
     function initGame(questionsData) {
-        questions = questionsData;
+        questions = questionsData;  // already shuffled
         currentIndex = 0;
         score = 0;
         wrongAnswers = [];
@@ -551,9 +562,7 @@
         const q = questions[currentIndex];
         const words = q.sentence.split(/\s+/);
         const hintWords = words.map(w => {
-            // keep punctuation? just first letter
             let firstChar = w.charAt(0);
-            // if word starts with punctuation? (e.g., "Hello," -> H)
             if (!firstChar.match(/[a-zA-ZÀ-ỹ]/i)) {
                 firstChar = w.length > 1 ? w.charAt(1) : w.charAt(0);
             }
@@ -653,7 +662,7 @@
             startScreenDiv.style.display = 'none';
             gameAreaDiv.style.display = 'block';
             try {
-                const qData = await loadLessonData();
+                const qData = await loadLessonData(); // data is already shuffled
                 initGame(qData);
             } catch (err) {
                 console.error(err);
@@ -666,13 +675,15 @@
     }
     
     function restartGame() {
+        // Cancel any ongoing speech
+        if (speechSynth) speechSynth.cancel();
         summaryModal.style.visibility = 'hidden';
         summaryModal.style.opacity = '0';
         gameAreaDiv.style.display = 'none';
         startScreenDiv.style.display = 'flex';
         startScreenDiv.style.opacity = '1';
         playerNameInput.value = playerName;
-        if (speechSynth) speechSynth.cancel();
+        // when playing again, the data will be reshuffled in startGame() -> loadLessonData()
     }
     
     // set home button dynamic
