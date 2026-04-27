@@ -548,8 +548,8 @@
     <!-- Start Screen -->
     <div id="start-screen" class="screen active">
         <div class="start-content">
-            <!-- Home button top-left inside start screen -->
-            <a href="../lesson3.html" class="home-btn start-home">⬅ Home</a>
+            <!-- Home button top-left inside start screen - sẽ được cập nhật bằng JS -->
+            <a href="#" id="homeStartBtn" class="home-btn start-home">⬅ Home</a>
             <h1>🏎️ VOCAB RACER</h1>
             <p>Unit 10: Du lịch bền vững (Lesson 3)</p>
             <input type="text" id="name-input" placeholder="Nhập tên học sinh..." maxlength="20" autocomplete="off">
@@ -591,7 +591,7 @@
     <!-- Summary Screen -->
     <div id="summary-screen" class="screen hidden">
         <div class="summary-card">
-            <a href="../lesson3.html" class="home-btn summary-home" style="position: absolute; top: 20px; left: 20px;">⬅ Home</a>
+            <a href="#" id="summaryHomeBtn" class="home-btn summary-home" style="position: absolute; top: 20px; left: 20px;">⬅ Home</a>
             <h2>🏁 Race Complete!</h2>
             <p>Great job, <span id="summary-name" style="color:#8b5cf6;font-weight:700;"></span>!</p>
             <div class="result-stats">
@@ -615,16 +615,33 @@
     </div>
 
     <script>
+        // ==================== FIX FETCH ON GITHUB PAGES ====================
         function getBasePath() {
-    let path = window.location.pathname;
-    // Loại bỏ phần tên file cuối cùng (nếu có)
-    let base = path.substring(0, path.lastIndexOf('/') + 1);
-    // Nếu đang ở thư mục gốc (base = '/') thì giữ nguyên
-    return base;
-}
+            let path = window.location.pathname;
+            let base = path.substring(0, path.lastIndexOf('/') + 1);
+            return base;
+        }
+        const BASE_URL = getBasePath();   // ví dụ: "/" hoặc "/your-repo/"
+
+        // Lấy lessonId từ URL (nếu có)
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        const currentLessonId = getQueryParam('id') || 'unit-10-grade-10';
+
+        // Cập nhật tất cả các link home
+        function updateHomeLinks() {
+            const hubUrl = `${BASE_URL}lesson3.html?id=${currentLessonId}`;
+            const homeBtns = document.querySelectorAll('#homeStartBtn, #summaryHomeBtn, .home-btn');
+            homeBtns.forEach(btn => {
+                if (btn.tagName === 'A') btn.setAttribute('href', hubUrl);
+            });
+        }
+
         const CONFIG = {
-             DATA_URL: 'data/articles.json',         // ✅ tương đối
-             BASE_PATH: 'data/',
+            DATA_URL: `${BASE_URL}data/articles.json`,
+            BASE_PATH: `${BASE_URL}data/`,
             AUDIO: {
                 correct: 'https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/correct.mp3',
                 incorrect: 'https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/incorrect.mp3',
@@ -710,19 +727,24 @@
             async fetchData() {
                 try {
                     const res = await fetch(CONFIG.DATA_URL);
-                    if (!res.ok) throw new Error("Network error");
+                    if (!res.ok) throw new Error(`HTTP ${res.status}: ${CONFIG.DATA_URL}`);
                     const allArticles = await res.json();
-                    const metadata = allArticles.find(a => a.layout === 3) || allArticles[0];
+                    // Tìm lesson theo layout=3 hoặc theo id từ URL
+                    let metadata = allArticles.find(a => a.layout === CONFIG.GAME.targetLayoutId);
+                    if (!metadata && currentLessonId) metadata = allArticles.find(a => a.id === currentLessonId);
+                    if (!metadata) metadata = allArticles[0];
+                    if (!metadata || !metadata.dataFile) throw new Error("No valid lesson metadata");
+                    
                     const vocabURL = CONFIG.BASE_PATH + metadata.dataFile;
                     const vocabRes = await fetch(vocabURL);
-                    if (!vocabRes.ok) throw new Error("Vocab file missing");
+                    if (!vocabRes.ok) throw new Error(`Cannot fetch ${vocabURL}`);
                     const data = await vocabRes.json();
                     return Array.isArray(data) ? data.map(item => ({
                         vocabulary: item.word,
                         meaning: item.meaning,
                         type: item.type || '',
                         ipa: item.ipa || '',
-                        example: item.sentence.replace(/_{3,}/g, '_____'),
+                        example: (item.sentence || "").replace(/_{3,}/g, '_____'),
                         answer: (item.answer || item.word).toLowerCase()
                     })) : [];
                 } catch (e) {
@@ -910,6 +932,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            updateHomeLinks();  // cập nhật link home
             window.game = new Game();
             document.addEventListener('visibilitychange', () => { if(document.hidden) window.game.audio.stopEngine(); });
         });

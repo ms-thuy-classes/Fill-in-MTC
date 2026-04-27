@@ -375,13 +375,16 @@
 </div>
 
 <script>
+    // ==================== FIX FETCH ON GITHUB PAGES ====================
     function getBasePath() {
-    let path = window.location.pathname;
-    // Loại bỏ phần tên file cuối cùng (nếu có)
-    let base = path.substring(0, path.lastIndexOf('/') + 1);
-    // Nếu đang ở thư mục gốc (base = '/') thì giữ nguyên
-    return base;
-}
+        let path = window.location.pathname;
+        // Loại bỏ phần tên file cuối cùng
+        let base = path.substring(0, path.lastIndexOf('/') + 1);
+        // Nếu base chỉ là "/" thì giữ nguyên, không thêm gì
+        return base;
+    }
+    const BASE_URL = getBasePath();   // ví dụ: "/" hoặc "/your-repo/"
+
     // ---------- GLOBAL VARIABLES ----------
     let currentLessonId = null;
     let questionsBank = [];       // { sentence, correctWord, meaning, options:[] }
@@ -422,7 +425,7 @@
     // update home links with current lesson id
     function updateHomeLinks() {
         const id = currentLessonId || 'unit-10-grade-10';
-        const hubUrl = `../lesson3.html?id=${id}`;
+        const hubUrl = `${BASE_URL}lesson3.html?id=${id}`;
         const links = ['homeStartLink', 'gameHomeLink', 'summaryHomeLink'];
         links.forEach(linkId => {
             const el = document.getElementById(linkId);
@@ -434,7 +437,6 @@
     function initSounds() {
         correctAudio = new Audio('https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/correct.mp3');
         wrongAudio = new Audio('https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/incorrect.mp3');
-        // preload
         correctAudio.load();
         wrongAudio.load();
     }
@@ -453,12 +455,13 @@
         }
     }
 
-    // ---- LOAD DATA FROM JSON (CORRECTED FETCH) ----
+    // ---- LOAD DATA FROM JSON (FIXED FETCH) ----
     async function loadVocabularyData() {
         try {
-            // 1. Fetch articles.json
-            const articlesRes = await fetch('data/articles.json');
-            if (!articlesRes.ok) throw new Error('Cannot fetch /data/articles.json');
+            // 1. Fetch articles.json dùng BASE_URL
+            const articlesUrl = `${BASE_URL}data/articles.json`;
+            const articlesRes = await fetch(articlesUrl);
+            if (!articlesRes.ok) throw new Error(`Cannot fetch ${articlesUrl}`);
             const articles = await articlesRes.json();
             
             // 2. Find target lesson by id or fallback to first
@@ -473,9 +476,10 @@
             const dataFile = targetLesson.dataFile;
             if (!dataFile) throw new Error('Missing dataFile property');
 
-            // 4. Fetch the actual vocabulary file (inside /data/articles/)
-          const vocabRes = await fetch(`data/${dataFile}`);
-            if (!vocabRes.ok) throw new Error(`Cannot fetch ${dataFile}`);
+            // 4. Fetch the actual vocabulary file
+            const vocabUrl = `${BASE_URL}data/${dataFile}`;
+            const vocabRes = await fetch(vocabUrl);
+            if (!vocabRes.ok) throw new Error(`Cannot fetch ${vocabUrl}`);
             const vocabData = await vocabRes.json();
             
             if (!Array.isArray(vocabData) || vocabData.length === 0) {
@@ -500,26 +504,21 @@
 
     // generate 4 options for a given correct word (using the full list of words from the lesson)
     function generateOptions(correctWord, allWordsList) {
-        // allWordsList: array of { word, meaning, sentence }
         let candidates = allWordsList.filter(item => item.word.toLowerCase() !== correctWord.toLowerCase()).map(item => item.word);
-        // remove duplicates
         let distinct = [...new Set(candidates)];
         if (distinct.length < 3) {
-            // fallback common English words related to environment/vocab
             const fallbacks = ["ecology", "global", "green", "preserve", "carbon", "nature", "waste"];
             for (let f of fallbacks) {
                 if (!distinct.includes(f) && f !== correctWord.toLowerCase()) distinct.push(f);
                 if (distinct.length >= 3) break;
             }
         }
-        // shuffle list and pick 3 distractors
         for (let i = distinct.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [distinct[i], distinct[j]] = [distinct[j], distinct[i]];
         }
         const dists = distinct.slice(0, 3);
         let options = [correctWord, ...dists];
-        // shuffle options order
         for (let i = options.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [options[i], options[j]] = [options[j], options[i]];
@@ -532,12 +531,9 @@
         const rawVocab = await loadVocabularyData();
         if (!rawVocab.length) throw new Error('No data loaded');
         const questionList = [];
-        // Use every vocabulary item as a question
         for (let item of rawVocab) {
-            // Ensure sentence has blank placeholder
             let sentenceWithBlank = item.sentence;
             if (!sentenceWithBlank.includes('________') && !sentenceWithBlank.includes('_____')) {
-                // fallback: add blank at the end if missing
                 sentenceWithBlank = sentenceWithBlank + " ________";
             }
             sentenceWithBlank = sentenceWithBlank.replace(/_____/g, '________');
@@ -552,7 +548,6 @@
         return questionList;
     }
 
-    // shuffle questions array
     function shuffleArray(arr) {
         for (let i = arr.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -561,14 +556,11 @@
         return arr;
     }
 
-    // render current question
     function renderCurrentQuestion() {
         if (!currentQuestions.length || currentIndex >= currentQuestions.length) return;
         const q = currentQuestions[currentIndex];
-        // insert blank highlight in sentence
         let sentenceHtml = q.sentence.replace(/________/g, '<span class="blank-highlight">__________</span>');
         sentenceDisplay.innerHTML = sentenceHtml;
-        // render options buttons
         optionsContainer.innerHTML = '';
         q.options.forEach(opt => {
             const btn = document.createElement('div');
@@ -578,25 +570,21 @@
             btn.addEventListener('click', (e) => handleAnswer(opt, btn));
             optionsContainer.appendChild(btn);
         });
-        // reset feedback & next button
         feedbackMsgDiv.innerHTML = '';
         nextBtn.disabled = true;
         selectedFlag = false;
-        // enable all option btns
         document.querySelectorAll('.opt-btn').forEach(btn => {
             btn.style.pointerEvents = 'auto';
             btn.classList.remove('opt-correct', 'opt-wrong');
         });
     }
 
-    // handle answer selection
     function handleAnswer(selectedWord, btnElement) {
         if (selectedFlag) return;
         const currentQ = currentQuestions[currentIndex];
         const isCorrect = (selectedWord === currentQ.correctWord);
         selectedFlag = true;
 
-        // disable all options
         document.querySelectorAll('.opt-btn').forEach(btn => {
             btn.style.pointerEvents = 'none';
         });
@@ -612,18 +600,15 @@
             btnElement.classList.add('opt-wrong');
             feedbackMsgDiv.innerHTML = '❌ Sai rồi. Hãy nhớ từ vựng nhé!';
             feedbackMsgDiv.style.color = '#cd6b6b';
-            // record wrong for summary (without revealing answer on screen)
             wrongRecords.push({
                 sentence: currentQ.sentence,
                 correctWord: currentQ.correctWord,
                 meaning: currentQ.meaning
             });
         }
-        // enable next button
         nextBtn.disabled = false;
     }
 
-    // move to next question or finish
     function nextQuestion() {
         if (!selectedFlag) return;
         if (currentIndex + 1 < currentQuestions.length) {
@@ -667,7 +652,6 @@
         }
     }
 
-    // reset and start quiz
     async function startQuiz() {
         const name = studentNameInput.value.trim();
         if (!name) {
