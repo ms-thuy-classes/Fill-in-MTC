@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Dictation Game | Luyện nghe & viết câu (có shuffle)</title>
+    <title>Dictation Pro | Nghe & Viết + Key Words Hint</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(145deg, #f9eef7 0%, #e0d3ff 100%);
+            background: linear-gradient(145deg, #fbf5e8 0%, #dbd0ff 100%);
             font-family: 'Segoe UI', 'Poppins', 'Quicksand', system-ui, sans-serif;
             padding: 24px 20px 40px;
             position: relative;
@@ -24,8 +24,8 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
             border-radius: 60px;
             padding: 12px 22px;
             font-weight: 700;
@@ -35,27 +35,27 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             transition: all 0.25s ease;
             z-index: 1000;
         }
         .home-btn:hover {
             transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-            border-color: #ffb347;
+            border-color: #ff9f4a;
         }
 
         /* CONTAINER */
         .game-container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(2px);
+            background: rgba(255, 255, 245, 0.5);
+            backdrop-filter: blur(3px);
             border-radius: 64px;
             padding: 28px 32px 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
         }
 
         /* START SCREEN */
@@ -66,7 +66,7 @@
             gap: 28px;
             text-align: center;
             padding: 40px 20px;
-            background: rgba(255, 248, 225, 0.8);
+            background: rgba(255, 252, 235, 0.9);
             border-radius: 48px;
             backdrop-filter: blur(4px);
             animation: fadeIn 0.6s ease;
@@ -106,7 +106,7 @@
             border-radius: 60px;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 8px 16px rgba(108,92,231,0.3);
+            box-shadow: 0 8px 16px rgba(108,92,231,0.35);
         }
         .start-btn:hover {
             transform: scale(1.03);
@@ -123,7 +123,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            background: rgba(255,255,240,0.7);
+            background: rgba(255,255,240,0.8);
             padding: 12px 24px;
             border-radius: 80px;
             margin-bottom: 30px;
@@ -162,7 +162,7 @@
 
         /* DICTATION CARD */
         .dictation-card {
-            background: rgba(255,255,245,0.8);
+            background: rgba(255,255,245,0.9);
             backdrop-filter: blur(4px);
             border-radius: 48px;
             padding: 32px 28px;
@@ -187,9 +187,6 @@
         .audio-btn:hover {
             transform: scale(1.08);
             box-shadow: 0 12px 28px rgba(108,92,231,0.6);
-        }
-        .audio-btn:active {
-            transform: scale(0.96);
         }
         .instruction {
             font-size: 1rem;
@@ -217,15 +214,16 @@
             box-shadow: 0 0 0 4px rgba(108,92,231,0.2);
         }
         .hint-area {
-            background: #fff9e6;
-            padding: 12px 20px;
+            background: #fff3e0;
+            padding: 14px 22px;
             border-radius: 60px;
-            margin: 15px 0;
+            margin: 18px 0;
             font-size: 1rem;
-            color: #b45f06;
-            font-family: monospace;
-            letter-spacing: 1px;
-            border: 1px dashed #fdcb6e;
+            color: #c45c00;
+            font-weight: 500;
+            border-left: 6px solid #fdcb6e;
+            text-align: left;
+            transition: all 0.2s;
         }
         .action-buttons {
             display: flex;
@@ -342,6 +340,12 @@
             .game-container { padding: 20px; }
             .answer-input { font-size: 1rem; }
         }
+        .highlight-keyword {
+            background: #ffe0b5;
+            padding: 2px 6px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -352,8 +356,8 @@
     <!-- START SCREEN -->
     <div id="startScreen" class="start-screen">
         <h1>🎧 Dictation Game</h1>
-        <p>Nghe câu và gõ chính xác nội dung bạn nghe được</p>
-        <p style="font-size:0.9rem; opacity:0.8;">✨ Câu hỏi được xáo trộn mỗi lượt chơi</p>
+        <p>Nghe câu tiếng Anh ➤ Gõ chính xác ➤ Hint hiển thị từ khóa chính (2-3 từ)</p>
+        <p style="font-size:0.9rem; opacity:0.8;">✨ Câu hỏi xáo trộn mỗi lượt. Giọng đọc chậm rãi, tự nhiên.</p>
         <input type="text" id="playerName" class="name-input" placeholder="Tên của bạn..." autocomplete="off">
         <button id="startGameBtn" class="start-btn">Bắt đầu 🎙️</button>
     </div>
@@ -362,7 +366,7 @@
     <div id="gameArea" class="game-area">
         <div class="stats-bar">
             <div class="progress-section">
-                <div class="progress-label">Tiến trình</div>
+                <div class="progress-label">📖 Tiến trình</div>
                 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
             </div>
             <div class="q-counter" id="qCounter">Câu 1 / ?</div>
@@ -373,15 +377,15 @@
             <div class="sentence-audio">
                 <button class="audio-btn" id="audioBtn">🔊</button>
             </div>
-            <div class="instruction">🎤 Nghe và gõ lại chính xác câu trên</div>
+            <div class="instruction">🎤 Nghe & gõ lại chính xác câu trên (không phân biệt hoa/thường, dấu câu nhẹ)</div>
             <div class="answer-area">
                 <textarea id="answerInput" class="answer-input" rows="3" placeholder="Gõ câu bạn nghe được..."></textarea>
             </div>
             <div class="hint-area" id="hintArea">
-                💡 Nhấn nút Hint để xem gợi ý
+                💡 Nhấn nút "Hint" để xem 2-3 từ khóa chính trong câu (gợi ý không hiển thị toàn bộ)
             </div>
             <div class="action-buttons">
-                <button id="hintBtn" class="btn btn-secondary">💡 Hint</button>
+                <button id="hintBtn" class="btn btn-secondary">🔑 Hint / Từ khóa</button>
                 <button id="checkBtn" class="btn btn-primary">✅ Kiểm tra</button>
             </div>
             <div id="feedbackMsg" class="feedback"></div>
@@ -407,8 +411,8 @@
     let questions = [];           // each: { sentence, correctText }
     let currentIndex = 0;
     let score = 0;
-    let wrongAnswers = [];        // { sentence, userAnswer, correctAnswer }
-    let isWaiting = false;        // disable during feedback
+    let wrongAnswers = [];
+    let isWaiting = false;
     
     // DOM elements
     const startScreenDiv = document.getElementById('startScreen');
@@ -431,16 +435,118 @@
     const playAgainBtn = document.getElementById('playAgainBtn');
     const homeBtn = document.getElementById('homeButton');
 
-    // -------------------- SOUND / SPEECH --------------------
+    // -------------------- HELPER: EXTRACT 2-3 KEYWORDS (English) --------------------
+    // Danh sách stop words phổ biến (bỏ qua các từ không mang nhiều nghĩa)
+    const STOP_WORDS = new Set([
+        "a", "an", "and", "the", "of", "to", "in", "for", "on", "with", "by", "at", "from",
+        "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having",
+        "do", "does", "did", "doing", "but", "or", "so", "for", "nor", "yet", "as", "like",
+        "it", "they", "we", "you", "he", "she", "them", "their", "our", "my", "your", "his", "her",
+        "this", "that", "these", "those", "some", "any", "no", "very", "just", "not", "will", "would",
+        "could", "should", "can", "may", "might", "must"
+    ]);
+    
+    function extractKeywords(sentence) {
+        // Tách từ, loại bỏ dấu câu
+        const words = sentence.toLowerCase().split(/\s+/).map(w => w.replace(/[.,!?;:()"']/g, ''));
+        // Lọc stop words và từ chỉ có 1 ký tự
+        const contentWords = words.filter(w => w.length > 2 && !STOP_WORDS.has(w));
+        // Nếu không đủ content words, lấy thêm từ có 2 ký tự hoặc từ đầu tiên (trừ stop)
+        let finalKeywords = [...contentWords];
+        if (finalKeywords.length < 2) {
+            // Bổ sung thêm các từ còn lại (không lọc stop quá gắt)
+            const remaining = words.filter(w => w.length > 1 && !finalKeywords.includes(w));
+            finalKeywords.push(...remaining);
+        }
+        // Loại bỏ trùng lặp và giới hạn 3 từ, ít nhất 2 từ nếu có thể
+        const unique = [...new Set(finalKeywords)];
+        const result = unique.slice(0, 3);
+        if (result.length === 0 && words.length > 0) {
+            // fallback: lấy 2 từ đầu tiên có độ dài >1
+            const fallback = words.filter(w => w.length > 1).slice(0, 2);
+            if (fallback.length) return fallback;
+            return words.slice(0, 2);
+        }
+        if (result.length === 1 && words.length > 1) {
+            // thêm từ tiếp theo (có thể là stop word nhưng vì chỉ có 1 keyword)
+            const nextWord = words.find(w => w !== result[0] && w.length > 1);
+            if (nextWord) result.push(nextWord);
+        }
+        return result;
+    }
+    
+    // Hiển thị gợi ý key words (chỉ 2-3 từ, không hiển thị toàn bộ câu)
+    function showKeywordHint() {
+        if (isWaiting) {
+            hintArea.innerHTML = "⚠️ Không thể dùng hint khi đang chờ kiểm tra.";
+            return;
+        }
+        const currentQ = questions[currentIndex];
+        if (!currentQ) return;
+        const sentence = currentQ.sentence;
+        const keywords = extractKeywords(sentence);
+        if (keywords.length === 0) {
+            hintArea.innerHTML = "🔍 Không thể trích xuất từ khóa cho câu này. Hãy thử nghe lại!";
+        } else {
+            // Tạo HTML highlight nhẹ
+            const keywordSpan = keywords.map(kw => `<span class="highlight-keyword">${kw}</span>`).join(', ');
+            hintArea.innerHTML = `🔑 <strong>Từ khóa gợi ý (${keywords.length} từ):</strong> ${keywordSpan}<br><span style="font-size:0.8rem; opacity:0.75;">⚡ Chỉ hiển thị từ chính, không phải toàn bộ câu.</span>`;
+        }
+        // Tự động reset sau 8 giây để không làm rối màn hình (nhưng vẫn giữ thông tin, chỉ làm mờ dần? ta có thể để nguyên nhưng sẽ bị ghi đè sau hint mới)
+        setTimeout(() => {
+            // Nếu không phải waiting và câu hiện tại vẫn như cũ, không ghi đè nếu người dùng đã dùng hint lần khác.
+            if (!isWaiting && currentIndex === questions.indexOf(currentQ)) {
+                // Không tự động xóa đi để người dùng có thể tham khảo, chỉ thêm dòng nhỏ
+                if (hintArea.innerHTML.includes("Từ khóa gợi ý")) {
+                    // giữ nguyên, không làm mất
+                }
+            }
+        }, 8000);
+    }
+    
+    // -------------------- VOICE & SPEECH (chậm, tự nhiên) --------------------
     let speechSynth = window.speechSynthesis;
     let currentUtterance = null;
+    let preferredVoice = null;
+    
+    function loadVoicesAndSet() {
+        if (!speechSynth) return;
+        const voices = speechSynth.getVoices();
+        if (voices.length === 0) return;
+        // Ưu tiên giọng nữ, nhẹ nhàng, chậm tự nhiên
+        const selected = voices.find(voice => 
+            (voice.name.includes("Google UK English Female") || 
+             voice.name.includes("Samantha") ||
+             voice.name.includes("Microsoft Susan") ||
+             voice.name.includes("Google US English Female") ||
+             (voice.name.includes("Female") && voice.lang === 'en-US')) &&
+            voice.localService !== false
+        ) || voices.find(voice => voice.lang === 'en-US' && voice.name.includes("Google")) 
+          || voices.find(voice => voice.lang === 'en-US');
+        if (selected) preferredVoice = selected;
+    }
+    
+    if (speechSynth) {
+        speechSynth.addEventListener('voiceschanged', () => {
+            loadVoicesAndSet();
+        });
+        loadVoicesAndSet();
+    }
     
     function speakSentence(text, onEnd) {
         if (!speechSynth) return;
         if (currentUtterance) speechSynth.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-US';
-        utterance.rate = 0.85;
+        utterance.rate = 0.72;       // chậm rãi, dễ nghe
+        utterance.pitch = 1.05;      // tự nhiên, ấm áp
+        utterance.volume = 1;
+        if (preferredVoice) utterance.voice = preferredVoice;
+        else {
+            const voices = speechSynth.getVoices();
+            const softVoice = voices.find(v => v.name.includes("Google") || v.name.includes("Samantha") || (v.lang === 'en-US' && v.name.includes("Female")));
+            if (softVoice) utterance.voice = softVoice;
+        }
         utterance.onend = () => {
             if (onEnd) onEnd();
         };
@@ -454,9 +560,11 @@
         if (q) speakSentence(q.sentence);
     }
     
-    // simple beep sound for correct/wrong (optional)
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // Beep sound feedback
+    let audioCtx = null;
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { /* fallback */ }
     function playBeep(freq, duration, vol = 0.2) {
+        if (!audioCtx) return;
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -471,7 +579,7 @@
     function playCorrectSound() { playBeep(880, 0.3, 0.25); }
     function playWrongSound() { playBeep(550, 0.4, 0.2); setTimeout(()=>playBeep(440,0.3,0.2), 200); }
     
-    // -------------------- SHUFFLE FUNCTION --------------------
+    // -------------------- SHUFFLE --------------------
     function shuffleArray(arr) {
         for (let i = arr.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -480,25 +588,22 @@
         return arr;
     }
     
-    // -------------------- DATA LOADING (articles.json + lesson) --------------------
+    // -------------------- DATA LOADING --------------------
     async function loadLessonData() {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get('id');
-        if (!id) throw new Error('Missing lesson id in URL (?id=...)');
+        if (!id) throw new Error('Thiếu lesson id trong URL (?id=...)');
         lessonId = id;
-        // 1. fetch articles.json
         const articlesRes = await fetch('../data/articles.json');
-        if (!articlesRes.ok) throw new Error('Cannot fetch articles.json');
+        if (!articlesRes.ok) throw new Error('Không tìm thấy articles.json');
         const articles = await articlesRes.json();
         const lessonMeta = articles.find(art => art.id === lessonId);
-        if (!lessonMeta) throw new Error(`Lesson ${lessonId} not found in articles.json`);
+        if (!lessonMeta) throw new Error(`Bài học ${lessonId} không tồn tại`);
         const dataFile = lessonMeta.dataFile;
-        if (!dataFile) throw new Error('dataFile missing');
-        // 2. fetch lesson vocab
+        if (!dataFile) throw new Error('Thiếu dataFile');
         const vocabRes = await fetch(`../data/${dataFile}`);
-        if (!vocabRes.ok) throw new Error(`Vocab file ${dataFile} missing`);
+        if (!vocabRes.ok) throw new Error(`Không thể tải file dữ liệu: ${dataFile}`);
         const vocabData = await vocabRes.json();
-        // Build dictation sentences: use "sentence" field, replace ________ with word if needed
         const dictationList = [];
         for (let item of vocabData) {
             let rawSentence = item.sentence || `I love ${item.word}.`;
@@ -509,14 +614,14 @@
                 correctText: fullSentence
             });
         }
-        if (dictationList.length === 0) throw new Error('No sentences found');
-        // SHUFFLE THE QUESTIONS BEFORE RETURNING (đảo câu mỗi lượt chơi)
+        if (dictationList.length === 0) throw new Error('Không có câu nào để luyện');
+        // Xáo trộn (shuffle)
         return shuffleArray(dictationList);
     }
     
-    // -------------------- GAME INIT --------------------
+    // -------------------- GAME CORE --------------------
     function initGame(questionsData) {
-        questions = questionsData;  // already shuffled
+        questions = questionsData;
         currentIndex = 0;
         score = 0;
         wrongAnswers = [];
@@ -526,27 +631,24 @@
     
     function renderCurrentQuestion() {
         if (!questions.length) return;
-        const q = questions[currentIndex];
-        // reset UI
         answerInput.value = '';
         feedbackDiv.innerHTML = '';
         feedbackDiv.className = 'feedback';
-        hintArea.innerHTML = '💡 Nhấn nút Hint để xem gợi ý';
+        hintArea.innerHTML = '💡 Nhấn nút "Hint / Từ khóa" để xem 2-3 từ chính trong câu (gợi ý nhẹ).';
         isWaiting = false;
         enableButtons(true);
         answerInput.disabled = false;
         answerInput.focus();
         qCounterSpan.innerText = `Câu ${currentIndex+1} / ${questions.length}`;
         updateScoreAndProgress();
-        // auto-play audio after a short delay
         setTimeout(() => {
-            if (!isWaiting) playCurrentAudio();
-        }, 300);
+            if (!isWaiting && questions.length) playCurrentAudio();
+        }, 280);
     }
     
     function updateScoreAndProgress() {
         scoreDisplaySpan.innerText = `⭐ ${score} điểm`;
-        const percent = ((currentIndex) / questions.length) * 100;
+        const percent = (currentIndex / questions.length) * 100;
         progressFill.style.width = `${percent}%`;
     }
     
@@ -556,25 +658,6 @@
         audioBtn.disabled = !enable;
     }
     
-    // Hint: show first letter of each word (capitalized)
-    function showHint() {
-        if (isWaiting) return;
-        const q = questions[currentIndex];
-        const words = q.sentence.split(/\s+/);
-        const hintWords = words.map(w => {
-            let firstChar = w.charAt(0);
-            if (!firstChar.match(/[a-zA-ZÀ-ỹ]/i)) {
-                firstChar = w.length > 1 ? w.charAt(1) : w.charAt(0);
-            }
-            return firstChar.toUpperCase() + '...';
-        });
-        hintArea.innerHTML = `🔍 Gợi ý: ${hintWords.join(' ')}`;
-        setTimeout(() => {
-            if (!isWaiting) hintArea.innerHTML = '💡 Hint đã được hiển thị, hãy thử gõ lại câu.';
-        }, 3000);
-    }
-    
-    // Normalize string for comparison (lowercase, remove extra spaces, punctuation normalized)
     function normalizeString(str) {
         return str.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,!?;:]/g, '');
     }
@@ -598,13 +681,13 @@
         
         if (isCorrect) {
             playCorrectSound();
-            feedbackDiv.innerHTML = '<span>✅ Chính xác! Câu trả lời đúng.</span>';
+            feedbackDiv.innerHTML = '<span>✅ Chính xác! Câu trả lời hoàn hảo.</span>';
             feedbackDiv.className = 'feedback feedback-correct';
             score++;
             updateScoreAndProgress();
         } else {
             playWrongSound();
-            feedbackDiv.innerHTML = `<span>❌ Sai rồi! Đáp án: "${q.correctText}"</span>`;
+            feedbackDiv.innerHTML = `<span>❌ Sai rồi! Đáp án đúng: "${q.correctText}"</span>`;
             feedbackDiv.className = 'feedback feedback-wrong';
             wrongAnswers.push({
                 sentence: q.sentence,
@@ -612,10 +695,9 @@
                 correctAnswer: q.correctText
             });
         }
-        
         setTimeout(() => {
             moveToNext();
-        }, 2200);
+        }, 2100);
     }
     
     function moveToNext() {
@@ -628,10 +710,11 @@
     }
     
     function finishGame() {
+        if (speechSynth) speechSynth.cancel();
         summaryNameSpan.innerText = `👤 Học viên: ${playerName}`;
         summaryScoreSpan.innerText = `🏆 Điểm số: ${score} / ${questions.length}`;
         if (wrongAnswers.length === 0) {
-            wrongListContainer.innerHTML = '<strong>🎉 Xuất sắc! Không có câu sai nào.</strong>';
+            wrongListContainer.innerHTML = '<strong>🎉 Xuất sắc! Bạn đã nghe và viết đúng tất cả câu.</strong>';
         } else {
             let html = '<strong>📘 Các câu cần ôn lại:</strong><ul style="list-style:none; margin-top:12px;">';
             wrongAnswers.forEach((item, idx) => {
@@ -653,7 +736,7 @@
     async function startGame() {
         const name = playerNameInput.value.trim();
         if (!name) {
-            alert("Vui lòng nhập tên của bạn!");
+            alert("Vui lòng nhập tên trước khi bắt đầu!");
             return;
         }
         playerName = name;
@@ -662,11 +745,11 @@
             startScreenDiv.style.display = 'none';
             gameAreaDiv.style.display = 'block';
             try {
-                const qData = await loadLessonData(); // data is already shuffled
+                const qData = await loadLessonData();
                 initGame(qData);
             } catch (err) {
                 console.error(err);
-                alert(`Lỗi tải dữ liệu: ${err.message}\nVui lòng kiểm lại thư mục data/ và lesson ID.`);
+                alert(`Lỗi tải dữ liệu: ${err.message}\nKiểm tra thư mục data/ và lesson ID hợp lệ.`);
                 gameAreaDiv.style.display = 'none';
                 startScreenDiv.style.display = 'flex';
                 startScreenDiv.style.opacity = '1';
@@ -675,7 +758,6 @@
     }
     
     function restartGame() {
-        // Cancel any ongoing speech
         if (speechSynth) speechSynth.cancel();
         summaryModal.style.visibility = 'hidden';
         summaryModal.style.opacity = '0';
@@ -683,36 +765,26 @@
         startScreenDiv.style.display = 'flex';
         startScreenDiv.style.opacity = '1';
         playerNameInput.value = playerName;
-        // when playing again, the data will be reshuffled in startGame() -> loadLessonData()
     }
     
-    // set home button dynamic
     function setHomeLink() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
-        if (id) {
-            homeBtn.href = `../lesson3.html?id=${id}`;
-        } else {
-            homeBtn.href = "../lesson3.html?id=1";
-        }
+        if (id) homeBtn.href = `../lesson3.html?id=${id}`;
+        else homeBtn.href = "../lesson3.html?id=1";
     }
     
-    // Event listeners
+    // -------------------- EVENT LISTENERS --------------------
     startBtn.addEventListener('click', startGame);
-    audioBtn.addEventListener('click', () => {
-        if (!isWaiting && questions.length) playCurrentAudio();
-    });
-    hintBtn.addEventListener('click', showHint);
+    audioBtn.addEventListener('click', () => { if (!isWaiting && questions.length) playCurrentAudio(); });
+    hintBtn.addEventListener('click', showKeywordHint);
     checkBtn.addEventListener('click', checkAnswer);
     playAgainBtn.addEventListener('click', restartGame);
     playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startGame(); });
-    answerInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !checkBtn.disabled && !isWaiting) checkAnswer();
-    });
-    
+    answerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !checkBtn.disabled && !isWaiting) checkAnswer(); });
     setHomeLink();
     
-    // warning if no lesson id
+    // Cảnh báo thiếu ID trên URL
     if (!new URLSearchParams(window.location.search).get('id')) {
         const warn = document.createElement('div');
         warn.style.background = '#fff3cd';
