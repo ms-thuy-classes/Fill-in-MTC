@@ -616,28 +616,11 @@
 
     <script>
         // ==================== FIX FETCH ON GITHUB PAGES ====================
-        function getBasePath() {
-            let path = window.location.pathname;
-            let base = path.substring(0, path.lastIndexOf('/') + 1);
-            return base;
-        }
-        const BASE_URL = getBasePath();   // ví dụ: "/" hoặc "/your-repo/"
+const articlesUrl = "./data/articles.json";
+const articlesRes = await fetch(articlesUrl);
 
-        // Lấy lessonId từ URL (nếu có)
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-        const currentLessonId = getQueryParam('id') || 'unit-10-grade-10';
-
-        // Cập nhật tất cả các link home
-        function updateHomeLinks() {
-            const hubUrl = `${BASE_URL}lesson3.html?id=${currentLessonId}`;
-            const homeBtns = document.querySelectorAll('#homeStartBtn, #summaryHomeBtn, .home-btn');
-            homeBtns.forEach(btn => {
-                if (btn.tagName === 'A') btn.setAttribute('href', hubUrl);
-            });
-        }
+const vocabUrl = `./data/${dataFile}`;
+const vocabRes = await fetch(vocabUrl);
 
         const CONFIG = {
             DATA_URL: `${BASE_URL}data/articles.json`,
