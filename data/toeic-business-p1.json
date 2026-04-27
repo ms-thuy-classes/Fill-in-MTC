@@ -1,0 +1,212 @@
+[
+  {
+    "word": "apply for a position",
+    "type": "(v phrase)",
+    "ipa": "/əˈplaɪ fɔːr ə pəˈzɪʃən/",
+    "meaning": "ứng tuyển vị trí",
+    "sentence": "I decided to ________ after seeing the job advertisement online."
+  },
+  {
+    "word": "hire new employees",
+    "type": "(v phrase)",
+    "ipa": "/ˈhaɪər nuː ˌɛmplɔɪˈiːz/",
+    "meaning": "tuyển nhân viên mới",
+    "sentence": "Our company plans to ________ to support the new project."
+  },
+  {
+    "word": "train staff",
+    "type": "(v phrase)",
+    "ipa": "/treɪn stæf/",
+    "meaning": "đào tạo nhân viên",
+    "sentence": "It is essential to ________ before introducing new software."
+  },
+  {
+    "word": "work full-time",
+    "type": "(v phrase)",
+    "ipa": "/wɜːrk fʊl taɪm/",
+    "meaning": "làm toàn thời gian",
+    "sentence": "After graduation, she wants to ________ at a marketing agency."
+  },
+  {
+    "word": "resign from a job",
+    "type": "(v phrase)",
+    "ipa": "/rɪˈzaɪn frəm ə dʒɑb/",
+    "meaning": "nghỉ việc",
+    "sentence": "He decided to ________ because he found a better opportunity."
+  },
+  {
+    "word": "get a promotion",
+    "type": "(v phrase)",
+    "ipa": "/ɡɛt ə prəˈmoʊʃən/",
+    "meaning": "được thăng chức",
+    "sentence": "After three years of hard work, she finally ________."
+  },
+  {
+    "word": "hold a meeting",
+    "type": "(v phrase)",
+    "ipa": "/hoʊld ə ˈmiːtɪŋ/",
+    "meaning": "tổ chức cuộc họp",
+    "sentence": "We will ________ to discuss the annual budget."
+  },
+  {
+    "word": "attend a meeting",
+    "type": "(v phrase)",
+    "ipa": "/əˈtɛnd ə ˈmiːtɪŋ/",
+    "meaning": "tham dự cuộc họp",
+    "sentence": "All department heads must ________ at 9 AM tomorrow."
+  },
+  {
+    "word": "schedule a meeting",
+    "type": "(v phrase)",
+    "ipa": "/ˈskɛdʒuːl ə ˈmiːtɪŋ/",
+    "meaning": "lên lịch họp",
+    "sentence": "Please ________ with the clients for next Monday."
+  },
+  {
+    "word": "take minutes (of a meeting)",
+    "type": "(v phrase)",
+    "ipa": "/teɪk ˈmɪnɪts əv ə ˈmiːtɪŋ/",
+    "meaning": "ghi biên bản họp",
+    "sentence": "It's your turn to ________ during today's session."
+  },
+  {
+    "word": "meet a deadline",
+    "type": "(v phrase)",
+    "ipa": "/miːt ə ˈdɛdlaɪn/",
+    "meaning": "kịp hạn chót",
+    "sentence": "The team worked overtime to ________ for the client."
+  },
+  {
+    "word": "miss a deadline",
+    "type": "(v phrase)",
+    "ipa": "/mɪs ə ˈdɛdlaɪn/",
+    "meaning": "trễ hạn",
+    "sentence": "Failing to plan properly can cause you to ________."
+  },
+  {
+    "word": "write a report",
+    "type": "(v phrase)",
+    "ipa": "/raɪt ə rɪˈpɔːrt/",
+    "meaning": "viết báo cáo",
+    "sentence": "She needs to ________ about the market research findings."
+  },
+  {
+    "word": "submit a report",
+    "type": "(v phrase)",
+    "ipa": "/səbˈmɪt ə rɪˈpɔːrt/",
+    "meaning": "nộp báo cáo",
+    "sentence": "All employees must ________ by Friday afternoon."
+  },
+  {
+    "word": "sign a contract",
+    "type": "(v phrase)",
+    "ipa": "/saɪn ə ˈkɑːntrækt/",
+    "meaning": "ký hợp đồng",
+    "sentence": "Before starting work, you will need to ________."
+  },
+  {
+    "word": "break a contract",
+    "type": "(v phrase)",
+    "ipa": "/breɪk ə ˈkɑːntrækt/",
+    "meaning": "vi phạm hợp đồng",
+    "sentence": "If you ________, you may face legal consequences."
+  },
+  {
+    "word": "send an email",
+    "type": "(v phrase)",
+    "ipa": "/sɛnd æn ˈiːmeɪl/",
+    "meaning": "gửi email",
+    "sentence": "I will ________ to confirm our meeting time."
+  },
+  {
+    "word": "respond to an inquiry",
+    "type": "(v phrase)",
+    "ipa": "/rɪˈspɑːnd tuː æn ɪnˈkwaɪəri/",
+    "meaning": "phản hồi yêu cầu",
+    "sentence": "Customer service should ________ within 24 hours."
+  },
+  {
+    "word": "launch a product",
+    "type": "(v phrase)",
+    "ipa": "/lɔːntʃ ə ˈprɑːdʌkt/",
+    "meaning": "ra mắt sản phẩm",
+    "sentence": "The company will ________ next month with a big event."
+  },
+  {
+    "word": "develop a product",
+    "type": "(v phrase)",
+    "ipa": "/dɪˈvɛləp ə ˈprɑːdʌkt/",
+    "meaning": "phát triển sản phẩm",
+    "sentence": "Our R&D team is working hard to ________."
+  },
+  {
+    "word": "provide a service",
+    "type": "(v phrase)",
+    "ipa": "/prəˈvaɪd ə ˈsɜːrvɪs/",
+    "meaning": "cung cấp dịch vụ",
+    "sentence": "We ________ that helps small businesses grow."
+  },
+  {
+    "word": "improve customer service",
+    "type": "(v phrase)",
+    "ipa": "/ɪmˈpruːv ˈkʌstəmər ˈsɜːrvɪs/",
+    "meaning": "cải thiện dịch vụ khách hàng",
+    "sentence": "The training program aims to ________ significantly."
+  },
+  {
+    "word": "expand a business",
+    "type": "(v phrase)",
+    "ipa": "/ɪkˈspænd ə ˈbɪznəs/",
+    "meaning": "mở rộng kinh doanh",
+    "sentence": "They plan to ________ by opening three new branches."
+  },
+  {
+    "word": "enter a market",
+    "type": "(v phrase)",
+    "ipa": "/ˈɛntər ə ˈmɑːrkɪt/",
+    "meaning": "thâm nhập thị trường",
+    "sentence": "It is risky to ________ without proper research."
+  },
+  {
+    "word": "make a profit",
+    "type": "(v phrase)",
+    "ipa": "/meɪk ə ˈprɑːfɪt/",
+    "meaning": "tạo lợi nhuận",
+    "sentence": "The startup managed to ________ within its first year."
+  },
+  {
+    "word": "increase sales",
+    "type": "(v phrase)",
+    "ipa": "/ɪnˈkriːs seɪlz/",
+    "meaning": "tăng doanh số",
+    "sentence": "Our new marketing strategy helped us ________ by 20%."
+  },
+  {
+    "word": "reduce costs",
+    "type": "(v phrase)",
+    "ipa": "/rɪˈduːs kɔːsts/",
+    "meaning": "giảm chi phí",
+    "sentence": "We need to ________ without affecting product quality."
+  },
+  {
+    "word": "set a budget",
+    "type": "(v phrase)",
+    "ipa": "/sɛt ə ˈbʌdʒɪt/",
+    "meaning": "lập ngân sách",
+    "sentence": "The finance team will ________ for the next quarter."
+  },
+  {
+    "word": "make a payment",
+    "type": "(v phrase)",
+    "ipa": "/meɪk ə ˈpeɪmənt/",
+    "meaning": "thanh toán",
+    "sentence": "You can ________ online using your credit card."
+  },
+  {
+    "word": "issue an invoice",
+    "type": "(v phrase)",
+    "ipa": "/ˈɪʃuː æn ˈɪnvɔɪs/",
+    "meaning": "xuất hóa đơn",
+    "sentence": "After the service is completed, we will ________."
+  }
+]

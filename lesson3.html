@@ -37,6 +37,7 @@
             padding: 40px 20px 60px;
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
+            position: relative;
         }
 
         /* Header */
@@ -44,6 +45,7 @@
             text-align: center;
             margin-bottom: 2rem;
             animation: fadeInDown 0.7s ease-out forwards;
+            position: relative;
         }
         h1 {
             font-size: 2.8rem;
@@ -58,6 +60,50 @@
             font-size: 1.15rem;
             font-weight: 500;
             opacity: 0.85;
+        }
+
+        /* ===== HOME BUTTON (beautiful, pastel, floating) ===== */
+        .home-button {
+            position: fixed;
+            top: 24px;
+            left: 28px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 10px 20px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4f46e5;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            transition: all 0.25s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .home-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+            border-color: #8b5cf6;
+            color: #7c3aed;
+        }
+        .home-button:active {
+            transform: translateY(1px);
+        }
+        /* Responsive: trên mobile, nút home có thể nhỏ lại hoặc chuyển sang trái */
+        @media (max-width: 600px) {
+            .home-button {
+                padding: 6px 14px;
+                font-size: 0.85rem;
+                top: 16px;
+                right: 16px;
+            }
+            body {
+                padding-top: 70px;
+            }
         }
 
         /* ===== FLASHCARD SECTION (from lesson2, adapted) ===== */
@@ -294,7 +340,7 @@
             transform: none;
         }
 
-        /* Game Grid Styles (as before) */
+        /* Game Grid Styles */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -397,8 +443,14 @@
 </head>
 <body>
 
+<!-- Nút Home đẹp, nổi bật, trỏ về index.html -->
+<a href="index.html" class="home-button" title="Về trang chủ">
+    🏠 <span>Home</span>
+</a>
+
 <header>
-    <h1>🎮 Game Center</h1>
+    <h1>🎮 LEARN WITH MS.THÚY</h1>
+    <h2>GAME CENTER</h2>
     <p class="subtitle" id="lessonSubtitle">Ôn từ vựng, sau đó chọn game để luyện tập</p>
 </header>
 
@@ -442,6 +494,12 @@
 
 <!-- ========== GAME GRID (original lesson3 content) ========== -->
 <main class="game-grid">
+    <a href="#" class="game-card" data-game="quiz">
+        <div class="icon">❓</div>
+        <h3>Quiz Game</h3>
+        <p>Test your knowledge with our fun quiz!</p>
+        <span class="play-btn">Play Now</span>
+    </a>
     <a href="#" class="game-card" data-game="racing">
         <div class="icon">🏎️</div>
         <h3>Racing Game</h3>
@@ -602,7 +660,6 @@
     // HIỂN THỊ CẢNH BÁO NẾU THIẾU ID
     if (!lessonId) {
         document.getElementById('lessonSubtitle').innerHTML = '⚠️ THIẾU ID! Vui lòng truy cập: lesson3.html?id=unit-10-grade-10 ⚠️';
-        // Vẫn cho phép chạy demo nhưng có cảnh báo
         lessonId = 'demo-lesson';
     } else {
         document.getElementById('lessonSubtitle').innerHTML = `📖 Đang tải bài học: ${lessonId}`;
@@ -612,20 +669,16 @@
     // ============================================================
     async function loadVocabularyData(lessonId) {
         try {
-            // Step 1: fetch articles.json
             const articlesRes = await fetch('data/articles.json');
             if (!articlesRes.ok) throw new Error('Cannot fetch articles.json');
             const articles = await articlesRes.json();
-            // Find lesson metadata
             const lessonMeta = articles.find(art => art.id === lessonId);
             if (!lessonMeta) throw new Error('Lesson not found in articles.json');
             const dataFile = lessonMeta.dataFile;
             if (!dataFile) throw new Error('dataFile missing');
-            // Step 2: fetch actual vocabulary
             const vocabRes = await fetch(`data/${dataFile}`);
             if (!vocabRes.ok) throw new Error(`Vocab file ${dataFile} missing`);
             const vocabData = await vocabRes.json();
-            // Transform to expected structure (word, meaning, ipa, type, sentence)
             return vocabData.map(item => ({
                 word: item.word,
                 meaning: item.meaning || "no meaning",
@@ -635,7 +688,6 @@
             }));
         } catch (err) {
             console.warn("Real data failed, using fallback sample:", err);
-            // Fallback sample data (same as lesson2)
             return [
                 { word: "beautiful", type: "adj", ipa: "/ˈbjuː.tɪ.fəl/", meaning: "xinh đẹp", sentence: "The sunset is ________." },
                 { word: "quickly", type: "adv", ipa: "/ˈkwɪk.li/", meaning: "một cách nhanh chóng", sentence: "He ran ________ to catch the bus." },
@@ -652,14 +704,6 @@
     }
 
     async function initFlashcard() {
-        const params = new URLSearchParams(window.location.search);
-        let lessonId = params.get('id');
-        if (!lessonId) {
-            document.getElementById('lessonSubtitle').innerHTML = '⚠️ Không tìm thấy ?id=... Dùng dữ liệu mẫu.';
-            lessonId = 'sample';
-        } else {
-            document.getElementById('lessonSubtitle').innerHTML = `📖 Đang tải bài học: ${lessonId}`;
-        }
         const vocab = await loadVocabularyData(lessonId);
         FlashcardState.cards = vocab;
         FlashcardState.currentIndex = 0;

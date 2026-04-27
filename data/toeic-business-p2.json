@@ -1,0 +1,212 @@
+[
+  {
+    "word": "make a phone call",
+    "type": "(v phrase)",
+    "ipa": "/meɪk ə fəʊn kɔːl/",
+    "meaning": "thực hiện cuộc gọi",
+    "sentence": "I need to ________ to confirm the reservation."
+  },
+  {
+    "word": "return a call",
+    "type": "(v phrase)",
+    "ipa": "/rɪˈtɜːrn ə kɔːl/",
+    "meaning": "gọi lại",
+    "sentence": "She will ________ as soon as she finishes the meeting."
+  },
+  {
+    "word": "leave a message",
+    "type": "(v phrase)",
+    "ipa": "/liːv ə ˈmesɪdʒ/",
+    "meaning": "để lại lời nhắn",
+    "sentence": "Please ________ after the beep."
+  },
+  {
+    "word": "take a message",
+    "type": "(v phrase)",
+    "ipa": "/teɪk ə ˈmesɪdʒ/",
+    "meaning": "ghi lại lời nhắn",
+    "sentence": "Can you ________ for Mr. Smith?"
+  },
+  {
+    "word": "answer the phone",
+    "type": "(v phrase)",
+    "ipa": "/ˈænsər ðə fəʊn/",
+    "meaning": "nghe điện thoại",
+    "sentence": "Could you ________ while I'm busy?"
+  },
+  {
+    "word": "put someone on hold",
+    "type": "(v phrase)",
+    "ipa": "/pʊt ˈsʌmwʌn ɒn həʊld/",
+    "meaning": "giữ máy",
+    "sentence": "Please ________ while I check the information."
+  },
+  {
+    "word": "change the schedule",
+    "type": "(v phrase)",
+    "ipa": "/tʃeɪndʒ ðə ˈʃedjuːl/",
+    "meaning": "thay đổi lịch",
+    "sentence": "We need to ________ due to the delay."
+  },
+  {
+    "word": "confirm an appointment",
+    "type": "(v phrase)",
+    "ipa": "/kənˈfɜːrm ən əˈpɔɪntmənt/",
+    "meaning": "xác nhận cuộc hẹn",
+    "sentence": "Please call to ________ for tomorrow."
+  },
+  {
+    "word": "cancel an appointment",
+    "type": "(v phrase)",
+    "ipa": "/ˈkænsəl ən əˈpɔɪntmənt/",
+    "meaning": "hủy cuộc hẹn",
+    "sentence": "I had to ________ because of an emergency."
+  },
+  {
+    "word": "reschedule a meeting",
+    "type": "(v phrase)",
+    "ipa": "/ˌriːˈʃedjuːl ə ˈmiːtɪŋ/",
+    "meaning": "dời lịch họp",
+    "sentence": "Can we ________ to next week?"
+  },
+  {
+    "word": "check availability",
+    "type": "(v phrase)",
+    "ipa": "/tʃek əˌveɪləˈbɪləti/",
+    "meaning": "kiểm tra lịch trống",
+    "sentence": "Let me ________ before booking."
+  },
+  {
+    "word": "be available for",
+    "type": "(v phrase)",
+    "ipa": "/bi əˈveɪləbl fɔːr/",
+    "meaning": "có thể tham gia",
+    "sentence": "Are you ________ the meeting this afternoon?"
+  },
+  {
+    "word": "handle a request",
+    "type": "(v phrase)",
+    "ipa": "/ˈhændl ə rɪˈkwest/",
+    "meaning": "xử lý yêu cầu",
+    "sentence": "She will ________ from the client."
+  },
+  {
+    "word": "deal with a problem",
+    "type": "(v phrase)",
+    "ipa": "/diːl wɪð ə ˈprɒbləm/",
+    "meaning": "giải quyết vấn đề",
+    "sentence": "We need to ________ immediately."
+  },
+  {
+    "word": "complete a task",
+    "type": "(v phrase)",
+    "ipa": "/kəmˈpliːt ə tɑːsk/",
+    "meaning": "hoàn thành nhiệm vụ",
+    "sentence": "He managed to ________ on time."
+  },
+  {
+    "word": "follow instructions",
+    "type": "(v phrase)",
+    "ipa": "/ˈfɒləʊ ɪnˈstrʌkʃənz/",
+    "meaning": "làm theo hướng dẫn",
+    "sentence": "Please ________ carefully."
+  },
+  {
+    "word": "check the details",
+    "type": "(v phrase)",
+    "ipa": "/tʃek ðə ˈdiːteɪlz/",
+    "meaning": "kiểm tra chi tiết",
+    "sentence": "Make sure to ________ before submitting."
+  },
+  {
+    "word": "update the system",
+    "type": "(v phrase)",
+    "ipa": "/ʌpˈdeɪt ðə ˈsɪstəm/",
+    "meaning": "cập nhật hệ thống",
+    "sentence": "IT will ________ tonight."
+  },
+  {
+    "word": "review a document",
+    "type": "(v phrase)",
+    "ipa": "/rɪˈvjuː ə ˈdɒkjʊmənt/",
+    "meaning": "xem xét tài liệu",
+    "sentence": "Please ________ before signing."
+  },
+  {
+    "word": "revise a report",
+    "type": "(v phrase)",
+    "ipa": "/rɪˈvaɪz ə rɪˈpɔːrt/",
+    "meaning": "chỉnh sửa báo cáo",
+    "sentence": "She needs to ________ based on feedback."
+  },
+  {
+    "word": "print a document",
+    "type": "(v phrase)",
+    "ipa": "/prɪnt ə ˈdɒkjʊmənt/",
+    "meaning": "in tài liệu",
+    "sentence": "Can you ________ for the meeting?"
+  },
+  {
+    "word": "copy a file",
+    "type": "(v phrase)",
+    "ipa": "/ˈkɒpi ə faɪl/",
+    "meaning": "sao chép file",
+    "sentence": "Please ________ to a USB drive."
+  },
+  {
+    "word": "fill out a form",
+    "type": "(v phrase)",
+    "ipa": "/fɪl aʊt ə fɔːrm/",
+    "meaning": "điền biểu mẫu",
+    "sentence": "You need to ________ first."
+  },
+  {
+    "word": "submit an application",
+    "type": "(v phrase)",
+    "ipa": "/səbˈmɪt ən ˌæplɪˈkeɪʃən/",
+    "meaning": "nộp đơn",
+    "sentence": "He plans to ________ tomorrow."
+  },
+  {
+    "word": "place an order",
+    "type": "(v phrase)",
+    "ipa": "/pleɪs ən ˈɔːrdər/",
+    "meaning": "đặt hàng",
+    "sentence": "We will ________ this afternoon."
+  },
+  {
+    "word": "process an order",
+    "type": "(v phrase)",
+    "ipa": "/ˈprɒses ən ˈɔːrdər/",
+    "meaning": "xử lý đơn hàng",
+    "sentence": "The system will ________ automatically."
+  },
+  {
+    "word": "deliver a package",
+    "type": "(v phrase)",
+    "ipa": "/dɪˈlɪvər ə ˈpækɪdʒ/",
+    "meaning": "giao hàng",
+    "sentence": "They will ________ by noon."
+  },
+  {
+    "word": "receive a shipment",
+    "type": "(v phrase)",
+    "ipa": "/rɪˈsiːv ə ˈʃɪpmənt/",
+    "meaning": "nhận hàng",
+    "sentence": "We expect to ________ today."
+  },
+  {
+    "word": "check inventory",
+    "type": "(v phrase)",
+    "ipa": "/tʃek ˈɪnvəntri/",
+    "meaning": "kiểm tra tồn kho",
+    "sentence": "Please ________ before ordering."
+  },
+  {
+    "word": "run out of stock",
+    "type": "(v phrase)",
+    "ipa": "/rʌn aʊt əv stɒk/",
+    "meaning": "hết hàng",
+    "sentence": "We have ________ this item."
+  }
+]

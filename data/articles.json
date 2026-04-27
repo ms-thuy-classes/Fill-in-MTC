@@ -5,8 +5,26 @@
     "date": "2024-05-20",
     "description": "Cụm từ & thành ngữ thông dụng - Bài tập điền từ vào câu.",
     "dataFile": "Test-1-P1-G9.json",
-    "tags": ["vocabulary", "phrasal verbs", "B1"],
+    "tags": [ "grade 9", "B1"],
     "layout": 1
+  },
+   {
+    "id": "toeic-business-p1",
+    "title": "Từ vựng TOEIC Business Part 1",
+    "date": "2026-04-27",
+    "description": "Cụm từ & thành ngữ thông dụng - Bài tập điền từ vào câu.",
+    "dataFile": "toeic-business-p1.json",
+    "tags": [ "collocations", "TOEIC"],
+    "layout": 3
+  },
+  {
+    "id": "toeic-business-p2",
+    "title": "Từ vựng TOEIC Business Part 2",
+    "date": "2026-04-27",
+    "description": "Cụm từ & thành ngữ thông dụng - Bài tập điền từ vào câu.",
+    "dataFile": "toeic-business-p2.json",
+    "tags": [ "collocations", "TOEIC"],
+    "layout": 3
   },
   {
     "id": "unit-10-grade-10",
@@ -14,7 +32,7 @@
     "date": "2025-02-15",
     "description": "Từ vựng về du lịch sinh thái, bảo vệ môi trường và trải nghiệm khám phá.",
     "dataFile": "unit-10-grade-10.json",
-    "tags": ["tourism", "eco-friendly", "B1", "vocabulary"],
+    "tags": ["tourism", "grade 10"],
     "layout": 3
   },
   {
@@ -23,7 +41,7 @@
     "date": "2025-02-15",
     "description": "Từ vựng về bài test",
     "dataFile": "bac-ninh.json",
-    "tags": ["culture", "B1", "vocabulary"],
+    "tags": [ "B1", "grade 12"],
     "layout": 1
   },
    {
@@ -32,7 +50,7 @@
     "date": "2025-04-24",
     "description": "Từ vựng về bài test",
     "dataFile": "test1-part2.json",
-    "tags": ["giải đề", "B1", "vocabulary"],
+    "tags": ["giải đề", "grade 9"],
     "layout": 1
   },
   {
@@ -41,7 +59,7 @@
     "date": "2025-02-15",
     "description": "Từ vựng về bài test",
     "dataFile": "chuyen-ha-long.json",
-    "tags": ["advanced", "medicine", "B1", "vocabulary"],
+    "tags": ["advanced", "B1", "grade 12"],
     "layout": 2
   }
 ]
