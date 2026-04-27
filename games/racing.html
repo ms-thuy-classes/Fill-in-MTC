@@ -615,6 +615,13 @@
     </div>
 
     <script>
+        function getBasePath() {
+    let path = window.location.pathname;
+    // Loại bỏ phần tên file cuối cùng (nếu có)
+    let base = path.substring(0, path.lastIndexOf('/') + 1);
+    // Nếu đang ở thư mục gốc (base = '/') thì giữ nguyên
+    return base;
+}
         const CONFIG = {
              DATA_URL: 'data/articles.json',         // ✅ tương đối
              BASE_PATH: 'data/',

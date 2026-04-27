@@ -375,6 +375,13 @@
 </div>
 
 <script>
+    function getBasePath() {
+    let path = window.location.pathname;
+    // Loại bỏ phần tên file cuối cùng (nếu có)
+    let base = path.substring(0, path.lastIndexOf('/') + 1);
+    // Nếu đang ở thư mục gốc (base = '/') thì giữ nguyên
+    return base;
+}
     // ---------- GLOBAL VARIABLES ----------
     let currentLessonId = null;
     let questionsBank = [];       // { sentence, correctWord, meaning, options:[] }
