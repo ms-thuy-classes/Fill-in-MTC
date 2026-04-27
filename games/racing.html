@@ -110,7 +110,6 @@
         #start-btn:active { transform: translateY(1px); }
         #start-btn:disabled { opacity: 0.7; cursor: wait; }
 
-        /* Home button style (minimal, elegant) */
         .home-btn {
             display: inline-flex;
             align-items: center;
@@ -151,7 +150,6 @@
             padding-top: 20px;
         }
 
-        /* Header */
         .game-header {
             width: 100%;
             max-width: 1200px;
@@ -203,7 +201,6 @@
             color: white;
         }
 
-        /* Road Container */
         .road-wrapper {
             width: 100%;
             max-width: 1200px;
@@ -224,8 +221,6 @@
             border-radius: 16px;
             overflow: hidden;
         }
-        /* Removed fake road line */
-
         .track {
             position: absolute;
             top: 50%; left: 5%; right: 5%;
@@ -258,7 +253,6 @@
             transform: translate(-50%, -50%) scale(1.1);
             animation: bounce 0.6s ease;
         }
-
         .finish-line {
             position: absolute;
             right: 5%;
@@ -269,7 +263,6 @@
             z-index: 10;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
         }
-
         .car {
             position: absolute;
             top: 55%;
@@ -284,7 +277,6 @@
         .car.shake { animation: shake 0.4s ease; }
         .car.speed-up { transition: left 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
 
-        /* Question Panel */
         .question-panel {
             background: rgba(26, 26, 46, 0.95);
             padding: 25px;
@@ -364,7 +356,6 @@
         .feedback.correct { color: #22c55e; background: rgba(34, 197, 94, 0.1); }
         .feedback.incorrect { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
 
-        /* Visual Effects */
         .flash-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -392,7 +383,6 @@
             opacity: 1;
         }
 
-        /* Winner Text - absolutely centered */
         .winner-text {
             position: fixed;
             top: 50%;
@@ -413,7 +403,6 @@
             pointer-events: none;
         }
 
-        /* Summary Screen */
         #summary-screen {
             background: linear-gradient(135deg, #1e1b4b, #312e81, #1e1b4b);
             padding: 30px;
@@ -548,7 +537,6 @@
     <!-- Start Screen -->
     <div id="start-screen" class="screen active">
         <div class="start-content">
-            <!-- Home button top-left inside start screen - sẽ được cập nhật bằng JS -->
             <a href="#" id="homeStartBtn" class="home-btn start-home">⬅ Home</a>
             <h1>🏎️ VOCAB RACER</h1>
             <p>Unit 10: Du lịch bền vững (Lesson 3)</p>
@@ -615,22 +603,25 @@
     </div>
 
     <script>
-        // ==================== FIX FETCH ON GITHUB PAGES ====================
+        // ==================== SỬA FETCH GIỐNG HANGMAN ====================
+        // Dùng đường dẫn tương đối (giả sử file HTML nằm trong thư mục con như /games/)
+        // Lùi ra ngoài 1 cấp để vào thư mục data/
+        const DATA_FOLDER = '../data/';
+
+        // Hàm lấy base path cho home link (vẫn giữ để quay về lesson3.html)
         function getBasePath() {
             let path = window.location.pathname;
             let base = path.substring(0, path.lastIndexOf('/') + 1);
             return base;
         }
-        const BASE_URL = getBasePath();   // ví dụ: "/" hoặc "/your-repo/"
+        const BASE_URL = getBasePath();
 
-        // Lấy lessonId từ URL (nếu có)
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
         const currentLessonId = getQueryParam('id') || 'unit-10-grade-10';
 
-        // Cập nhật tất cả các link home
         function updateHomeLinks() {
             const hubUrl = `${BASE_URL}lesson3.html?id=${currentLessonId}`;
             const homeBtns = document.querySelectorAll('#homeStartBtn, #summaryHomeBtn, .home-btn');
@@ -640,8 +631,9 @@
         }
 
         const CONFIG = {
-            DATA_URL: `${BASE_URL}data/articles.json`,
-            BASE_PATH: `${BASE_URL}data/`,
+            // Sửa fetch dùng DATA_FOLDER tương đối
+            DATA_URL: `${DATA_FOLDER}articles.json`,
+            BASE_PATH: DATA_FOLDER,
             AUDIO: {
                 correct: 'https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/correct.mp3',
                 incorrect: 'https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/incorrect.mp3',
@@ -729,7 +721,6 @@
                     const res = await fetch(CONFIG.DATA_URL);
                     if (!res.ok) throw new Error(`HTTP ${res.status}: ${CONFIG.DATA_URL}`);
                     const allArticles = await res.json();
-                    // Tìm lesson theo layout=3 hoặc theo id từ URL
                     let metadata = allArticles.find(a => a.layout === CONFIG.GAME.targetLayoutId);
                     if (!metadata && currentLessonId) metadata = allArticles.find(a => a.id === currentLessonId);
                     if (!metadata) metadata = allArticles[0];
@@ -932,7 +923,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateHomeLinks();  // cập nhật link home
+            updateHomeLinks();
             window.game = new Game();
             document.addEventListener('visibilitychange', () => { if(document.hidden) window.game.audio.stopEngine(); });
         });
