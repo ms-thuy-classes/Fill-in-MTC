@@ -21,7 +21,6 @@
             padding: 2rem 1rem;
         }
 
-        /* main container pastel glassmorphism */
         .quiz-app {
             max-width: 1000px;
             width: 100%;
@@ -33,7 +32,6 @@
             transition: all 0.3s ease;
         }
 
-        /* screens */
         .screen {
             padding: 2rem 2rem 2.5rem;
             transition: opacity 0.25s;
@@ -43,7 +41,6 @@
             display: none;
         }
 
-        /* start panel */
         .start-card {
             text-align: center;
         }
@@ -116,7 +113,6 @@
             background: #f3cdc6;
         }
 
-        /* game header */
         .game-header {
             display: flex;
             justify-content: space-between;
@@ -143,7 +139,6 @@
             border-radius: 30px;
         }
 
-        /* sentence style */
         .sentence-card {
             background: #ffffffdb;
             border-radius: 48px;
@@ -166,7 +161,6 @@
             color: #b6572a;
         }
 
-        /* options grid 2x2 */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -231,7 +225,6 @@
             font-weight: 500;
         }
 
-        /* summary */
         .summary-card {
             text-align: center;
         }
@@ -294,23 +287,11 @@
         }
 
         @media (max-width: 650px) {
-            .screen {
-                padding: 1.5rem;
-            }
-            .sentence-card {
-                font-size: 1.2rem;
-            }
-            .options-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            .stat-circle {
-                width: 80px;
-                height: 80px;
-            }
-            .stat-number {
-                font-size: 1.8rem;
-            }
+            .screen { padding: 1.5rem; }
+            .sentence-card { font-size: 1.2rem; }
+            .options-grid { grid-template-columns: 1fr; gap: 12px; }
+            .stat-circle { width: 80px; height: 80px; }
+            .stat-number { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -335,9 +316,7 @@
             <span class="player-badge" id="playerNameDisplay">✨ player</span>
             <span class="progress-text" id="progressText">question 1 / 0</span>
         </div>
-        <div class="sentence-card" id="sentenceDisplay">
-            Loading sentence...
-        </div>
+        <div class="sentence-card" id="sentenceDisplay">Loading sentence...</div>
         <div class="options-grid" id="optionsContainer"></div>
         <button id="nextQuestionBtn" class="next-btn" disabled>➡ next question</button>
         <div class="feedback-message" id="feedbackMsg"></div>
@@ -354,18 +333,14 @@
                 <div class="stat-circle"><span class="stat-number" id="correctCount">0</span><span>correct</span></div>
                 <div class="stat-circle"><span class="stat-number" id="totalCount">0</span><span>total</span></div>
             </div>
-            <!-- percentage chart (simple bar) -->
             <div class="chart-container">
                 <div style="background:#f7d9cf; border-radius:30px; height:26px; overflow:hidden;">
                     <div id="percentBar" style="width:0%; height:100%; background:#85c7b8; border-radius:30px; transition: width 0.6s;"></div>
                 </div>
                 <p style="margin-top:8px;" id="percentLabel">0% accuracy</p>
             </div>
-
             <h3 style="margin: 20px 0 10px;">🔁 review mistakes</h3>
-            <div class="wrong-list" id="wrongAnswersList">
-                <p>✨ no mistakes, perfect!</p>
-            </div>
+            <div class="wrong-list" id="wrongAnswersList"><p>✨ no mistakes, perfect!</p></div>
             <div style="margin-top: 25px;">
                 <button id="restartQuizBtn" class="restart-btn">🔄 play again</button>
                 <a href="#" id="summaryHomeLink" class="home-link" style="display: inline-block; margin-left: 15px;">🏠 hub</a>
@@ -375,23 +350,30 @@
 </div>
 
 <script>
-    // ==================== FIX FETCH ON GITHUB PAGES ====================
+    // ---------- LẤY ĐƯỜNG DẪN CƠ SỞ (GIỐNG HANGMAN) ----------
     function getBasePath() {
         let path = window.location.pathname;
-        // Loại bỏ phần tên file cuối cùng
+        // Nếu file HTML đang ở thư mục con (ví dụ /games/quiz.html) -> base = /games/
+        // Nếu ở thư mục gốc -> base = /
         let base = path.substring(0, path.lastIndexOf('/') + 1);
-        // Nếu base chỉ là "/" thì giữ nguyên, không thêm gì
         return base;
     }
-    const BASE_URL = getBasePath();   // ví dụ: "/" hoặc "/your-repo/"
+    const BASE_URL = getBasePath();  // ví dụ: '/' hoặc '/games/'
+
+    // Hàm dùng để fetch dữ liệu (chạy ổn định trên GitHub Pages)
+    // Dữ liệu nên đặt ở thư mục data/ cùng cấp với file HTML (hoặc trên một cấp nếu cần)
+    // Ở đây ta dùng đường dẫn tương đối: '../data/' để lùi ra ngoài thư mục hiện tại (giống hangman)
+    // Nếu quiz.html nằm cùng cấp với thư mục data, hãy sửa thành 'data/'
+    // Nhưng để an toàn và giống hangman, ta dùng '../data/' (lùi 1 cấp)
+    const DATA_FOLDER = '../data/';   // <--- THAY ĐỔI NẾU CẦN: có thể là 'data/' nếu cùng cấp
 
     // ---------- GLOBAL VARIABLES ----------
     let currentLessonId = null;
-    let questionsBank = [];       // { sentence, correctWord, meaning, options:[] }
-    let currentQuestions = [];    // shuffled
+    let questionsBank = [];
+    let currentQuestions = [];
     let currentIndex = 0;
     let score = 0;
-    let wrongRecords = [];        // { sentence, correctWord, meaning }
+    let wrongRecords = [];
     let studentName = "";
     let quizActive = false;
     let selectedFlag = false;
@@ -416,15 +398,14 @@
     const percentLabel = document.getElementById('percentLabel');
     const wrongAnswersListDiv = document.getElementById('wrongAnswersList');
 
-    // utility: get URL parameter
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
 
-    // update home links with current lesson id
     function updateHomeLinks() {
         const id = currentLessonId || 'unit-10-grade-10';
+        // Đường dẫn về lesson3.html cùng cấp với thư mục hiện tại (dùng BASE_URL)
         const hubUrl = `${BASE_URL}lesson3.html?id=${id}`;
         const links = ['homeStartLink', 'gameHomeLink', 'summaryHomeLink'];
         links.forEach(linkId => {
@@ -433,38 +414,25 @@
         });
     }
 
-    // ---- SOUNDS (correct/incorrect) using existing audio files ----
     function initSounds() {
         correctAudio = new Audio('https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/correct.mp3');
         wrongAudio = new Audio('https://github.com/ms-thuy-classes/audio/raw/refs/heads/main/incorrect.mp3');
         correctAudio.load();
         wrongAudio.load();
     }
+    function playCorrect() { if (correctAudio) { correctAudio.currentTime = 0; correctAudio.play().catch(e => console.log("audio blocked")); } }
+    function playWrong() { if (wrongAudio) { wrongAudio.currentTime = 0; wrongAudio.play().catch(e => console.log("audio blocked")); } }
 
-    function playCorrect() {
-        if (correctAudio) {
-            correctAudio.currentTime = 0;
-            correctAudio.play().catch(e => console.log("audio blocked"));
-        }
-    }
-
-    function playWrong() {
-        if (wrongAudio) {
-            wrongAudio.currentTime = 0;
-            wrongAudio.play().catch(e => console.log("audio blocked"));
-        }
-    }
-
-    // ---- LOAD DATA FROM JSON (FIXED FETCH) ----
+    // -------------- FETCH DỮ LIỆU (SỬA THEO HANGMAN) --------------
     async function loadVocabularyData() {
         try {
-            // 1. Fetch articles.json dùng BASE_URL
-            const articlesUrl = `${BASE_URL}data/articles.json`;
+            // 1. Lấy articles.json (dùng DATA_FOLDER + 'articles.json')
+            const articlesUrl = `${DATA_FOLDER}articles.json`;
             const articlesRes = await fetch(articlesUrl);
             if (!articlesRes.ok) throw new Error(`Cannot fetch ${articlesUrl}`);
             const articles = await articlesRes.json();
             
-            // 2. Find target lesson by id or fallback to first
+            // 2. Tìm lesson theo id từ URL
             let targetLesson = null;
             if (currentLessonId) {
                 targetLesson = articles.find(art => art.id === currentLessonId);
@@ -472,12 +440,11 @@
             if (!targetLesson && articles.length) targetLesson = articles[0];
             if (!targetLesson) throw new Error('No lesson found in articles.json');
 
-            // 3. Get the dataFile path (e.g., "lesson_1.json")
             const dataFile = targetLesson.dataFile;
             if (!dataFile) throw new Error('Missing dataFile property');
 
-            // 4. Fetch the actual vocabulary file
-            const vocabUrl = `${BASE_URL}data/${dataFile}`;
+            // 3. Lấy file vocab cụ thể
+            const vocabUrl = `${DATA_FOLDER}${dataFile}`;
             const vocabRes = await fetch(vocabUrl);
             if (!vocabRes.ok) throw new Error(`Cannot fetch ${vocabUrl}`);
             const vocabData = await vocabRes.json();
@@ -489,7 +456,6 @@
             return vocabData;
         } catch (err) {
             console.error("Fetch error:", err);
-            // Fallback data (so the quiz still works offline/demo)
             console.warn("Using fallback sample data");
             return [
                 { word: "sustainable", meaning: "bền vững", sentence: "________ tourism helps protect nature for future generations." },
@@ -502,7 +468,6 @@
         }
     }
 
-    // generate 4 options for a given correct word (using the full list of words from the lesson)
     function generateOptions(correctWord, allWordsList) {
         let candidates = allWordsList.filter(item => item.word.toLowerCase() !== correctWord.toLowerCase()).map(item => item.word);
         let distinct = [...new Set(candidates)];
@@ -526,7 +491,6 @@
         return options;
     }
 
-    // build full questions bank from vocab data (one question per word)
     async function buildQuestions() {
         const rawVocab = await loadVocabularyData();
         if (!rawVocab.length) throw new Error('No data loaded');
@@ -584,11 +548,7 @@
         const currentQ = currentQuestions[currentIndex];
         const isCorrect = (selectedWord === currentQ.correctWord);
         selectedFlag = true;
-
-        document.querySelectorAll('.opt-btn').forEach(btn => {
-            btn.style.pointerEvents = 'none';
-        });
-
+        document.querySelectorAll('.opt-btn').forEach(btn => { btn.style.pointerEvents = 'none'; });
         if (isCorrect) {
             playCorrect();
             score++;
@@ -634,19 +594,14 @@
         const percent = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
         percentBar.style.width = `${percent}%`;
         percentLabel.innerText = `${percent}% accuracy`;
-
         if (wrongRecords.length === 0) {
             wrongAnswersListDiv.innerHTML = '<p style="background:#daf4e4; padding:12px; border-radius:30px;">🎉 Hoàn hảo! Không có lỗi sai nào 🎉</p>';
         } else {
             let html = '';
             wrongRecords.forEach(w => {
-                html += `
-                    <div class="wrong-item">
-                        <div style="font-weight:bold;">📖 ${w.sentence.replace(/________/g, '______')}</div>
-                        <div>🔑 Đáp án đúng: <strong>${w.correctWord}</strong></div>
-                        <div>🇻🇳 Nghĩa tiếng Việt: ${w.meaning}</div>
-                    </div>
-                `;
+                html += `<div class="wrong-item"><div style="font-weight:bold;">📖 ${w.sentence.replace(/________/g, '______')}</div>
+                         <div>🔑 Đáp án đúng: <strong>${w.correctWord}</strong></div>
+                         <div>🇻🇳 Nghĩa tiếng Việt: ${w.meaning}</div></div>`;
             });
             wrongAnswersListDiv.innerHTML = html;
         }
@@ -654,13 +609,9 @@
 
     async function startQuiz() {
         const name = studentNameInput.value.trim();
-        if (!name) {
-            alert("Please enter your name to start");
-            return;
-        }
+        if (!name) { alert("Please enter your name to start"); return; }
         studentName = name;
         playerNameSpan.innerText = `🌸 ${studentName}`;
-
         try {
             const fullBank = await buildQuestions();
             if (!fullBank.length) throw new Error("empty questions");
@@ -669,10 +620,8 @@
             currentIndex = 0;
             wrongRecords = [];
             selectedFlag = false;
-
             renderCurrentQuestion();
             updateProgress();
-
             startScreen.classList.add('hidden');
             quizScreen.classList.remove('hidden');
             summaryScreen.classList.add('hidden');
@@ -693,14 +642,10 @@
         selectedFlag = false;
     }
 
-    // EVENT LISTENERS
     startBtn.addEventListener('click', startQuiz);
     nextBtn.addEventListener('click', nextQuestion);
-    document.getElementById('restartQuizBtn')?.addEventListener('click', () => {
-        restartQuiz();
-    });
+    document.getElementById('restartQuizBtn')?.addEventListener('click', restartQuiz);
 
-    // INIT
     function init() {
         currentLessonId = getQueryParam('id');
         if (!currentLessonId) currentLessonId = 'unit-10-grade-10';
@@ -708,7 +653,6 @@
         initSounds();
         studentNameInput.value = "";
     }
-
     init();
 </script>
 </body>
