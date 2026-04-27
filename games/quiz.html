@@ -450,7 +450,7 @@
     async function loadVocabularyData() {
         try {
             // 1. Fetch articles.json
-            const articlesRes = await fetch('/data/articles.json');
+            const articlesRes = await fetch('data/articles.json');
             if (!articlesRes.ok) throw new Error('Cannot fetch /data/articles.json');
             const articles = await articlesRes.json();
             
@@ -467,7 +467,7 @@
             if (!dataFile) throw new Error('Missing dataFile property');
 
             // 4. Fetch the actual vocabulary file (inside /data/articles/)
-            const vocabRes = await fetch(`/data/${dataFile}`);
+          const vocabRes = await fetch(`data/${dataFile}`);
             if (!vocabRes.ok) throw new Error(`Cannot fetch ${dataFile}`);
             const vocabData = await vocabRes.json();
             
